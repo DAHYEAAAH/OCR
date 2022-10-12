@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:last_ocr/entities/Ocr_maternity.dart';
-import 'package:last_ocr/entities/Ocr_pregnant.dart';
 import 'package:last_ocr/page/maternity_graph_page.dart';
 import 'package:last_ocr/page/maternity_page.dart';
 import 'package:last_ocr/page/pregnant_graph_page.dart';
@@ -57,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   OutlinedButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => PregnantPage("")));
+                            builder: (context) => PregnantPage("","")));
                       },
                       child: const Text('OCR')
                   ),
@@ -68,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   OutlinedButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => PregnantGraphPage()));
+                            builder: (context) =>  PregnantGraphPage()));
                       },
                       child: const Text('그래프')
                   ),

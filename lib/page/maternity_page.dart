@@ -7,8 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:last_ocr/overlay/example_camera_overlay.dart';
-import 'package:last_ocr/overlay/example_camera_overlay_back.dart';
+import 'package:last_ocr/overlay/camera_overlay_maternity.dart';
 
 
 late List<String> array = List.filled(35, "",growable: true);
@@ -608,7 +607,7 @@ class MaternityPageState extends State<MaternityPage> {
                   tooltip: 'pick Image',
                   onPressed: ()  {
                     // getImage(ImageSource.camera);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ExampleCameraOverlay()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayMaternity()));
                     // print("open camera");
                   },
                 ),
