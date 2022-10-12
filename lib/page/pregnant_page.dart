@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:last_ocr/overlay/camera_overlay_maternity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:last_ocr/overlay/camera_overlay_pregnant.dart';
@@ -11,11 +11,7 @@ import 'package:last_ocr/overlay/camera_overlay_pregnant.dart';
 class PregnantPage extends StatefulWidget{
   static const routeName = '/OcrPregnantPage';
 
-  final String path;
-
-  //const PregnantPage({Key? key, this.title}) : super(key: key);
-
-  const PregnantPage(this.path, this.title);
+  const PregnantPage({Key? key, this.title}) : super(key: key);
 
   final String? title;
 
@@ -91,6 +87,7 @@ class PregnantPageState extends State<PregnantPage>{
   String galleryurl = '';
 
 
+
   Widget showImage() {
 
     return Container(
@@ -120,38 +117,6 @@ class PregnantPageState extends State<PregnantPage>{
     });
     return temp;
   }
-
-
-  // 이미지를 보여주는 위젯
-  Widget ShowImage() {
-
-    final String cameraurl = 'http://211.107.210.141:4000/images/' + widget.path;
-    print(cameraurl);
-    // if(widget.path != "no"){
-    //   array = receiveresult();
-    //   print(array);
-    //   modon = array[0];
-    // };
-
-
-    return Container(
-        color: const Color(0xffd0cece),
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
-        height: MediaQuery
-            .of(context)
-            .size
-            .width,
-        child: Center(
-            child: _image == null //삼항연!산!자!
-                ? (widget.path == "no" ? Text('No image selected.') : Image
-                .network(cameraurl))
-                : galleryurl == '' ? Text('No url selected.') : Image.network(
-                'http://211.107.210.141:3001/images/' + galleryurl)));
-  }
-
 
   final sowID1_Controller = TextEditingController();
   final sowID2_Controller = TextEditingController();
@@ -195,6 +160,7 @@ class PregnantPageState extends State<PregnantPage>{
   final pxController = TextEditingController();
 
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -217,29 +183,21 @@ class PregnantPageState extends State<PregnantPage>{
                         TableCell(
                           child: SizedBox(height: 30,),
                         ),
-                        Card(
-                          child: Column(children:[
-                            Text('모돈번호',style: TextStyle(fontSize: 20),textAlign: TextAlign.center,)
-                          ],
-                          ),
+                        Column(children:[
+                          Text('모돈번호',style: TextStyle(fontSize: 20),textAlign: TextAlign.center,)
+                        ],
                         ),
-                        Card(
-                          child: Column(children:[
-                            TextField(controller: sowID1_Controller,
-                              decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                          ]),
-                        ),
-                        Card(
-                          child: Column(children:[
-                            Text('-',style: TextStyle(fontSize: 20),textAlign: TextAlign.center,)
-                          ], ),
-                        ),
-                        Card(
-                          child: Column(children:[
-                            TextField(controller: sowID2_Controller,
-                              decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                          ]),
-                        ),
+                        Column(children:[
+                          TextField(controller: sowID1_Controller,
+                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                        ]),
+                        Column(children:[
+                          Text('-',style: TextStyle(fontSize: 20),textAlign: TextAlign.center,)
+                        ], ),
+                        Column(children:[
+                          TextField(controller: sowID2_Controller,
+                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                        ]),
 
                       ],),
                   ],
@@ -283,29 +241,21 @@ class PregnantPageState extends State<PregnantPage>{
                     TableCell(
                       child: SizedBox(height: 30,),
                     ),
-                    Card(
-                      child: Column(children:[
-                        Text('구입일')
-                      ]),
-                    ),
-                    Card(
-                      child: Column(children:[
-                        TextField(controller: adoption_year_Controller,
-                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                      ]),
-                    ),
-                    Card(
-                      child: Column(children:[
-                        TextField(controller: adoption_month_Controller,
-                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                      ]),
-                    ),
-                    Card(
-                      child: Column(children:[
-                        TextField(controller: adoption_day_Controller,
-                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                      ]),
-                    )
+                    Column(children:[
+                      Text('구입일')
+                    ]),
+                    Column(children:[
+                      TextField(controller: adoption_year_Controller,
+                        decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                    ]),
+                    Column(children:[
+                      TextField(controller: adoption_month_Controller,
+                        decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                    ]),
+                    Column(children:[
+                      TextField(controller: adoption_day_Controller,
+                        decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                    ]),
                   ],),
                 ],
                 ),
@@ -319,29 +269,21 @@ class PregnantPageState extends State<PregnantPage>{
                     TableCell(
                       child: SizedBox(height: 30,),
                     ),
-                    Card(
-                      child: Column(children:[
-                        Text('초발정일')
-                      ]),
-                    ),
-                    Card(
-                      child: Column(children:[
-                        TextField(controller: hormone_year_Controller,
-                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                      ]),
-                    ),
-                    Card(
-                      child: Column(children:[
-                        TextField(controller: hormone_month_Controller,
-                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                      ]),
-                    ),
-                    Card(
-                      child: Column(children:[
-                        TextField(controller: hormone_day_Controller,
-                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                      ]),
-                    )
+                    Column(children:[
+                      Text('초발정일')
+                    ]),
+                    Column(children:[
+                      TextField(controller: hormone_year_Controller,
+                        decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                    ]),
+                    Column(children:[
+                      TextField(controller: hormone_month_Controller,
+                        decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                    ]),
+                    Column(children:[
+                      TextField(controller: hormone_day_Controller,
+                        decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                    ]),
                   ],),
                 ],
                 ),
@@ -356,23 +298,17 @@ class PregnantPageState extends State<PregnantPage>{
                       TableCell(
                         child: SizedBox(height: 30,),
                       ),
-                      Card(
-                        child: Column(children:[
-                          Text('교배일')
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: mate_month_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: mate_day_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
+                      Column(children:[
+                        Text('교배일')
+                      ]),
+                      Column(children:[
+                        TextField(controller: mate_month_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        TextField(controller: mate_day_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
                     ],),
                   ],
                 ),
@@ -387,50 +323,34 @@ class PregnantPageState extends State<PregnantPage>{
                       TableCell(
                         child: SizedBox(height: 30,),
                       ),
-                      Card(
-                        child: Column(children:[
-                          Text('1차 웅돈번호', textAlign: TextAlign.center)
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: boar1ID1_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          Text('-',style: TextStyle(fontSize: 20))
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: boar1ID2_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          Text('2차 웅돈번호', textAlign: TextAlign.center)
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: boar2ID1_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          Text('-',style: TextStyle(fontSize: 20))
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: boar2ID2_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      )
+                      Column(children:[
+                        Text('1차 웅돈번호', textAlign: TextAlign.center)
+                      ]),
+                      Column(children:[
+                        TextField(controller: boar1ID1_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        Text('-',style: TextStyle(fontSize: 20))
+                      ]),
+                      Column(children:[
+                        TextField(controller: boar1ID2_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        Text('2차 웅돈번호', textAlign: TextAlign.center)
+                      ]),
+                      Column(children:[
+                        TextField(controller: boar2ID1_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        Text('-',style: TextStyle(fontSize: 20))
+                      ]),
+                      Column(children:[
+                        TextField(controller: boar2ID1_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
                     ],),
                   ],
                 ),
@@ -445,23 +365,17 @@ class PregnantPageState extends State<PregnantPage>{
                       TableCell(
                         child: SizedBox(height: 30,),
                       ),
-                      Card(
-                        child: Column(children:[
-                          Text('재발 확인일', textAlign: TextAlign.center)
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: check_month_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: check_day_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      )
+                      Column(children:[
+                        Text('재발 확인일', textAlign: TextAlign.center)
+                      ]),
+                      Column(children:[
+                        TextField(controller: check_month_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        TextField(controller: check_day_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
                     ],),
                   ],
                 ),
@@ -476,23 +390,17 @@ class PregnantPageState extends State<PregnantPage>{
                       TableCell(
                         child: SizedBox(height: 30,),
                       ),
-                      Card(
-                        child: Column(children:[
-                          Text('분만 예정일', textAlign: TextAlign.center)
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: expect_month_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: expect_day_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      )
+                      Column(children:[
+                        Text('분만 예정일', textAlign: TextAlign.center)
+                      ]),
+                      Column(children:[
+                        TextField(controller: expect_month_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        TextField(controller: expect_day_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
                     ],),
                   ],
                 ),
@@ -507,39 +415,28 @@ class PregnantPageState extends State<PregnantPage>{
                       TableCell(
                         child: SizedBox(height: 30,),
                       ),
-                      Card(
-                        child: Column(children:[
-                          Text('백신1')
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          Text('백신1')
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: vaccine1_sec_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          Text('백신2')
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: vaccine2_fir_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: vaccine2_sec_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      )
+                      Column(children:[
+                        Text('백신1')
+                      ]),
+                      Column(children:[
+                        TextField(controller: vaccine1_fir_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        TextField(controller: vaccine1_sec_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        Text('백신2')
+                      ]),
+                      Column(children:[
+                        TextField(controller: vaccine2_fir_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        TextField(controller: vaccine2_sec_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
                     ],),
                   ],
                 ),
@@ -554,40 +451,28 @@ class PregnantPageState extends State<PregnantPage>{
                       TableCell(
                         child: SizedBox(height: 30,),
                       ),
-                      Card(
-                        child: Column(children:[
-                          Text('백신3')
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: vaccine3_fir_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: vaccine3_sec_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          Text('백신4')
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: vaccine4_fir_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: vaccine4_sec_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      )
+                      Column(children:[
+                        Text('백신3')
+                      ]),
+                      Column(children:[
+                        TextField(controller: vaccine3_fir_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        TextField(controller: vaccine4_sec_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        Text('백신4')
+                      ]),
+                      Column(children:[
+                        TextField(controller: vaccine4_fir_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
+                      Column(children:[
+                        TextField(controller: vaccine4_sec_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
                     ],),
                   ],
                 ),
@@ -603,17 +488,13 @@ class PregnantPageState extends State<PregnantPage>{
                       TableCell(
                         child: SizedBox(height: 100,),
                       ),
-                      Card(
-                        child: Column(children:[
-                          Text('특이사항')
-                        ]),
-                      ),
-                      Card(
-                        child: Column(children:[
-                          TextField(controller: memo_Controller,
-                            decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
-                        ]),
-                      )
+                      Column(children:[
+                        Text('특이사항')
+                      ]),
+                      Column(children:[
+                        TextField(controller: memo_Controller,
+                          decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),),
+                      ]),
                     ],),
                   ],
                 ),
@@ -631,16 +512,19 @@ class PregnantPageState extends State<PregnantPage>{
                       child: Icon(Icons.add_a_photo),
                       tooltip: 'pick Image',
                       onPressed: ()  {
+
                         // getImage(ImageSource.camera);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayMaternity()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant()));
                         // print("open camera");
+
                       },
                     ),
                     FloatingActionButton(
-                      heroTag: 'gallery',
+                      heroTag: 'gallery_button',
                       child: Icon(Icons.wallpaper),
                       tooltip: 'pick Iamge',
                       onPressed: () async{
+
                         ImagePicker picker = ImagePicker();
                         // galleryurl = (await picker.getImage(source: ImageSource.gallery)) as String;
                         //galleryurl = (await ImagePicker().pickImage(source: ImageSource.gallery)) as String;
@@ -650,6 +534,7 @@ class PregnantPageState extends State<PregnantPage>{
                         print(galleryurl);
                         // getImage(ImageSource.gallery);
 
+
                       },
                     ),
                     FloatingActionButton(
@@ -657,7 +542,7 @@ class PregnantPageState extends State<PregnantPage>{
                       child: Icon(Icons.arrow_circle_right_sharp),
                       tooltip: 'pick Iamge',
                       onPressed: () async{
-                        _showToast(context);
+                        //_showToast(context);
                         sowID = sowID1_Controller.text + "," + sowID2_Controller.text;
                         ocr_seq = sowID1_Controller.text + "," + sowID2_Controller.text;
                         sow_no = sowID1_Controller.text + "," + sowID2_Controller.text;
@@ -679,19 +564,6 @@ class PregnantPageState extends State<PregnantPage>{
 
                         sendData(ocr_seq, sow_no, sow_birth, sow_buy, sow_estrus, sow_cross, boar_fir, boar_sec, checkdate, expectdate, vaccine1, vaccine2, vaccine3, vaccine4, memo);
 
-                        //서버로 사진 전송
-                        // final api ='http://211.107.210.141:3000/api/ocrpregnatInsert';
-                        // final dio = Dio();
-                        // Response response;
-                        // response = await dio.post(api);
-                        // if(response.statusCode == 200){
-                        //   //resultToast('Ocr 임신사 insert success... \n\n');
-                        //   array = receiveresult();
-                        //   _showToast(context);
-                        // }
-                        // getImage(ImageSource.gallery);
-
-
                       },
                     ),
                   ])
@@ -701,40 +573,28 @@ class PregnantPageState extends State<PregnantPage>{
     );
 
   }
-  void _showToast(BuildContext context) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: const Text('Ocr 임신사 insert success... \n\n'),
-        action: SnackBarAction(
-            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
-      ),
-    );
-  }
-
 }
-
 
 sendData(String? ocr_seq, String? sow_no,String? sow_birth, String? sow_buy, String? sow_estrus, String? sow_cross, String? boar_fir, String? boar_sec,
     String? checkdate, String? expectdate, String? vaccine1, String? vaccine2, String? vaccine3, String? vaccine4, String? memo) async {
   final api ='http://211.107.210.141:3000/api/ocrpregnatUpdate';
   final data = {
-    "ocr_seq":'2',
-    "sow_no":'2',
-    "sow_birth":'5',
-    "sow_buy":'6',
-    "sow_estrus":'7',
-    "sow_cross":'8',
-    "boar_fir":'9',
-    "boar_sec":'10',
-    "checkdate":'11',
-    "expectdate":'12',
-    "vaccine1":'13',
-    "vaccine2":'14',
-    "vaccine3":'15',
-    "vaccine4":'16',
+    "ocr_seq": ocr_seq,
+    "sow_no": sow_no,
+    "sow_birth": sow_birth,
+    "sow_buy":sow_buy,
+    "sow_estrus":sow_estrus,
+    "sow_cross":sow_cross,
+    "boar_fir":boar_fir,
+    "boar_sec":boar_sec,
+    "checkdate":checkdate,
+    "expectdate":expectdate,
+    "vaccine1":vaccine1,
+    "vaccine2":vaccine2,
+    "vaccine3":vaccine3,
+    "vaccine4":vaccine4,
     // "ocr_imgpath":'17',
-    "memo":'18',
+    "memo":memo,
   };
   final dio = Dio();
   Response response;
@@ -745,6 +605,7 @@ sendData(String? ocr_seq, String? sow_no,String? sow_birth, String? sow_buy, Str
   }
   return 0;
 }
+
 
 // class EmployeeDataSource extends DataGridSource {
 //    EmployeeDataSource(List<Employee> employees) {
