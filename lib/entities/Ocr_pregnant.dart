@@ -1,19 +1,19 @@
 class Ocr_pregnant {
   int? ocr_seq;
-  int? sow_no;
+  String? sow_no;
   int? sow_hang;
   String? sow_birth;
   String? sow_buy;
   String? sow_estrus;
   String? sow_cross;
-  int? boar_fir;
-  int? boar_sec;
+  String? boar_fir;
+  String? boar_sec;
   String? checkdate;
   String? expectdate;
-  int? vaccine1;
-  int? vaccine2;
-  int? vaccine3;
-  int? vaccine4;
+  String? vaccine1;
+  String? vaccine2;
+  String? vaccine3;
+  String? vaccine4;
   String? input_date;
   String? ocr_imgpath;
   String? memo;

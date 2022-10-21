@@ -1,26 +1,16 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_camera_overlay/flutter_camera_overlay.dart';
 import 'package:flutter_camera_overlay/model.dart';
 import 'package:http_parser/http_parser.dart';
-// import 'package:ocr/pages/navigations/camera_page.dart';
-// import '../pages/navigations/camera_page.dart';
-
-import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
-
-
-late List<String> array = List.filled(35, "",growable: true);
-late List<String> array_graph = List.filled(8, "", growable: true);
-
-receiveresult(){
-  print(array);
-  return array;
-}
+import 'package:intl/intl.dart';
+import 'package:ntp/ntp.dart';
+import 'package:path_provider/path_provider.dart';
+import '../page/pregnant_page.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 
 main() {
@@ -41,8 +31,10 @@ class CameraOverlayPregnant extends StatefulWidget {
 }
 
 class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
-  OverlayFormat format = OverlayFormat.cardID1;
-  int tab = 0;
+  OverlayFormat format = OverlayFormat.cardID2;
+  String? returnfilepath = "";
+  bool downloading = false;
+  var progressString = "";
 
   cropImage(String cameraurl) async {
     File? croppedfile = await ImageCropper().cropImage(
@@ -54,33 +46,86 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
           CropAspectRatioPreset.ratio4x3,
           CropAspectRatioPreset.ratio16x9
         ],
-        androidUiSettings: AndroidUiSettings(
+        androidUiSettings: const AndroidUiSettings(
             toolbarTitle: 'Image Cropper',
             toolbarColor: Colors.deepPurpleAccent,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),
-        iosUiSettings: IOSUiSettings(
+        iosUiSettings: const IOSUiSettings(
           minimumAspectRatio: 1.0,
         )
     );
-
-    if (croppedfile != null) {
-      // imagefile = croppedfile;
-      setState(() { });
-    }else{
-      print("Image is not cropped.");
-    }
     return croppedfile;
   }
+  Future<List> uploadimg_pregnant(File file)async{
+    final api = 'http://211.107.210.141:3000/api/ocrImageUpload';
+    final dio = Dio();
+
+    DateTime currentTime = await NTP.now();
+
+    currentTime = currentTime.toUtc().add(Duration(hours: 9));
+    String formatDate = DateFormat('yyMMddHHmm').format(currentTime); //format변경
+    String fileName = "pre"+formatDate+'.jpg';
+
+    FormData _formData = FormData.fromMap({
+      "file" : await MultipartFile.fromFile(file.path,
+          filename: fileName, contentType : MediaType("image","jpg")),
+    });
+
+    Response response = await dio.post(
+        api,
+        data:_formData,
+        onSendProgress: (rec, total) {
+          print('Rec: $rec , Total: $total');
+          setState(() {
+            downloading = true;
+            progressString = ((rec / total) * 100).toStringAsFixed(0) + '%';
+            print(progressString);
+          });
+        }
+    );
+    print(response);
+    print('Successfully uploaded');
+    return response.data;
+  }
+  Future<void> downloadFile(String imgname) async {
+    Dio dio = Dio();
+    try {
+      var serverurl = "http://211.107.210.141:3000/api/ocrGetImage/"+imgname;
+      var dir = await getApplicationDocumentsDirectory();
+      await dio.download(serverurl, '${dir.path}/'+imgname,
+          onReceiveProgress: (rec, total) {
+            print('Rec: $rec , Total: $total');
+            returnfilepath = '${dir.path}/'+imgname;
+            setState(() {
+              setState(() {
+                downloading = true;
+                progressString = ((rec / total) * 100).toStringAsFixed(0) + '%';
+                print(progressString);
+              });
+            });
+          }, deleteOnError: true
+      );
+      print("download image success");
+    } catch (e) {
+      print("download image failed");
+      print(e);
+    }
+    setState(() {
+      downloading = false;
+      progressString = 'Completed';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
     var media = MediaQuery.of(context);
     var size = media.size;
     double width = media.orientation == Orientation.portrait
         ? size.shortestSide * .9
         : size.longestSide * .5;
-
     double height = width * 1.414;
 
     return MaterialApp(
@@ -92,11 +137,11 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
               if (snapshot.hasData) {
                 if (snapshot.data == null) {
                   return const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'No camera found',
-                        style: TextStyle(color: Colors.black),
-                      ));
+                    alignment: Alignment.center,
+                    child: Text(
+                      'No camera found',
+                      style: TextStyle(color: Colors.black),
+                    ));
                 }
                 return CameraOverlay(
                     snapshot.data!.first,
@@ -105,13 +150,9 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                       context: context,
                       barrierColor: Colors.black,
                       builder: (context) {
-                        CardOverlay overlay = CardOverlay.byFormat(format);
                         return AlertDialog(
                             actionsAlignment: MainAxisAlignment.center,
                             backgroundColor: Colors.black,
-                            // title: const Text('찰칵',
-                            //     style: TextStyle(color: Colors.white),
-                            //     textAlign: TextAlign.center),
                             title: Row(
                               children: [
                                 OutlinedButton(
@@ -120,85 +161,113 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                   },
                                   child: Container(
                                       alignment: Alignment.topLeft,
-                                      child: const Icon(Icons.arrow_back_rounded)
+                                      child: const Icon(Icons.arrow_back_rounded, color: Colors.white,)
                                   ),
                                 ),
                                 OutlinedButton(
                                   onPressed: () async {
+                                    showDialog(context: context, builder: (context){
+                                      return Container(
+                                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                        alignment: Alignment.center,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white70,
+                                        ),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.blue[200],
+                                              borderRadius: BorderRadius.circular(10.0)
+                                          ),
+                                          width: 300.0,
+                                          height: 200.0,
+                                          alignment: AlignmentDirectional.center,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              const Center(
+                                                child: SizedBox(
+                                                  height: 50.0,
+                                                  width: 50.0,
+                                                  child: CircularProgressIndicator(
+                                                    value: null,
+                                                    strokeWidth: 7.0,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 25.0),
+                                                child: const Center(
+                                                  child: Text(
+                                                    "loading.. wait...",
+                                                    style: TextStyle(
+                                                        color: Colors.white
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                    List list = await uploadimg_pregnant(File(file.path));
 
-                                    ImageProperties properties = await FlutterNativeImage.getImageProperties(file.path);
+                                    GallerySaver.saveImage(file.path)
+                                        .then((value) => print('>>>> save value= $value'))
+                                        .catchError((err) {print('error : $err');
+                                    });
 
-                                    //final filename = await submit_uploadimg_front(file);
-
-                                    //서버로 사진 전송
-                                    final api ='http://211.107.210.141:3000/api/ocrpregnatInsert';
-                                    final dio = Dio();
-                                    Response response;
-                                    response = await dio.post(api, data: file);
-                                    if(response.statusCode == 200){
-                                      //resultToast('Ocr 임신사 insert success... \n\n');
-                                      array = receiveresult();
-                                      //_showToast(context);
-                                    }
+                                    await downloadFile("ocrpreimages/" + list[0]);
 
                                     Navigator.of(context).popUntil((route) => route.isFirst);
-                                    await Navigator.push(context,MaterialPageRoute(builder: (context) =>
-                                    CameraOverlayPregnant()),
+                                    await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                          PregnantPage(list, returnfilepath!)),
                                     );
                                   },
                                   child: Container(
                                       alignment: Alignment.topRight,
-                                      child: const Icon(Icons.send)
-
+                                      child: Icon(Icons.send, color: Colors.white,)
                                   ),
                                 ),
                               ],
                             ),
-                            // actions: [
-                            //   OutlinedButton(
-                            //     // onPressed: () => Navigator.of(context).pop(),
-                            //     //
-                            //     //     Navigator.pop(context, file.path);
-                            //       onPressed: () async {
-                            //         final croppedfile = await cropImage(file.path);
-                            //         final filename = await submit_uploadimg_front(croppedfile); // 서버에 저장된 이름을 반환해줌 (이름을 알아야 url로 들어가니까)
-                            //         print(file.path);
-                            //         // final filename = await submit_uploadimg(file.path);
-                            //         // print(filename);
-                            //
-                            //
-                            //
-                            //
-                            //         Navigator.of(context).popUntil((route) => route.isFirst);
-                            //         await Navigator.push(context,MaterialPageRoute(builder: (context) =>
-                            //             ExampleCameraOverlay()),
-                            //         );
-                            //
-                            //
-                            //       },
-                            //       child: const Icon(Icons.edit))
-                            //
-                            // ],
-                            content: SizedBox( // 뒤로가기 버튼 만든 그 페이지 사이즈박스
+                            actions:[
+                              OutlinedButton(
+                                  onPressed: () async {
+                                    final croppedfile = await cropImage(file.path);
+                                    List list = await uploadimg_pregnant(File(croppedfile.path));
+
+                                    GallerySaver.saveImage(croppedfile.path)
+                                        .then((value) => print('>>>> save value= $value'))
+                                        .catchError((err) {print('error : $err');
+                                    });
+
+                                    await downloadFile(
+                                        "ocrpreimages/" + list[0]);
+
+                                    Navigator.of(context).popUntil((route) => route.isFirst);
+                                    await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                          PregnantPage(list, returnfilepath!)),
+                                    );
+                                  },
+                                  child: const Icon(Icons.edit, color: Colors.white,))
+                            ],
+                            content:SizedBox(
                                 width: double.infinity,
                                 child: AspectRatio(
                                   // aspectRatio: overlay.ratio!,
-                                  aspectRatio: width/height,
+                                  aspectRatio: width / height,
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          fit: BoxFit.fitWidth,
-                                          alignment: FractionalOffset.center,
-                                          image: FileImage(
-                                            File(file.path),
-                                          ),
-                                        )),
-
-                                  ),
-                                )));
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              fit: BoxFit.fill,
+                                              alignment: FractionalOffset.center,
+                                              image: FileImage(File(file.path),
+                                              )))))
+                            )
+                        );
                       },
-
-
                     ),
                     info:
                     '박스에 맞춰 사진찍어주세요');
@@ -206,69 +275,15 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                 return const Align(
                     alignment: Alignment.center,
                     child: Text(
-                      '임신사 카메라임',
+                      '임신사 카메라',
                       style: TextStyle(color: Colors.black),
                     ));
               }
             },
           ),
-        ));
-  }
-}
-
-submit_uploadimg_front(dynamic file) async {
-  String filename = "no";
-  try {
-    //print("임신사 이미지 전송 함");
-    Response res = await uploadimg_front(file.path);
-
-    switch(res.statusCode){
-      case 200:
-        final jsonbody = res.data;       // ex) {"result":[335,"1111-11-11","2022_08_10_14_57_16.jpg"]}
-        filename = jsonbody['result'][37]; // ex) "2022_08_10_14_57_16.jpg"
-        array = jsonbody['result'];
-        print("array is ?");
-        print(array);
-        print("임신사 이미지 전송 함");
-        break;
-      case 201:
-        break;
-      case 202:
-        break;
-      default:
-        break;
-    }
-    return filename;
-  } catch (error) {
-    print("error");
-    return filename;
-  }
-}
-
-uploadimg_front(String imagePath) async {
-  Dio dio = new Dio();
-  try {
-    dio.options.contentType = 'multipart/form-data';
-    dio.options.maxRedirects.isFinite;
-    String fileName = imagePath.split('/').last;
-
-    print(fileName);
-    FormData _formData = FormData.fromMap({
-      "Image" : await MultipartFile.fromFile(imagePath,
-          filename: fileName, contentType:MediaType("image","jpg")),
-    });
-    Response response = await dio.post(
-        'http://211.107.210.141:3000/api/ocrpregnatInsert',
-        data:_formData
+        )
     );
-    print(response);
-
-    final jsonBody = response.data;
-    return response;
-  } catch (e) {
-    Exception(e);
-  } finally {
-    dio.close();
   }
-  // return 0;
 }
+
+
