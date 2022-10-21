@@ -3,9 +3,29 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-late List<double> array_graph = List.filled(8, 0, growable: true);
-// late List<double> array_graph = [10,20,30,40,30,0,40];
-// var int_list = List<int>.filled(5, 0);
+late double mating_week1 = 18;
+late double mating_week2 = 20;
+late double mating_week3 = 35;
+late double mating_week4 =29;
+late double mating_goal = 32;
+
+late double feedbaby_week1 = 24;
+late double feedbaby_week2 = 35;
+late double feedbaby_week3 = 29;
+late double feedbaby_week4 = 18;
+late double feedbaby_goal = 27;
+
+late double mortality_week1 = 11;
+late double mortality_week2 = 24;
+late double mortality_week3 = 32;
+late double mortality_week4 = 37;
+late double mortality_goal = 35;
+
+late double shipment_week1 = 14;
+late double shipment_week2 = 21;
+late double shipment_week3 = 32;
+late double shipment_week4 = 29;
+late double shipment_goal = 35;
 
 class PregnantGraphPage extends StatefulWidget {
   static const routeName = '/camera-page';
@@ -20,75 +40,102 @@ class PregnantGraphPage extends StatefulWidget {
 
 class PregnantGraphPageState extends State<PregnantGraphPage> {
 
+
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
-        appBar: AppBar(
-            title: Text("임신사 Graph Page")
+      appBar: AppBar(
+          title: Text("임신사 그래프")
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              children: [
+                Text("교배",style:TextStyle(fontSize: 20),),
+                AspectRatio(aspectRatio: 3/2,
+                  child:Padding(
+                    padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                    child: LineChart(
+                      mainChart_sow_cross(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Text("이유",style:TextStyle(fontSize: 20),),
+                AspectRatio(aspectRatio: 3/2,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                    child: LineChart(
+                      mainChart_sow_sevrer(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Text("총산자수",style:TextStyle(fontSize: 20),),
+                AspectRatio(aspectRatio: 3/2,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                    child: LineChart(
+                      mainChart_total_baby(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Text("포유",style:TextStyle(fontSize: 20),),
+                AspectRatio(aspectRatio: 3/2,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                    child: LineChart(
+                      mainChart_feed_baby(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            // Stack(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   alignment: Alignment.bottomLeft,
+            //   children: [
+            //     FloatingActionButton(
+            //       child: Icon(Icons.cached_outlined ),
+            //       onPressed: () {
+            //
+            //       },
+            //     )
+            //   ],
+            // )
+
+          ],
         ),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextButton.icon(
-                  onPressed: () { },
-                  icon: Icon(Icons.refresh), label: Text('새로고침')),
-              Text("교배",style:TextStyle(fontSize: 20),),
-              Column(
-                children: [
-                  AspectRatio(aspectRatio: 3/2,
-                    child:Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
-                      child: LineChart(
-                        mainChart_sow_cross(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text("이유",style:TextStyle(fontSize: 20),),
-                  AspectRatio(aspectRatio: 3/2,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
-                      child: LineChart(
-                        mainChart_sow_sevrer(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text("총산",style:TextStyle(fontSize: 20),),
-                  AspectRatio(aspectRatio: 3/2,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
-                      child: LineChart(
-                        mainChart_total_baby(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text("포유",style:TextStyle(fontSize: 20),),
-                  AspectRatio(aspectRatio: 3/2,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
-                      child: LineChart(
-                        mainChart_feed_baby(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            backgroundColor: Colors.blue,
+            child: Icon(Icons.refresh),
+            onPressed: () async {
+              setState(() {
+              });
+            },
           ),
-        ));
+        ],
+      ),
+    );
   }
 }
 
@@ -99,21 +146,17 @@ LineChartData mainChart_sow_cross() {
     const Color(0xff02d39a),
   ];
 
-  List<Color> gradientColors_avg = [
+  List<Color> gradientColorsAvg = [
     const Color(0xfffa0000),
     const Color(0xffffdd00),
   ];
-  print(array_graph);
-  print("main 그래프 페이지 값 ");
-  print(array_graph);
-  final oneweek_mate = array_graph[0];
-  final twoweek_mate = array_graph[1];
-  final threeweek_mate = array_graph[2];
-  final fourweek_mate = array_graph[3];
-  final goal_mate = array_graph[4];
-  final minvalue_mate = array_graph[5];
-  final maxvalue_mate = array_graph[6];
-  // final middlevalue_mate = array_graph[7];
+
+  final oneweekMate = mating_week1;
+  final twoweekMate = mating_week2;
+  final threeweekMate = mating_week3;
+  final fourweekMate = mating_week4;
+  final goalMate = mating_goal;
+
 
   return LineChartData(
 
@@ -170,19 +213,19 @@ LineChartData mainChart_sow_cross() {
           fontWeight: FontWeight.bold,
           fontSize: 15,
         ),
-        getTitles: (value) {
-          // print('leftTitles $value');
-          if (value.toInt() == minvalue_mate) {
-            return minvalue_mate.toInt().toString();
-          }else if(value.toInt() == maxvalue_mate){
-            return maxvalue_mate.toInt().toString();
-          }else if(value.toInt() == goal_mate){
-            return goal_mate.toInt().toString();
-          }else{
-            return value.toInt().toString();
-          }
-          // return '';
-        },
+        // getTitles: (value) {
+        //   // print('leftTitles $value');
+        //   if (value.toInt() == minvalue_mate) {
+        //     return minvalue_mate.toInt().toString();
+        //   }else if(value.toInt() == maxvalue_mate){
+        //     return maxvalue_mate.toInt().toString();
+        //   }else if(value.toInt() == goal_mate){
+        //     return goal_mate.toInt().toString();
+        //   }else{
+        //     return value.toInt().toString();
+        //   }
+        //   // return '';
+        // },
       ),
     ),
     // // borderData: FlBorderData(
@@ -195,10 +238,10 @@ LineChartData mainChart_sow_cross() {
     lineBarsData: [
       LineChartBarData(
         spots: [
-          FlSpot(0, oneweek_mate),
-          FlSpot(3, twoweek_mate),
-          FlSpot(6, threeweek_mate),
-          FlSpot(9, fourweek_mate),
+          FlSpot(0, oneweekMate.toDouble()),
+          FlSpot(3, twoweekMate.toDouble()),
+          FlSpot(6, threeweekMate.toDouble()),
+          FlSpot(9, fourweekMate.toDouble()),
         ],
 
         isCurved: true,
@@ -211,13 +254,13 @@ LineChartData mainChart_sow_cross() {
       ),
       LineChartBarData(
         spots: [
-          FlSpot(0, goal_mate),
-          FlSpot(3, goal_mate),
-          FlSpot(6, goal_mate),
-          FlSpot(9, goal_mate),
+          FlSpot(0, goalMate.toDouble()),
+          FlSpot(3, goalMate.toDouble()),
+          FlSpot(6, goalMate.toDouble()),
+          FlSpot(9, goalMate.toDouble()),
         ],
         isCurved: true,
-        colors: gradientColors_avg,
+        colors: gradientColorsAvg,
         barWidth: 5,
         isStrokeCapRound: true,
         dotData: FlDotData(
@@ -239,18 +282,12 @@ LineChartData mainChart_sow_sevrer() {
     const Color(0xfffa0000),
     const Color(0xffffdd00),
   ];
-  // array_graph = receiveresult_graph();
-  print("main 그래프 페이지 값 ");
-  // print(array_graph);
-  //var oneweek  = array_graph[0] as double;
-  final oneweek_teen = array_graph[0];
-  final  twoweek_teen = array_graph[1];
-  final threeweek_teen = array_graph[2];
-  final fourweek_teen = array_graph[3];
-  final goal_teen = array_graph[4];
-  final minvalue_teen = array_graph[5];
-  final maxvalue_teen = array_graph[6];
-  // final middlevalue_teen = array_graph[7];
+
+  final oneweek_feedbaby = feedbaby_week1;
+  final twoweek_feedbaby = feedbaby_week2;
+  final threeweek_feedbaby = feedbaby_week3;
+  final fourweek_feedbaby = feedbaby_week4;
+  final goal_feedbaby= feedbaby_goal;
 
   return LineChartData(
 
@@ -307,18 +344,18 @@ LineChartData mainChart_sow_sevrer() {
           fontWeight: FontWeight.bold,
           fontSize: 15,
         ),
-        getTitles: (value) {
-          // print('leftTitles $value');
-          if (value.toInt() == minvalue_teen) {
-            return minvalue_teen.toInt().toString();
-          }else if(value.toInt() == maxvalue_teen){
-            return maxvalue_teen.toInt().toString();
-          }else if(value.toInt() == goal_teen){
-            return goal_teen.toInt().toString();
-          }else{
-            return value.toInt().toString();
-          }
-        },
+        // getTitles: (value) {
+        //   // print('leftTitles $value');
+        //   if (value.toInt() == minvalue_teen) {
+        //     return minvalue_teen.toInt().toString();
+        //   }else if(value.toInt() == maxvalue_teen){
+        //     return maxvalue_teen.toInt().toString();
+        //   }else if(value.toInt() == goal_teen){
+        //     return goal_teen.toInt().toString();
+        //   }else{
+        //     return value.toInt().toString();
+        //   }
+        // },
       ),
     ),
     // // borderData: FlBorderData(
@@ -331,10 +368,10 @@ LineChartData mainChart_sow_sevrer() {
     lineBarsData: [
       LineChartBarData(
         spots: [
-          FlSpot(0, oneweek_teen),
-          FlSpot(3, twoweek_teen),
-          FlSpot(6, threeweek_teen),
-          FlSpot(9, fourweek_teen),
+          FlSpot(0, oneweek_feedbaby.toDouble()),
+          FlSpot(3, twoweek_feedbaby.toDouble()),
+          FlSpot(6, threeweek_feedbaby.toDouble()),
+          FlSpot(9, fourweek_feedbaby.toDouble()),
         ],
 
         isCurved: true,
@@ -347,10 +384,10 @@ LineChartData mainChart_sow_sevrer() {
       ),
       LineChartBarData(
         spots: [
-          FlSpot(0, goal_teen),
-          FlSpot(3, goal_teen),
-          FlSpot(6, goal_teen),
-          FlSpot(9, goal_teen),
+          FlSpot(0, goal_feedbaby.toDouble()),
+          FlSpot(3, goal_feedbaby.toDouble()),
+          FlSpot(6, goal_feedbaby.toDouble()),
+          FlSpot(9, goal_feedbaby.toDouble()),
         ],
         isCurved: true,
         colors: gradientColors_avg,
@@ -380,13 +417,11 @@ LineChartData mainChart_total_baby() {
   print("main 그래프 페이지 값 ");
   // print(array_graph);
   //var oneweek  = array_graph[0] as double;
-  final oneweek_die = array_graph[0];
-  final  twoweek_die = array_graph[1];
-  final threeweek_die = array_graph[2];
-  final fourweek_die = array_graph[3];
-  final goal_die = array_graph[4];
-  final minvalue_die = array_graph[5];
-  final maxvalue_die = array_graph[6];
+  final oneweek_mortality = mortality_week1;
+  final  twoweek_mortality = mortality_week2;
+  final threeweek_mortality = mortality_week3;
+  final fourweek_mortality = mortality_week4;
+  final goal_die = mortality_goal;
 
 
   return LineChartData(
@@ -444,19 +479,19 @@ LineChartData mainChart_total_baby() {
           fontWeight: FontWeight.bold,
           fontSize: 15,
         ),
-        getTitles: (value) {
-          // print('leftTitles $value');
-          if (value.toInt() == minvalue_die) {
-            return minvalue_die.toInt().toString();
-          }else if(value.toInt() == maxvalue_die){
-            return maxvalue_die.toInt().toString();
-          }else if(value.toInt() == goal_die){
-            return goal_die.toInt().toString();
-          }else{
-            return value.toInt().toString();
-          }
-          return '';
-        },
+        // getTitles: (value) {
+        //   // print('leftTitles $value');
+        //   if (value.toInt() == minvalue_die) {
+        //     return minvalue_die.toInt().toString();
+        //   }else if(value.toInt() == maxvalue_die){
+        //     return maxvalue_die.toInt().toString();
+        //   }else if(value.toInt() == goal_die){
+        //     return goal_die.toInt().toString();
+        //   }else{
+        //     return value.toInt().toString();
+        //   }
+        //   return '';
+        // },
 
       ),
     ),
@@ -470,10 +505,10 @@ LineChartData mainChart_total_baby() {
     lineBarsData: [
       LineChartBarData(
         spots: [
-          FlSpot(0, oneweek_die),
-          FlSpot(3, twoweek_die),
-          FlSpot(6, threeweek_die),
-          FlSpot(9, fourweek_die),
+          FlSpot(0, oneweek_mortality.toDouble()),
+          FlSpot(3, twoweek_mortality.toDouble()),
+          FlSpot(6, threeweek_mortality.toDouble()),
+          FlSpot(9, fourweek_mortality.toDouble()),
         ],
 
         isCurved: true,
@@ -486,10 +521,10 @@ LineChartData mainChart_total_baby() {
       ),
       LineChartBarData(
         spots: [
-          FlSpot(0, goal_die),
-          FlSpot(3, goal_die),
-          FlSpot(6, goal_die),
-          FlSpot(9, goal_die),
+          FlSpot(0, goal_die.toDouble()),
+          FlSpot(3, goal_die.toDouble()),
+          FlSpot(6, goal_die.toDouble()),
+          FlSpot(9, goal_die.toDouble()),
         ],
         isCurved: true,
         colors: gradientColors_avg,
@@ -519,13 +554,11 @@ LineChartData mainChart_feed_baby() {
 
   // print(array_graph);
   //var oneweek  = array_graph[0] as double;
-  final oneweek_die = array_graph[0];
-  final  twoweek_die = array_graph[1];
-  final threeweek_die = array_graph[2];
-  final fourweek_die = array_graph[3];
-  final goal_die = array_graph[4];
-  final minvalue_die = array_graph[5];
-  final maxvalue_die = array_graph[6];
+  final oneweek_shipment = shipment_week1;
+  final  twoweek_shipment = shipment_week2;
+  final threeweek_shipment = shipment_week3;
+  final fourweek_shipment = shipment_week4;
+  final goal_shipment = shipment_goal;
 
 
   return LineChartData(
@@ -585,19 +618,19 @@ LineChartData mainChart_feed_baby() {
           fontWeight: FontWeight.bold,
           fontSize: 15,
         ),
-        getTitles: (value) {
-          // print('leftTitles $value');
-          if (value.toInt() == minvalue_die) {
-            return minvalue_die.toInt().toString();
-          }else if(value.toInt() == maxvalue_die){
-            return maxvalue_die.toInt().toString();
-          }else if(value.toInt() == goal_die){
-            return goal_die.toInt().toString();
-          }else{
-            return value.toInt().toString();
-          }
-          return '';
-        },
+        // getTitles: (value) {
+        //   // print('leftTitles $value');
+        //   if (value.toInt() == minvalue_die) {
+        //     return minvalue_die.toInt().toString();
+        //   }else if(value.toInt() == maxvalue_die){
+        //     return maxvalue_die.toInt().toString();
+        //   }else if(value.toInt() == goal_die){
+        //     return goal_die.toInt().toString();
+        //   }else{
+        //     return value.toInt().toString();
+        //   }
+        //   return '';
+        // },
       ),
     ),
     // // borderData: FlBorderData(
@@ -610,10 +643,10 @@ LineChartData mainChart_feed_baby() {
     lineBarsData: [
       LineChartBarData(
         spots: [
-          FlSpot(0, oneweek_die),
-          FlSpot(3, twoweek_die),
-          FlSpot(6, threeweek_die),
-          FlSpot(9, fourweek_die),
+          FlSpot(0, oneweek_shipment.toDouble()),
+          FlSpot(3, twoweek_shipment.toDouble()),
+          FlSpot(6, threeweek_shipment.toDouble()),
+          FlSpot(9, fourweek_shipment.toDouble()),
         ],
 
         isCurved: true,
@@ -626,10 +659,10 @@ LineChartData mainChart_feed_baby() {
       ),
       LineChartBarData(
         spots: [
-          FlSpot(0, goal_die),
-          FlSpot(3, goal_die),
-          FlSpot(6, goal_die),
-          FlSpot(9, goal_die),
+          FlSpot(0, goal_shipment.toDouble()),
+          FlSpot(3, goal_shipment.toDouble()),
+          FlSpot(6, goal_shipment.toDouble()),
+          FlSpot(9, goal_shipment.toDouble()),
         ],
         isCurved: true,
         colors: gradientColors_avg,
