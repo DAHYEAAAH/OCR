@@ -26,7 +26,7 @@ late double shipment_week4 = 29;
 late double shipment_goal = 35;
 
 class PregnantGraphPage extends StatefulWidget {
-  static const routeName = '/camera-page';
+  static const routeName = '/pregnant-graph-page';
 
   const PregnantGraphPage({Key? key, this.title}) : super(key: key);
 
