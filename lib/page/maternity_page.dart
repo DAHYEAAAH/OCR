@@ -46,11 +46,6 @@ class MaternityPage extends StatefulWidget{
 
 class MaternityPageState extends State<MaternityPage>{
 
-  File? _image;
-  final picker = ImagePicker();
-
-  late List returnlist = [];
-
   late String sowID1;
   late String sowID2;
 
