@@ -1,7 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 late double mating_week1 = 18;
 late double mating_week2 = 20;
@@ -39,27 +37,49 @@ class PregnantGraphPage extends StatefulWidget {
 }
 
 class PregnantGraphPageState extends State<PregnantGraphPage> {
-
+  var thismonth = DateTime.now().month;
+  void increase_month(){
+    setState(() {
+      thismonth++;
+    });
+  }
+  void decrease_month(){
+    setState(() {
+      thismonth--;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
 
     return Scaffold(
       appBar: AppBar(
           title: Text("임신사 그래프")
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(10, 20, 10, 50),
         scrollDirection: Axis.vertical,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: <Widget> [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () { decrease_month();}, icon: Icon(Icons.navigate_before)
+                ),
+                Text('$thismonth'.toString()+"월",style: TextStyle(fontSize: 25),),
+                IconButton(
+                    onPressed: () { increase_month();}, icon: Icon(Icons.navigate_next)
+                )
+              ]
+            ),
             Column(
               children: [
                 Text("교배",style:TextStyle(fontSize: 20),),
                 AspectRatio(aspectRatio: 3/2,
                   child:Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                    padding: EdgeInsets.fromLTRB(20, 20, 30, 30),
                     child: LineChart(
                       mainChart_sow_cross(),
                     ),
@@ -72,7 +92,7 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
                 Text("이유",style:TextStyle(fontSize: 20),),
                 AspectRatio(aspectRatio: 3/2,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                    padding: EdgeInsets.fromLTRB(20, 20, 30, 30),
                     child: LineChart(
                       mainChart_sow_sevrer(),
                     ),
@@ -85,7 +105,7 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
                 Text("총산자수",style:TextStyle(fontSize: 20),),
                 AspectRatio(aspectRatio: 3/2,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                    padding: EdgeInsets.fromLTRB(20, 20, 30, 30),
                     child: LineChart(
                       mainChart_total_baby(),
                     ),
@@ -98,7 +118,7 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
                 Text("포유",style:TextStyle(fontSize: 20),),
                 AspectRatio(aspectRatio: 3/2,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                    padding: EdgeInsets.fromLTRB(20, 20, 30, 30),
                     child: LineChart(
                       mainChart_feed_baby(),
                     ),
@@ -130,6 +150,10 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
             child: Icon(Icons.refresh),
             onPressed: () async {
               setState(() {
+                // Navigator.of(context).popUntil((route) => route.isFirst);
+                // await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                //     PregnantPage(list, returnfilepath!)),
+                // );
               });
             },
           ),

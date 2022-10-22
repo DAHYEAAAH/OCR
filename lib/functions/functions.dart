@@ -1,8 +1,61 @@
+import 'dart:io';
+import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_rx/get_rx.dart';
+import 'package:intl/intl.dart';
 import 'package:last_ocr/entities/Ocr_maternity.dart';
 import 'package:last_ocr/entities/Ocr_pregnant.dart';
+import 'package:ntp/ntp.dart';
+import 'package:path_provider/path_provider.dart';
+
+Future<String> downloadFile(String imgname) async {
+  String returnfilepath = "";
+  Dio dio = Dio();
+  try {
+    var serverurl = "http://211.107.210.141:3000/api/ocrGetImage/"+imgname;
+    print(serverurl);
+    var dir = await getApplicationDocumentsDirectory();
+    await dio.download(serverurl, '${dir.path}/'+imgname,
+        onReceiveProgress: (rec, total) {
+          print('Rec: $rec , Total: $total');
+          returnfilepath = '${dir.path}/'+imgname;
+        }, deleteOnError: true
+    );
+    print("download image success");
+  } catch (e) {
+    print("download image failed");
+    print(e);
+  }
+  return returnfilepath;
+}
+
+Future<List> uploadimg_pregnant(File file)async{
+  final api = 'http://211.107.210.141:3000/api/ocrImageUpload';
+  final dio = Dio();
+
+  DateTime currentTime = await NTP.now();
+  currentTime = currentTime.toUtc().add(Duration(hours: 9));
+  String formatDate = DateFormat('yyMMddHHmm').format(currentTime); //format변경
+  String fileName = "pre"+formatDate+'.jpg';
+
+  FormData _formData = FormData.fromMap({
+    "file" : await MultipartFile.fromFile(file.path,
+        filename: fileName, contentType : MediaType("image","jpg")),
+  });
+
+  Response response = await dio.post(
+      api,
+      data:_formData,
+      onSendProgress: (rec, total) {
+        print('Rec: $rec , Total: $total');
+      }
+  );
+  print(response);
+  print('Successfully uploaded');
+  return response.data;
+}
+
 
 //분만사 전체 기록 불러오기
 maternity_getocr() async {
@@ -114,6 +167,32 @@ pregnant_getocr() async {
   return list_add;
 }
 
+Future<List> uploadimg_maternity(File file)async{
+  final api ='http://211.107.210.141:3000/api/ocrImageUpload';
+  final dio = Dio();
+
+  DateTime currentTime = await NTP.now();
+
+  currentTime = currentTime.toUtc().add(Duration(hours: 9));
+  String formatDate = DateFormat('yyMMddHHmm').format(currentTime); //format변경
+  String fileName = "mat"+formatDate+'.jpg';
+
+  FormData _formData = FormData.fromMap({
+    "file" : await MultipartFile.fromFile(file.path,
+        filename: fileName, contentType : MediaType("image","jpg")),
+  });
+
+  Response response = await dio.post(
+      api,
+      data:_formData,
+      onSendProgress: (rec, total) {
+        print('Rec: $rec , Total: $total');
+      }
+  );
+  print(response);
+  print('Successfully uploaded');
+  return response.data;
+}
 
 //선택한 리스트 값 받아오기
 maternity_selectrow(int num) async {

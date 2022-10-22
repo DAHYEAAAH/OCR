@@ -9,6 +9,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
 import 'package:ntp/ntp.dart';
 import 'package:path_provider/path_provider.dart';
+import '../functions/functions.dart';
 import '../page/maternity_page.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
@@ -32,10 +33,6 @@ class CameraOverlayMaternity extends StatefulWidget {
 
 class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
   OverlayFormat format = OverlayFormat.cardID1;
-  String? returnfilepath = "";
-  bool downloading = false;
-  var progressString = "";
-
 
   cropImage(String cameraurl) async {
     File? croppedfile = await ImageCropper().cropImage(
@@ -65,66 +62,6 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
       print("Image is not cropped.");
     }
     return croppedfile;
-  }
-
-  Future<List> uploadimg_maternity(File file)async{
-    final api ='http://211.107.210.141:3000/api/ocrImageUpload';
-    final dio = Dio();
-
-    DateTime currentTime = await NTP.now();
-
-    currentTime = currentTime.toUtc().add(Duration(hours: 9));
-    String formatDate = DateFormat('yyMMddHHmm').format(currentTime); //format변경
-    String fileName = "mat"+formatDate+'.jpg';
-
-    FormData _formData = FormData.fromMap({
-      "file" : await MultipartFile.fromFile(file.path,
-          filename: fileName, contentType : MediaType("image","jpg")),
-    });
-
-    Response response = await dio.post(
-        api,
-        data:_formData,
-        onSendProgress: (rec, total) {
-          print('Rec: $rec , Total: $total');
-          setState(() {
-            downloading = true;
-            progressString = ((rec / total) * 100).toStringAsFixed(0) + '%';
-            print(progressString);
-          });
-        }
-    );
-    print(response);
-    print('Successfully uploaded');
-    return response.data;
-  }
-  Future<void> downloadFile(String imgname) async {
-    Dio dio = Dio();
-    try {
-      var serverurl = "http://211.107.210.141:3000/api/ocrGetImage/"+imgname;
-      var dir = await getApplicationDocumentsDirectory();
-      await dio.download(serverurl, '${dir.path}/'+imgname,
-          onReceiveProgress: (rec, total) {
-            print('Rec: $rec , Total: $total');
-            returnfilepath = '${dir.path}/'+imgname;
-            setState(() {
-              setState(() {
-                downloading = true;
-                progressString = ((rec / total) * 100).toStringAsFixed(0) + '%';
-                print(progressString);
-              });
-            });
-          }, deleteOnError: true
-      );
-      print("download image success");
-    } catch (e) {
-      print("download image failed");
-      print(e);
-    }
-    setState(() {
-      downloading = false;
-      progressString = 'Completed';
-    });
   }
 
   @override
@@ -181,10 +118,11 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                         alignment: Alignment.center,
                                         decoration: const BoxDecoration(
                                           color: Colors.white70,
+                                          backgroundBlendMode: BlendMode.darken
                                         ),
                                         child: Container(
                                           decoration: BoxDecoration(
-                                              color: Colors.blue[200],
+                                              color: Colors.white,
                                               borderRadius: BorderRadius.circular(10.0)
                                           ),
                                           width: 300.0,
@@ -210,7 +148,7 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                                   child: Text(
                                                     "loading.. wait...",
                                                     style: TextStyle(
-                                                        color: Colors.white
+                                                        color: Colors.black
                                                     ),
                                                   ),
                                                 ),
@@ -227,11 +165,11 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                         .catchError((err) {print('error : $err');
                                     });
 
-                                    await downloadFile("ocrmatimages/" + list[0]);
+                                    String returnfilepath = await downloadFile("ocrmatimages/" + list[0]);
 
                                     Navigator.of(context).popUntil((route) => route.isFirst);
                                     await Navigator.push(context,MaterialPageRoute(builder: (context) =>
-                                        MaternityPage(list, returnfilepath!)),
+                                        MaternityPage(list, returnfilepath)),
                                     );
                                   },
                                   child: Container(
@@ -252,11 +190,11 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                         .catchError((err) {
                                       print('error : $err');
                                     });
-                                    await downloadFile("ocrmatimages/" + list[0]);
+                                    String returnfilepath = await downloadFile("ocrmatimages/" + list[0]);
 
                                     Navigator.of(context).popUntil((route) => route.isFirst);
                                     await Navigator.push(context,MaterialPageRoute(builder: (context) =>
-                                        MaternityPage(list, returnfilepath!)),
+                                        MaternityPage(list, returnfilepath)),
                                     );
                                   },
                                   child: const Icon(Icons.edit, color: Colors.white,))

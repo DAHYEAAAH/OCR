@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_rx/get_rx.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:last_ocr/entities/Ocr_pregnant.dart';
 import 'package:last_ocr/functions/functions.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
@@ -8,6 +10,7 @@ import 'package:last_ocr/page/maternity_graph_page.dart';
 import 'package:last_ocr/page/maternity_page.dart';
 import 'package:last_ocr/page/pregnant_graph_page.dart';
 import 'package:last_ocr/page/pregnant_page.dart';
+import 'overlay/camera_overlay_pregnant.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,6 +29,8 @@ class MyHomePage extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   var pregnants = <Ocr_pregnant>[].obs;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +63,86 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       OutlinedButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                // builder: (context) => PregnantPage([],"")));
-                                builder: (context) => PregnantPage([],"")));
-                                // builder:(context)=> LargeFileMain()));
-                            },
+                            showDialog(context: context, barrierDismissible:true,builder: (context){
+                              return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0)
+                                  ),
+                                  content: SizedBox(
+                                    height: 120.0,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        TextButton.icon(
+                                          label: Text("CAMERA",style: TextStyle(color: Colors.black),),
+                                          onPressed: () {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant())); },
+                                          icon: Icon(Icons.camera_alt, size:40,color: Colors.black,),),
+                                        TextButton.icon(
+                                            label: Text("GALLERY",style: TextStyle(color: Colors.black),),
+                                            onPressed: () async {
+                                              final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                              showDialog(context: context, builder: (context){
+                                                return Container(
+                                                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                  alignment: Alignment.center,
+                                                  decoration: const BoxDecoration(
+                                                    color: Colors.white70,
+                                                  ),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.blue[200],
+                                                        borderRadius: BorderRadius.circular(10.0)
+                                                    ),
+                                                    width: 300.0,
+                                                    height: 200.0,
+                                                    alignment: AlignmentDirectional.center,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        const Center(
+                                                          child: SizedBox(
+                                                            height: 50.0,
+                                                            width: 50.0,
+                                                            child: CircularProgressIndicator(
+                                                              value: null,
+                                                              strokeWidth: 7.0,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          margin: const EdgeInsets.only(top: 25.0),
+                                                          child: const Center(
+                                                            child: Text(
+                                                              "loading.. wait...",
+                                                              style: TextStyle(
+                                                                  color: Colors.white,fontSize: 20
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                              List returnlist = await uploadimg_pregnant(File(image!.path));
+                                              String returnfilepath = await downloadFile("ocrpreimages/"+returnlist[0]);
+                                              Navigator.of(context).popUntil((route) =>
+                                              route.isFirst);
+                                              await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                                  PregnantPage(returnlist, returnfilepath)),
+                                              );
+                                            },
+                                            icon: Icon(Icons.photo, size:40,color: Colors.black,)),
+                                      ],
+                                    ),
+                                    // width: 300.0,
+                                  )
+                              );
+                            });
+                          },
                           child: const Text('OCR')
                       ),
                       OutlinedButton(
@@ -96,8 +176,85 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       OutlinedButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => MaternityPage([],"")));
+                            showDialog(context: context, barrierDismissible:true,builder: (context){
+                              return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0)
+                                  ),
+                                  content: SizedBox(
+                                    height: 120.0,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        TextButton.icon(
+                                          label: Text("CAMERA",style: TextStyle(color: Colors.black),),
+                                          onPressed: () {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant())); },
+                                          icon: Icon(Icons.camera_alt, size:40,color: Colors.black,),),
+                                        TextButton.icon(
+                                            label: Text("GALLERY",style: TextStyle(color: Colors.black),),
+                                            onPressed: () async {
+                                              final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                              showDialog(context: context, builder: (context){
+                                                return Container(
+                                                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                  alignment: Alignment.center,
+                                                  decoration: const BoxDecoration(
+                                                    color: Colors.white70,
+                                                  ),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.blue[200],
+                                                        borderRadius: BorderRadius.circular(10.0)
+                                                    ),
+                                                    width: 300.0,
+                                                    height: 200.0,
+                                                    alignment: AlignmentDirectional.center,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        const Center(
+                                                          child: SizedBox(
+                                                            height: 50.0,
+                                                            width: 50.0,
+                                                            child: CircularProgressIndicator(
+                                                              value: null,
+                                                              strokeWidth: 7.0,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          margin: const EdgeInsets.only(top: 25.0),
+                                                          child: const Center(
+                                                            child: Text(
+                                                              "loading.. wait...",
+                                                              style: TextStyle(
+                                                                  color: Colors.white,fontSize: 20
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                              List returnlist = await uploadimg_maternity(File(image!.path));
+                                              String returnfilepath = await downloadFile("ocrmatimages/"+returnlist[0]);
+                                              Navigator.of(context).popUntil((route) =>
+                                              route.isFirst);
+                                              await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                                  MaternityPage(returnlist, returnfilepath)),
+                                              );
+                                            },
+                                            icon: Icon(Icons.photo, size:40,color: Colors.black,)),
+                                      ],
+                                    ),
+                                    // width: 300.0,
+                                  )
+                              );
+                            });
                           },
                           child: const Text('OCR')
                       ),

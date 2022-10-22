@@ -9,6 +9,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
 import 'package:ntp/ntp.dart';
 import 'package:path_provider/path_provider.dart';
+import '../functions/functions.dart';
 import '../page/pregnant_page.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
@@ -32,9 +33,6 @@ class CameraOverlayPregnant extends StatefulWidget {
 
 class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
   OverlayFormat format = OverlayFormat.cardID2;
-  String? returnfilepath = "";
-  bool downloading = false;
-  var progressString = "";
 
   cropImage(String cameraurl) async {
     File? croppedfile = await ImageCropper().cropImage(
@@ -57,65 +55,6 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
         )
     );
     return croppedfile;
-  }
-  Future<List> uploadimg_pregnant(File file)async{
-    final api = 'http://211.107.210.141:3000/api/ocrImageUpload';
-    final dio = Dio();
-
-    DateTime currentTime = await NTP.now();
-
-    currentTime = currentTime.toUtc().add(Duration(hours: 9));
-    String formatDate = DateFormat('yyMMddHHmm').format(currentTime); //format변경
-    String fileName = "pre"+formatDate+'.jpg';
-
-    FormData _formData = FormData.fromMap({
-      "file" : await MultipartFile.fromFile(file.path,
-          filename: fileName, contentType : MediaType("image","jpg")),
-    });
-
-    Response response = await dio.post(
-        api,
-        data:_formData,
-        onSendProgress: (rec, total) {
-          print('Rec: $rec , Total: $total');
-          setState(() {
-            downloading = true;
-            progressString = ((rec / total) * 100).toStringAsFixed(0) + '%';
-            print(progressString);
-          });
-        }
-    );
-    print(response);
-    print('Successfully uploaded');
-    return response.data;
-  }
-  Future<void> downloadFile(String imgname) async {
-    Dio dio = Dio();
-    try {
-      var serverurl = "http://211.107.210.141:3000/api/ocrGetImage/"+imgname;
-      var dir = await getApplicationDocumentsDirectory();
-      await dio.download(serverurl, '${dir.path}/'+imgname,
-          onReceiveProgress: (rec, total) {
-            print('Rec: $rec , Total: $total');
-            returnfilepath = '${dir.path}/'+imgname;
-            setState(() {
-              setState(() {
-                downloading = true;
-                progressString = ((rec / total) * 100).toStringAsFixed(0) + '%';
-                print(progressString);
-              });
-            });
-          }, deleteOnError: true
-      );
-      print("download image success");
-    } catch (e) {
-      print("download image failed");
-      print(e);
-    }
-    setState(() {
-      downloading = false;
-      progressString = 'Completed';
-    });
   }
 
   @override
@@ -175,7 +114,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                         ),
                                         child: Container(
                                           decoration: BoxDecoration(
-                                              color: Colors.blue[200],
+                                              color: Colors.white,
                                               borderRadius: BorderRadius.circular(10.0)
                                           ),
                                           width: 300.0,
@@ -218,11 +157,11 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                         .catchError((err) {print('error : $err');
                                     });
 
-                                    await downloadFile("ocrpreimages/" + list[0]);
+                                    String returnfilepath = await downloadFile("ocrpreimages/" + list[0]);
 
                                     Navigator.of(context).popUntil((route) => route.isFirst);
                                     await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                          PregnantPage(list, returnfilepath!)),
+                                          PregnantPage(list, returnfilepath)),
                                     );
                                   },
                                   child: Container(
@@ -243,12 +182,11 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                         .catchError((err) {print('error : $err');
                                     });
 
-                                    await downloadFile(
-                                        "ocrpreimages/" + list[0]);
+                                    String returnfilepath = await downloadFile("ocrpreimages/" + list[0]);
 
                                     Navigator.of(context).popUntil((route) => route.isFirst);
                                     await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                          PregnantPage(list, returnfilepath!)),
+                                          PregnantPage(list, returnfilepath)),
                                     );
                                   },
                                   child: const Icon(Icons.edit, color: Colors.white,))
@@ -261,7 +199,6 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                   child: Container(
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
-                                              fit: BoxFit.fill,
                                               alignment: FractionalOffset.center,
                                               image: FileImage(File(file.path),
                                               )))))
