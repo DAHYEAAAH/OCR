@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
-import 'package:last_ocr/overlay/camera_overlay_pregnant.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
-import 'package:path_provider/path_provider.dart';
 import '../functions/functions.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:ntp/ntp.dart';
 
 late int ocr_seq;
 late String sow_no;

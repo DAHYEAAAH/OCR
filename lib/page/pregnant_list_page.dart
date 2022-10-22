@@ -1,9 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:last_ocr/functions/functions.dart';
 import 'package:last_ocr/page/pregnant_modify_page.dart';
-import 'package:path_provider/path_provider.dart';
 
 class PregnantListPage extends StatefulWidget {
 
@@ -16,30 +14,7 @@ class PregnantListPage extends StatefulWidget {
 
 class PregnantListPageState extends State<PregnantListPage> {
   int num  = 0;
-  String? returnfilepath = "";
-  var progressString = "";
 
-  Future<void> downloadFile(String imgname) async {
-    Dio dio = Dio();
-    try {
-      var serverurl = "http://211.107.210.141:3000/api/ocrGetImage/" + imgname;
-      var dir = await getApplicationDocumentsDirectory();
-      print(serverurl);
-      await dio.download(serverurl, '${dir.path}/' + imgname,
-          onReceiveProgress: (rec, total) {
-            print('Rec: $rec , Total: $total');
-            returnfilepath = '${dir.path}/' + imgname;
-            setState(() {
-              progressString = ((rec / total) * 100).toStringAsFixed(0) + '%';
-              print(progressString);
-            });
-          }, deleteOnError: true);
-      print("download success");
-    } catch (e) {
-      print("download failed");
-      print(e);
-    }
-  }
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
@@ -85,10 +60,10 @@ class PregnantListPageState extends State<PregnantListPage> {
                                 print("임신사 selectrow 결과");
                                 print(list);
 
-                                await downloadFile("ocrpreimages/"+list[16].toString().split("/").last);
+                                String returnfilepath = await downloadFile("ocrpreimages/"+list[16].toString().split("/").last);
 
                                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                    PregnantModifyPage(list,returnfilepath!)));
+                                    PregnantModifyPage(list,returnfilepath)));
                                 //   print("서버에게 받은 리스트 null 값임");
                               },
                             ) ,

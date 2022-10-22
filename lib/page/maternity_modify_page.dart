@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:last_ocr/functions/functions.dart';
-import 'package:last_ocr/overlay/camera_overlay_maternity.dart';
 
 import 'maternity_list_page.dart';
 

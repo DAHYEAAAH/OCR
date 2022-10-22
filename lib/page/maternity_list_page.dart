@@ -1,9 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:last_ocr/page/pregnant_list_page.dart';
-import 'package:path_provider/path_provider.dart';
-
 import '../functions/functions.dart';
 import 'maternity_modify_page.dart';
 
@@ -18,30 +14,7 @@ class MaternityListPage extends StatefulWidget {
 
 class MaternityListPageState extends State<MaternityListPage> {
   int num  = 0;
-  String? returnfilepath = "";
-  var progressString = "";
 
-  Future<void> downloadFile(String imgname) async {
-    Dio dio = Dio();
-    try {
-      var serverurl = "http://211.107.210.141:3000/api/ocrGetImage/" + imgname;
-      var dir = await getApplicationDocumentsDirectory();
-      print(serverurl);
-      await dio.download(serverurl, '${dir.path}/' + imgname,
-          onReceiveProgress: (rec, total) {
-            print('Rec: $rec , Total: $total');
-            returnfilepath = '${dir.path}/' + imgname;
-            setState(() {
-              progressString = ((rec / total) * 100).toStringAsFixed(0) + '%';
-              print(progressString);
-            });
-          }, deleteOnError: true);
-      print("download success");
-    } catch (e) {
-      print("download failed");
-      print(e);
-    }
-  }
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
@@ -85,10 +58,10 @@ class MaternityListPageState extends State<MaternityListPage> {
                                 print("분만사 selectrow 결과");
                                 print(list);
 
-                                await downloadFile("ocrmatimages/"+list[18].toString().split("/").last);
+                                String returnfilepath = await downloadFile("ocrmatimages/"+list[18].toString().split("/").last);
 
                                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                    MaternityModifyPage(list, returnfilepath!)));
+                                    MaternityModifyPage(list, returnfilepath)));
                                 //   print("서버에게 받은 리스트 null 값임");
                               },
                             ) ,

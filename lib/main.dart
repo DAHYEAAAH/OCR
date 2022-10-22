@@ -71,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   content: SizedBox(
                                     height: 120.0,
                                     child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         TextButton.icon(
@@ -184,6 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   content: SizedBox(
                                     height: 120.0,
                                     child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         TextButton.icon(

@@ -2,15 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:last_ocr/functions/functions.dart';
-import 'package:last_ocr/overlay/camera_overlay_pregnant.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
+
 
 late int ocr_seq;
 late String sow_no;
@@ -726,7 +721,6 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
 
         )
     );
-
   }
 }
 
