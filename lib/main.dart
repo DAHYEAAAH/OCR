@@ -83,51 +83,67 @@ class _MyHomePageState extends State<MyHomePage> {
                                             label: Text("GALLERY",style: TextStyle(color: Colors.black),),
                                             onPressed: () async {
                                               final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                                              showDialog(context: context, builder: (context){
-                                                return Container(
-                                                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                                  alignment: Alignment.center,
-                                                  decoration: const BoxDecoration(
-                                                    color: Colors.white70,
-                                                  ),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.blue[200],
-                                                        borderRadius: BorderRadius.circular(10.0)
-                                                    ),
-                                                    width: 300.0,
-                                                    height: 200.0,
-                                                    alignment: AlignmentDirectional.center,
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: <Widget>[
-                                                        const Center(
-                                                          child: SizedBox(
-                                                            height: 50.0,
-                                                            width: 50.0,
-                                                            child: CircularProgressIndicator(
-                                                              value: null,
-                                                              strokeWidth: 7.0,
-                                                            ),
-                                                          ),
+                                              if(image!=null) {
+                                                showDialog(context: context,
+                                                    builder: (context) {
+                                                      return Container(
+                                                        padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                            0, 0, 0, 0),
+                                                        alignment: Alignment
+                                                            .center,
+                                                        decoration: const BoxDecoration(
+                                                          color: Colors.white70,
                                                         ),
-                                                        Container(
-                                                          margin: const EdgeInsets.only(top: 25.0),
-                                                          child: const Center(
-                                                            child: Text(
-                                                              "loading.. wait...",
-                                                              style: TextStyle(
-                                                                  color: Colors.white,fontSize: 20
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                              color: Colors
+                                                                  .blue[200],
+                                                              borderRadius: BorderRadius
+                                                                  .circular(
+                                                                  10.0)
+                                                          ),
+                                                          width: 300.0,
+                                                          height: 200.0,
+                                                          alignment: AlignmentDirectional
+                                                              .center,
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment
+                                                                .center,
+                                                            mainAxisAlignment: MainAxisAlignment
+                                                                .center,
+                                                            children: <Widget>[
+                                                              const Center(
+                                                                child: SizedBox(
+                                                                  height: 50.0,
+                                                                  width: 50.0,
+                                                                  child: CircularProgressIndicator(
+                                                                    value: null,
+                                                                    strokeWidth: 7.0,
+                                                                  ),
+                                                                ),
                                                               ),
-                                                            ),
+                                                              Container(
+                                                                margin: const EdgeInsets
+                                                                    .only(
+                                                                    top: 25.0),
+                                                                child: const Center(
+                                                                  child: Text(
+                                                                    "loading.. wait...",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize: 20
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              });
+                                                      );
+                                                    });
+                                              }
                                               List returnlist = await uploadimg_pregnant(File(image!.path));
                                               String returnfilepath = await downloadFile("ocrpreimages/"+returnlist[0]);
                                               Navigator.of(context).popUntil((route) =>
@@ -197,55 +213,71 @@ class _MyHomePageState extends State<MyHomePage> {
                                             label: Text("GALLERY",style: TextStyle(color: Colors.black),),
                                             onPressed: () async {
                                               final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                                              showDialog(context: context, builder: (context){
-                                                return Container(
-                                                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                                  alignment: Alignment.center,
-                                                  decoration: const BoxDecoration(
-                                                    color: Colors.white70,
-                                                  ),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.blue[200],
-                                                        borderRadius: BorderRadius.circular(10.0)
-                                                    ),
-                                                    width: 300.0,
-                                                    height: 200.0,
-                                                    alignment: AlignmentDirectional.center,
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: <Widget>[
-                                                        const Center(
-                                                          child: SizedBox(
-                                                            height: 50.0,
-                                                            width: 50.0,
-                                                            child: CircularProgressIndicator(
-                                                              value: null,
-                                                              strokeWidth: 7.0,
-                                                            ),
-                                                          ),
+                                              if(image != null) {
+                                                showDialog(context: context,
+                                                    builder: (context) {
+                                                      return Container(
+                                                        padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                            0, 0, 0, 0),
+                                                        alignment: Alignment
+                                                            .center,
+                                                        decoration: const BoxDecoration(
+                                                          color: Colors.white70,
                                                         ),
-                                                        Container(
-                                                          margin: const EdgeInsets.only(top: 25.0),
-                                                          child: const Center(
-                                                            child: Text(
-                                                              "loading.. wait...",
-                                                              style: TextStyle(
-                                                                  color: Colors.white,fontSize: 20
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                              color: Colors
+                                                                  .blue[200],
+                                                              borderRadius: BorderRadius
+                                                                  .circular(
+                                                                  10.0)
+                                                          ),
+                                                          width: 300.0,
+                                                          height: 200.0,
+                                                          alignment: AlignmentDirectional
+                                                              .center,
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment
+                                                                .center,
+                                                            mainAxisAlignment: MainAxisAlignment
+                                                                .center,
+                                                            children: <Widget>[
+                                                              const Center(
+                                                                child: SizedBox(
+                                                                  height: 50.0,
+                                                                  width: 50.0,
+                                                                  child: CircularProgressIndicator(
+                                                                    value: null,
+                                                                    strokeWidth: 7.0,
+                                                                  ),
+                                                                ),
                                                               ),
-                                                            ),
+                                                              Container(
+                                                                margin: const EdgeInsets
+                                                                    .only(
+                                                                    top: 25.0),
+                                                                child: const Center(
+                                                                  child: Text(
+                                                                    "loading.. wait...",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize: 20
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              });
+                                                      );
+                                                    });
+                                              }
+
                                               List returnlist = await uploadimg_maternity(File(image!.path));
                                               String returnfilepath = await downloadFile("ocrmatimages/"+returnlist[0]);
-                                              Navigator.of(context).popUntil((route) =>
-                                              route.isFirst);
+
                                               await Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                   MaternityPage(returnlist, returnfilepath)),
                                               );
