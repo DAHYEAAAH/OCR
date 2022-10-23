@@ -31,8 +31,6 @@ class _MyAppState extends State<MyApp> {
 
   var pregnants = <Ocr_pregnant>[].obs;
 
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

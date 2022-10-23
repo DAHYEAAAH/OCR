@@ -28,6 +28,8 @@ late double shipment_week3 = 32;
 late double shipment_week4 = 29;
 late double shipment_goal = 35;
 
+List<String> list = <String>['총산자수', '포유개시두수', '이유두수', '교배복수'];
+
 class PregnantOwnerGraphPage extends StatefulWidget {
   static const routeName = '/camera-page';
 
@@ -40,6 +42,28 @@ class PregnantOwnerGraphPage extends StatefulWidget {
 }
 
 class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
+
+  var thisyear = DateTime.now().year;
+  var thismonth = DateTime.now().month;
+
+  void increase_month(){
+    setState(() {
+      thismonth++;
+      if(thismonth>12) {
+        thismonth = 1;
+        thisyear++;
+      }
+    });
+  }
+  void decrease_month(){
+    setState(() {
+      thismonth--;
+      if(thismonth<1) {
+        thismonth = 12;
+        thisyear--;
+      }
+    });
+  }
 
   List list_mating = [
     mating_week1,
@@ -82,16 +106,29 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             title: Text("임신사 그래프")
         ),
         body: SingleChildScrollView(
+          padding: EdgeInsets.fromLTRB(10, 20, 10, 50),
           scrollDirection: Axis.vertical,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                        onPressed: () { decrease_month();}, icon: Icon(Icons.navigate_before)
+                    ),
+                    Text('$thisyear'.toString()+"년 "+'$thismonth'.toString()+"월",style: TextStyle(fontSize: 25),),
+                    IconButton(
+                        onPressed: () { increase_month();}, icon: Icon(Icons.navigate_next)
+                    )
+                  ]
+              ),
               Column(
                 children: [
                   Text("교배", style: TextStyle(fontSize: 20),),
                   AspectRatio(aspectRatio: 3 / 2,
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                      padding: EdgeInsets.fromLTRB(20, 20, 30, 30),
                       child: LineChart(
                         mainChart_sow_cross(),
                       ),
@@ -104,7 +141,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                   Text("이유", style: TextStyle(fontSize: 20),),
                   AspectRatio(aspectRatio: 3 / 2,
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                      padding: EdgeInsets.fromLTRB(20, 20, 30, 30),
                       child: LineChart(
                         mainChart_sow_sevrer(),
                       ),
@@ -117,7 +154,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                   Text("총산자수", style: TextStyle(fontSize: 20),),
                   AspectRatio(aspectRatio: 3 / 2,
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                      padding: EdgeInsets.fromLTRB(20, 20, 30, 30),
                       child: LineChart(
                         mainChart_total_baby(),
                       ),
@@ -130,7 +167,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                   Text("포유", style: TextStyle(fontSize: 20),),
                   AspectRatio(aspectRatio: 3 / 2,
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 30, 30),
+                      padding: EdgeInsets.fromLTRB(20, 20, 30, 30),
                       child: LineChart(
                         mainChart_feed_baby(),
                       ),
@@ -176,37 +213,23 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                     showDialog(context: context, barrierDismissible: true, builder: (context) {
                           return AlertDialog(
                               title: const Text('목표값을 설정해주세요'),
-                              content: DropdownButton(
-                                alignment: Alignment.centerLeft,
-                                underline: SizedBox.shrink(),
-                                // Text('목표값을 설정해주세요'),
-                                hint: Text('선택해주세요'),
+                              content:
+                              Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                  DropdownButtonExample(),
+                                    TextField(
+                                      decoration: InputDecoration(
+                                        hintText: '숫자만 입력해주세요',),
+                                      textAlign: TextAlign.left,
 
-                                value: _selectedValue,
-                                items: _valueList.map((value) {
-                                  return DropdownMenuItem(value: value, child: Text(value));
-                                }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedValue = value;
-                                  });
-                                },
-                              ),
-                              actions: <Widget>[
-                                TextField(
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 0,
-                                        style: BorderStyle.none,
-                                      ),
+                                      keyboardType: TextInputType.number,
+                                      controller: goal_Controller,
                                     ),
-                                      hintText: '숫자만 입력해주세요',),
-                                  textAlign: TextAlign.center,
+                                  ]),
+                              actions: <Widget>[
 
-                                  keyboardType: TextInputType.number,
-                                  controller: goal_Controller,
-                                ),
                                 ButtonBar(
                                   alignment: MainAxisAlignment.end,
                                   buttonPadding: EdgeInsets.all(8.0),
@@ -768,5 +791,35 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
         firstval = list[i];
     }
     return firstval;
+  }
+}
+
+class DropdownButtonExample extends StatefulWidget {
+  const DropdownButtonExample({super.key});
+
+  @override
+  State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
+}
+
+class _DropdownButtonExampleState extends State<DropdownButtonExample> {
+  String dropdownValue = list.first;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+        });
+      },
+      items: list.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
   }
 }

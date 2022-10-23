@@ -37,17 +37,28 @@ class PregnantGraphPage extends StatefulWidget {
 }
 
 class PregnantGraphPageState extends State<PregnantGraphPage> {
+  var thisyear = DateTime.now().year;
   var thismonth = DateTime.now().month;
+
   void increase_month(){
     setState(() {
       thismonth++;
+      if(thismonth>12) {
+        thismonth = 1;
+        thisyear++;
+      }
     });
   }
   void decrease_month(){
     setState(() {
       thismonth--;
+      if(thismonth<1) {
+        thismonth = 12;
+        thisyear--;
+      }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +79,7 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
                 IconButton(
                     onPressed: () { decrease_month();}, icon: Icon(Icons.navigate_before)
                 ),
-                Text('$thismonth'.toString()+"월",style: TextStyle(fontSize: 25),),
+                Text('$thisyear'.toString()+"년 "+'$thismonth'.toString()+"월",style: TextStyle(fontSize: 25),),
                 IconButton(
                     onPressed: () { increase_month();}, icon: Icon(Icons.navigate_next)
                 )
