@@ -32,7 +32,7 @@ send_date_pregnant(List sendlist) async {
 
 send_date_maternity(List sendlist) async {
   print("materntiy");
-  final api = 'http://211.107.210.141:3000//api/ocrMaternitySendDate';
+  final api = 'http://211.107.210.141:3000/api/ocrMaternitySendDate';
   final dio = Dio();
 
   final data={
@@ -54,7 +54,7 @@ send_date_maternity(List sendlist) async {
 
 ocrTargetInsertUpate(String yyyy, String mm, String sow_totalbaby, String sow_feedbaby, String sow_sevrer, String sow_cross) async {
   print("ocrTargetInsertUpate");
-  final api = 'http://211.107.210.141:3000//api/ocrTargetInsertUpdate';
+  final api = 'http://211.107.210.141:3000/api/ocrTargetInsertUpdate';
   final dio = Dio();
 
   final data={
@@ -67,17 +67,39 @@ ocrTargetInsertUpate(String yyyy, String mm, String sow_totalbaby, String sow_fe
   };
   Response response;
   print(data);
-  // response = await dio.post(api, data:data);
-  // if(response.statusCode==200){
-  //   print("목표값보내기 성공");
-  // }
-  // else{
-  //   print("목표값보내기 실패");
-  // }
+  response = await dio.post(api, data:data);
+  if(response.statusCode==200){
+    print("목표값보내기 성공");
+  }
+  else{
+    print("목표값보내기 실패");
+  }
   print("returndata-목표값");
-  // print(response.data);
+  print(response.data);
 }
+ocrTargetSelectedRow(String yyyy, String mm) async {
+  print("ocrTargetInsertUpate");
+  final api = 'http://211.107.210.141:3000/api/ocrTargetSelectedRow';
+  final dio = Dio();
 
+  final data={
+    'yyyy': yyyy,
+    'mm':mm,
+  };
+  Response response;
+  print(data);
+  response = await dio.post(api, data:data);
+  if(response.statusCode==200){
+    print("목표값보내기 성공");
+  }
+  else{
+    print("목표값보내기 실패");
+  }
+  print("returndata-목표값");
+  print(response.data);
+  // 총산자수, 포유, 이유, 교배 순
+  return response.data;
+}
 // 서버로 임신사 사진 보내는 api
 Future<List> uploadimg_pregnant(File file)async{
   final api = 'http://211.107.210.141:3000/api/ocrImageUpload';
