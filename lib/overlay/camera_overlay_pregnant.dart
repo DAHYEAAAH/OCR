@@ -1,14 +1,9 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_camera_overlay/flutter_camera_overlay.dart';
 import 'package:flutter_camera_overlay/model.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:intl/intl.dart';
-import 'package:ntp/ntp.dart';
-import 'package:path_provider/path_provider.dart';
 import '../functions/functions.dart';
 import '../page/pregnant_page.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -32,11 +27,14 @@ class CameraOverlayPregnant extends StatefulWidget {
 }
 
 class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
+  // camera overlay에서 cardID2라는 카메라를 사용
   OverlayFormat format = OverlayFormat.cardID2;
 
   cropImage(String cameraurl) async {
     File? croppedfile = await ImageCropper().cropImage(
         sourcePath: cameraurl,
+
+        // cropImage 비율 정의
         aspectRatioPresets: [
           CropAspectRatioPreset.square,
           CropAspectRatioPreset.ratio3x2,
@@ -44,6 +42,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
           CropAspectRatioPreset.ratio4x3,
           CropAspectRatioPreset.ratio16x9
         ],
+        // cropImage ui 정의
         androidUiSettings: const AndroidUiSettings(
             toolbarTitle: 'Image Cropper',
             toolbarColor: Colors.deepPurpleAccent,
@@ -74,6 +73,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
             future: availableCameras(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                // 카메라가 없는 경우
                 if (snapshot.data == null) {
                   return const Align(
                     alignment: Alignment.center,
@@ -83,6 +83,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                     ));
                 }
                 return CameraOverlay(
+                    // 카메라 화면
                     snapshot.data!.first,
                     CardOverlay.byFormat(format),
                         (XFile file) => showDialog(
@@ -94,6 +95,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                             backgroundColor: Colors.black,
                             title: Row(
                               children: [
+                                // 뒤로가기 버튼
                                 OutlinedButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
@@ -105,6 +107,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                 ),
                                 OutlinedButton(
                                   onPressed: () async {
+                                    //뭐라고 설명을 해야할지 모르겠습니다,, 그냥 박스,,인데...///
                                     showDialog(context: context, builder: (context){
                                       return Container(
                                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -128,7 +131,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                                 child: SizedBox(
                                                   height: 50.0,
                                                   width: 50.0,
-                                                  child: CircularProgressIndicator(
+                                                  child: CircularProgressIndicator( // 로딩화면 애니메이션
                                                     value: null,
                                                     strokeWidth: 7.0,
                                                   ),
@@ -150,21 +153,24 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                         ),
                                       );
                                     });
+                                    // 서버로 임신사 사진 list에 넣어서 보내기
                                     List list = await uploadimg_pregnant(File(file.path));
 
+                                    // 찍은 사진 갤러리에 저장
                                     GallerySaver.saveImage(file.path)
                                         .then((value) => print('>>>> save value= $value'))
                                         .catchError((err) {print('error : $err');
                                     });
 
+                                    // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
                                     String returnfilepath = await downloadFile("ocrpreimages/" + list[0]);
 
-                                    Navigator.of(context).popUntil((route) => route.isFirst);
+                                    Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
                                     await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                          PregnantPage(list, returnfilepath)),
+                                          PregnantPage(list, returnfilepath)), // PregnantPage 넘어가기
                                     );
                                   },
-                                  child: Container(
+                                  child: Container( // 전송버튼
                                       alignment: Alignment.topRight,
                                       child: Icon(Icons.send, color: Colors.white,)
                                   ),
@@ -174,23 +180,29 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                             actions:[
                               OutlinedButton(
                                   onPressed: () async {
+                                    // 수동으로 자른 사진 croppedfile로 저장
                                     final croppedfile = await cropImage(file.path);
+
+                                    // 서버로 수동으로 자른 임신사 사진 list에 넣어서 보내기
                                     List list = await uploadimg_pregnant(File(croppedfile.path));
 
+                                    // 찍고 수동으로 자른 사진 갤러리에 저장
                                     GallerySaver.saveImage(croppedfile.path)
                                         .then((value) => print('>>>> save value= $value'))
                                         .catchError((err) {print('error : $err');
                                     });
 
-                                    String returnfilepath = await downloadFile("ocrpreimages/" + list[0]);
+                                    // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
+                                    String returnfilepath = await downloadFile("ocrpreimages/" + list[0]); // 처음 화면으로 돌아가기
 
                                     Navigator.of(context).popUntil((route) => route.isFirst);
                                     await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                          PregnantPage(list, returnfilepath)),
+                                          PregnantPage(list, returnfilepath)), // PregnantPage 넘어가기
                                     );
                                   },
                                   child: const Icon(Icons.edit, color: Colors.white,))
                             ],
+                            // 사진 미리보기
                             content:SizedBox(
                                 width: double.infinity,
                                 child: AspectRatio(

@@ -9,27 +9,7 @@ import 'package:last_ocr/entities/Ocr_pregnant.dart';
 import 'package:ntp/ntp.dart';
 import 'package:path_provider/path_provider.dart';
 
-Future<String> downloadFile(String imgname) async {
-  String returnfilepath = "";
-  Dio dio = Dio();
-  try {
-    var serverurl = "http://211.107.210.141:3000/api/ocrGetImage/"+imgname;
-    print(serverurl);
-    var dir = await getApplicationDocumentsDirectory();
-    await dio.download(serverurl, '${dir.path}/'+imgname,
-        onReceiveProgress: (rec, total) {
-          print('Rec: $rec , Total: $total');
-          returnfilepath = '${dir.path}/'+imgname;
-        }, deleteOnError: true
-    );
-    print("download image success");
-  } catch (e) {
-    print("download image failed");
-    print(e);
-  }
-  return returnfilepath;
-}
-
+// 서버로 임신사 사진 보내는 api
 Future<List> uploadimg_pregnant(File file)async{
   final api = 'http://211.107.210.141:3000/api/ocrImageUpload';
   final dio = Dio();
@@ -56,47 +36,7 @@ Future<List> uploadimg_pregnant(File file)async{
   return response.data;
 }
 
-
-//분만사 전체 기록 불러오기
-maternity_getocr() async {
-  var maternity = <Ocr_maternity>[].obs;
-  List<int> list_ocr_seq = [];
-  List<String> list_sow_no = [];
-  List<dynamic> list_add = [];
-
-  final api ='http://211.107.210.141:3000/api/getOcr_maternity';
-  final dio = Dio();
-  Response response = await dio.get(api);
-
-  if(response.statusCode == 200) {
-    List<dynamic> result = response.data;
-    maternity.assignAll(result.map((data) => Ocr_maternity.fromJson(data)).toList());
-    maternity.refresh();
-    for(int i=0; i<maternity.length; i++){
-      if(i == 0) {
-        print(" success..." + maternity[i].ocr_seq.toString() + " " + maternity[i].sow_no.toString());
-        list_ocr_seq.add(maternity.length);
-        list_sow_no.add(maternity.length.toString());
-      }
-      print(" success!"+ maternity[i].ocr_seq.toString()+" " +maternity[i].sow_no.toString());
-      list_ocr_seq.add(maternity[i].ocr_seq!.toInt());
-      list_sow_no.add(maternity[i].sow_no!.toString());
-    }
-  }
-  else{
-    print(" fail..."+response.statusCode.toString());
-  }
-
-  for( int i=0; i< list_ocr_seq.length; i++){
-    list_add += [[list_ocr_seq[i],list_sow_no[i]]];
-  }
-
-  print(list_add);
-  return list_add;
-}
-
-//선택한 기록 불러오기
-//사용자 아이디, 모돈 번호를 보내고 그 값을 받아옴
+// 선택한 임신사 기록 불러오기, ocr_seq를 보내고 그 값을 받아옴
 pregnant_selectrow(int num) async{
   final api ='http://211.107.210.141:3000/api/ocr_pregnantSelectedRow';
   final data = {
@@ -114,20 +54,29 @@ pregnant_selectrow(int num) async{
   return response.data;
 }
 
-delete_pregnant() async{
-  final api ='http://211.107.210.141:3000/api/ocrDeleteAll';
-
-  final dio = Dio();
-  Response response;
-  response = await dio.get(api);
-  if(response.statusCode == 200) {
-    print("successfully deleted");
-  }else{
-    print("failed to delete");
+// 서버에서 이미지 받는 api
+Future<String> downloadFile(String imgname) async {
+  String returnfilepath = "";
+  Dio dio = Dio();
+  try {
+    var serverurl = "http://211.107.210.141:3000/api/ocrGetImage/"+imgname;
+    print(serverurl);
+    var dir = await getApplicationDocumentsDirectory();
+    await dio.download(serverurl, '${dir.path}/'+imgname,
+        onReceiveProgress: (rec, total) {
+          print('Rec: $rec , Total: $total');
+          returnfilepath = '${dir.path}/'+imgname;
+        }, deleteOnError: true
+    );
+    print("download image success");
+  } catch (e) {
+    print("download image failed");
+    print(e);
   }
+  return returnfilepath;
 }
 
-//전체 기록 불러오기
+// 임신사 전체 기록 불러오기
 pregnant_getocr() async {
   var pregnants = <Ocr_pregnant>[].obs;
   List<int> list_ocr_seq = [];
@@ -167,6 +116,21 @@ pregnant_getocr() async {
   return list_add;
 }
 
+// 임신사 기록 지우기
+delete_pregnant() async{
+  final api ='http://211.107.210.141:3000/api/ocrDeleteAll';
+
+  final dio = Dio();
+  Response response;
+  response = await dio.get(api);
+  if(response.statusCode == 200) {
+    print("successfully deleted");
+  }else{
+    print("failed to delete");
+  }
+}
+
+// 서버로 분만사 사진 보내는 api
 Future<List> uploadimg_maternity(File file)async{
   final api ='http://211.107.210.141:3000/api/ocrImageUpload';
   final dio = Dio();
@@ -194,7 +158,7 @@ Future<List> uploadimg_maternity(File file)async{
   return response.data;
 }
 
-//선택한 리스트 값 받아오기
+// 선택한 분만사 기록 불러오기, ocr_seq를 보내고 그 값을 받아옴
 maternity_selectrow(int num) async {
   final api ='http://211.107.210.141:3000/api/ocr_maternitySelectedRow';
   final data = {
@@ -213,7 +177,45 @@ maternity_selectrow(int num) async {
   return response.data;
 }
 
+// 분만사 전체 기록 불러오기
+maternity_getocr() async {
+  var maternity = <Ocr_maternity>[].obs;
+  List<int> list_ocr_seq = [];
+  List<String> list_sow_no = [];
+  List<dynamic> list_add = [];
 
+  final api ='http://211.107.210.141:3000/api/getOcr_maternity';
+  final dio = Dio();
+  Response response = await dio.get(api);
+
+  if(response.statusCode == 200) {
+    List<dynamic> result = response.data;
+    maternity.assignAll(result.map((data) => Ocr_maternity.fromJson(data)).toList());
+    maternity.refresh();
+    for(int i=0; i<maternity.length; i++){
+      if(i == 0) {
+        print(" success..." + maternity[i].ocr_seq.toString() + " " + maternity[i].sow_no.toString());
+        list_ocr_seq.add(maternity.length);
+        list_sow_no.add(maternity.length.toString());
+      }
+      print(" success!"+ maternity[i].ocr_seq.toString()+" " +maternity[i].sow_no.toString());
+      list_ocr_seq.add(maternity[i].ocr_seq!.toInt());
+      list_sow_no.add(maternity[i].sow_no!.toString());
+    }
+  }
+  else{
+    print(" fail..."+response.statusCode.toString());
+  }
+
+  for( int i=0; i< list_ocr_seq.length; i++){
+    list_add += [[list_ocr_seq[i],list_sow_no[i]]];
+  }
+
+  print(list_add);
+  return list_add;
+}
+
+// 결과를 toast로 띄우는 함수
 resultToast(String msg) {
   Fluttertoast.showToast(
       msg: msg,

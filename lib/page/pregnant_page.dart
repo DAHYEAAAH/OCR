@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
 import '../functions/functions.dart';
 
+// 서버에서 받을 값 변수 선언
 late int ocr_seq;
 late String sow_no;
 late String sow_birth;
@@ -26,9 +27,13 @@ late String filename;
 class PregnantPage extends StatefulWidget{
   static const routeName = '/OcrPregnantPage';
 
-  // const PregnantPage({Key? key, this.title}) : super(key: key);
+  // 서버에서 넘어오는 값을 저장할 listfromserver_pre를 list로 선언
   final List listfromserver_pre;
+
+  // 서버에서 넘어오는 사진변수를 Imagefromserver_pre로 선언
   final String Imagefromserver_pre;
+
+  // PregnantPage호출 시 리스트 입력 받음
   const PregnantPage(this.listfromserver_pre, this.Imagefromserver_pre);
 
   // final String? title;
@@ -39,6 +44,7 @@ class PregnantPage extends StatefulWidget{
 
 class PregnantPageState extends State<PregnantPage>{
 
+  // 서버에서 받은 값 저장하는 변수
   late String sowID1;
   late String sowID2;
 
@@ -69,8 +75,8 @@ class PregnantPageState extends State<PregnantPage>{
   late String expect_month;
   late String expect_day;
 
+  // 서버로부터 받은 이미지를 띄우는 함수
   Widget showImage() {
-
     return Container(
         margin: EdgeInsets.only(left: 20,right: 20),
         color: const Color(0xffd0cece),
@@ -86,6 +92,7 @@ class PregnantPageState extends State<PregnantPage>{
             child: widget.Imagefromserver_pre.isEmpty ? Text('No image selected.') : Image.file(File(widget.Imagefromserver_pre))));
   }
 
+  // 서버에서 받은 값이 수정가능하게 하기위해 TextEditingController로 선언
   final sowID1_Controller = TextEditingController();
   final sowID2_Controller = TextEditingController();
 
@@ -130,10 +137,12 @@ class PregnantPageState extends State<PregnantPage>{
   @override
   Widget build(BuildContext context) {
 
+    // 서버에서 받은 값이 들어있고, 현황판이 빈칸일때만 밑에 코드가 실행
     if(widget.listfromserver_pre.isNotEmpty){
       if (sowID1_Controller.text.isEmpty) {
         print(widget.listfromserver_pre);
 
+        // 서버로부터 받은 값 매핑
         sowID1_Controller.text = widget.listfromserver_pre[1][23].split("-")[0];
         sowID2_Controller.text = widget.listfromserver_pre[1][23].split("-")[1];
 
@@ -193,10 +202,10 @@ class PregnantPageState extends State<PregnantPage>{
                     Container(
                       margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
                       child: Table(
-                        textBaseline: TextBaseline.alphabetic,
+                        textBaseline: TextBaseline.alphabetic, // 글자 크기 맞추기
                         border: TableBorder.all(),
                         columnWidths: const {0: FractionColumnWidth(.0), 1: FractionColumnWidth(.4), 2: FractionColumnWidth(.4), 3: FractionColumnWidth(.1), 4: FractionColumnWidth(.1)},
-                        children: [
+                        children: [ // 현황판 표 만들기
                           TableRow(
                             children: [
                               const TableCell(
@@ -209,7 +218,7 @@ class PregnantPageState extends State<PregnantPage>{
                                 TextField(controller: sowID1_Controller,
                                   decoration: const InputDecoration(hintText: " "),
                                   style: const TextStyle(fontSize: 20),
-                                  keyboardType: TextInputType.number,
+                                  keyboardType: TextInputType.number, // 키보드 숫자만 나오게
                                   textAlign: TextAlign.center,),
                               ]),
                               Column(children: const [
@@ -220,7 +229,7 @@ class PregnantPageState extends State<PregnantPage>{
                                 TextField(controller: sowID2_Controller,
                                   decoration: const InputDecoration(hintText: " "),
                                   style: const TextStyle(fontSize: 20),
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.text, // 키보드 영어자판 나오게
                                   textAlign: TextAlign.center,),
                               ]),
 
@@ -676,7 +685,7 @@ class PregnantPageState extends State<PregnantPage>{
                           FloatingActionButton(
                             heroTag: 'send_button',
                             tooltip: 'send changed ocr',
-                            onPressed: () async {
+                            onPressed: () async { // 서버로 값 보내기 전 매핑
                               sow_no = sowID1_Controller.text + "-" + sowID2_Controller.text;
                               sow_birth = birth_year_Controller.text + "-" + birth_month_Controller.text + "-" + birth_day_Controller.text;
                               sow_buy = adoption_year_Controller.text + "-" + adoption_month_Controller.text + "-" + adoption_day_Controller.text;
@@ -692,10 +701,10 @@ class PregnantPageState extends State<PregnantPage>{
                               vaccine4 = vaccine4_fir_Controller.text + "-" + vaccine4_sec_Controller.text; // "ocr_imgpath":'17',
                               memo = memo_Controller.text;
 
-                              await pregnant_insert();
-                              List<dynamic> list = await pregnant_getocr();
-                              Navigator.of(context).popUntil((route) => route.isFirst);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(list)));
+                              await pregnant_insert(); // 임신사 사진 전송 api 호출
+                              List<dynamic> list = await pregnant_getocr(); // ocr돌린 값 list에 넣기
+                              Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(list))); // PregnantListPage로 넘어가기
                             },
                             child: const Icon(Icons.arrow_circle_right_sharp),
                           ),
@@ -710,7 +719,7 @@ class PregnantPageState extends State<PregnantPage>{
   }
 }
 
-//임신사 사진전송
+//임신사 사진전송 api
 pregnant_insert() async {
   final api ='http://211.107.210.141:3000/api/ocrpregnatInsert';
   final data = {

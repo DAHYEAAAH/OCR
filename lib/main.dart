@@ -9,6 +9,7 @@ import 'package:last_ocr/page/maternity_list_page.dart';
 import 'package:last_ocr/page/maternity_graph_page.dart';
 import 'package:last_ocr/page/maternity_page.dart';
 import 'package:last_ocr/page/pregnant_graph_page.dart';
+import 'package:last_ocr/page/pregnant_owner_graph_page.dart';
 import 'package:last_ocr/page/pregnant_page.dart';
 import 'overlay/camera_overlay_pregnant.dart';
 
@@ -35,6 +36,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // 화면 오른쪽에 뜨는 디버크 표시 지우기
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       home: MyHomePage(),
@@ -64,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       OutlinedButton(
                           onPressed: () {
                             showDialog(context: context, barrierDismissible:true,builder: (context){
-                              return AlertDialog(
+                              return AlertDialog( // 카메라와 갤러리 선택 dialog
                                   shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8.0)
                                   ),
@@ -74,14 +76,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                       crossAxisAlignment: CrossAxisAlignment.stretch,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        TextButton.icon(
+                                        TextButton.icon( // 카메라
                                           label: Text("CAMERA",style: TextStyle(color: Colors.black),),
-                                          onPressed: () {
+                                          onPressed: () { // 선택하면 CameraOverlayPregnant로 넘어간다
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant())); },
                                           icon: Icon(Icons.camera_alt, size:40,color: Colors.black,),),
-                                        TextButton.icon(
+                                        TextButton.icon( // 갤러리
                                             label: Text("GALLERY",style: TextStyle(color: Colors.black),),
-                                            onPressed: () async {
+                                            onPressed: () async { // ImagePicker를 이용하여 사진 선택
                                               final image = await ImagePicker().pickImage(source: ImageSource.gallery);
                                               if(image!=null) {
                                                 showDialog(context: context,
@@ -117,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                 child: SizedBox(
                                                                   height: 50.0,
                                                                   width: 50.0,
-                                                                  child: CircularProgressIndicator(
+                                                                  child: CircularProgressIndicator( // 로딩화면 애니메이션
                                                                     value: null,
                                                                     strokeWidth: 7.0,
                                                                   ),
@@ -144,12 +146,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       );
                                                     });
                                               }
+                                              // 서버로 임신사 사진 returnlist에 넣어서 보내기
                                               List returnlist = await uploadimg_pregnant(File(image!.path));
+
+                                              // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
                                               String returnfilepath = await downloadFile("ocrpreimages/"+returnlist[0]);
-                                              Navigator.of(context).popUntil((route) =>
-                                              route.isFirst);
+                                              Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
                                               await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                  PregnantPage(returnlist, returnfilepath)),
+                                                  PregnantPage(returnlist, returnfilepath)), // PregnantPage로 넘어가기
                                               );
                                             },
                                             icon: Icon(Icons.photo, size:40,color: Colors.black,)),
@@ -164,19 +168,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       OutlinedButton(
                           onPressed: ()async{
-                            //화면전환
                             //서버로부터 값 받아오기
                             List<dynamic> list = await pregnant_getocr();
                             print("pregnant get ocr->");
                             print(list);
+                            // PregnantListPage로 넘어가기
                             Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(list)));
                           },
                           child: const Text('기록')
                       ),
                       OutlinedButton(
                           onPressed: () {
+                            // PregnantGraphPage로 넘어가기
                             Navigator.push(context, MaterialPageRoute(
-                                builder: (context) =>  PregnantGraphPage()));
+                                builder: (context) =>  PregnantOwnerGraphPage()));
                           },
                           child: const Text('그래프')
                       ),
@@ -194,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       OutlinedButton(
                           onPressed: () {
                             showDialog(context: context, barrierDismissible:true,builder: (context){
-                              return AlertDialog(
+                              return AlertDialog( // 카메라와 갤러리 선택 dialog
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0)
                                   ),
@@ -204,14 +209,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                       crossAxisAlignment: CrossAxisAlignment.stretch,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        TextButton.icon(
+                                        TextButton.icon( // 카메라
                                           label: Text("CAMERA",style: TextStyle(color: Colors.black),),
-                                          onPressed: () {
+                                          onPressed: () { // 선택하면 CameraOverlayPregnant로 넘어간다
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant())); },
                                           icon: Icon(Icons.camera_alt, size:40,color: Colors.black,),),
-                                        TextButton.icon(
+                                        TextButton.icon( // 갤러리
                                             label: Text("GALLERY",style: TextStyle(color: Colors.black),),
-                                            onPressed: () async {
+                                            onPressed: () async { // ImagePicker를 이용하여 사진 선택
                                               final image = await ImagePicker().pickImage(source: ImageSource.gallery);
                                               if(image != null) {
                                                 showDialog(context: context,
@@ -247,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                 child: SizedBox(
                                                                   height: 50.0,
                                                                   width: 50.0,
-                                                                  child: CircularProgressIndicator(
+                                                                  child: CircularProgressIndicator( // 로딩화면 애니메이션
                                                                     value: null,
                                                                     strokeWidth: 7.0,
                                                                   ),
@@ -274,12 +279,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       );
                                                     });
                                               }
-
+                                              // 서버로 분만사 사진 returnlist에 넣어서 보내기
                                               List returnlist = await uploadimg_maternity(File(image!.path));
+
+                                              // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
                                               String returnfilepath = await downloadFile("ocrmatimages/"+returnlist[0]);
 
                                               await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                  MaternityPage(returnlist, returnfilepath)),
+                                                  MaternityPage(returnlist, returnfilepath)), // MaternityPage로 넘어가기
                                               );
                                             },
                                             icon: Icon(Icons.photo, size:40,color: Colors.black,)),
@@ -294,9 +301,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       OutlinedButton(
                           onPressed: () async{
+                            //서버로부터 값 받아오기
                             List<dynamic> list = await maternity_getocr();
                             print("maternity get ocr->");
                             print(list);
+                            // MaternityListPage로 넘어가기
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => MaternityListPage(list)));
                           },
@@ -304,6 +313,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       OutlinedButton(
                           onPressed: () {
+                            // MaternityGraphPage로 넘어가기
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => MaternityGraphPage()));
                           },
