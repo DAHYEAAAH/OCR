@@ -71,7 +71,6 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
   late String expect_day;
 
   Widget showImage() {
-    filename = widget.listfromserver_pre_mo[16].toString().split("/").last;
 
     return Container(
         margin: EdgeInsets.only(left: 20,right: 20),
@@ -177,7 +176,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
         vaccine4_fir_Controller.text = widget.listfromserver_pre_mo[14].toString().split("-")[0];
         vaccine4_sec_Controller.text = widget.listfromserver_pre_mo[14].toString().split("-")[1];
 
-        memo_Controller.text = widget.listfromserver_pre_mo[17].toString();
+        memo_Controller.text = widget.listfromserver_pre_mo[18].toString();
       }
     }
 

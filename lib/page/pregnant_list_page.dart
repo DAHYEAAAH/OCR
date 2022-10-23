@@ -60,7 +60,7 @@ class PregnantListPageState extends State<PregnantListPage> {
                                 print("임신사 selectrow 결과");
                                 print(list);
 
-                                String returnfilepath = await downloadFile("ocrpreimages/"+list[16].toString().split("/").last);
+                                String returnfilepath = await downloadFile("ocrpreimages/"+list[17].toString().split("/").last);
 
                                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                     PregnantModifyPage(list,returnfilepath)));

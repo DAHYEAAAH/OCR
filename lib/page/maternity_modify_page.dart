@@ -74,7 +74,6 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
 
 
   Widget showImage() {
-    filename = widget.listfromserver_mat_mo[16].toString().split("/").last;
     return Container(
         margin: EdgeInsets.only(left: 20,right: 20),
         color: const Color(0xffd0cece),

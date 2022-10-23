@@ -17,6 +17,7 @@ class Ocr_maternity {
   String? vaccine3;
   String? vaccine4;
   String? input_date;
+  String? input_time;
   String? ocr_imgpath;
   String? memo;
 
@@ -39,6 +40,7 @@ class Ocr_maternity {
     this.vaccine3,
     this.vaccine4,
     this.input_date,
+    this.input_time,
     this.ocr_imgpath,
     this.memo,
   });
@@ -62,6 +64,7 @@ class Ocr_maternity {
     vaccine3: json["vaccine3"],
     vaccine4: json["vaccine4"],
     input_date: json["input_date"],
+    input_time: json["input_time"],
     ocr_imgpath: json["ocr_imgpath"],
     memo: json["memo"],
   );
@@ -84,6 +87,7 @@ class Ocr_maternity {
     "vaccine3": vaccine3,
     "vaccine4": vaccine4,
     "input_date": input_date,
+    "input_time": input_time,
     "ocr_imgpath": ocr_imgpath,
     "memo": memo,
   };
@@ -106,6 +110,7 @@ class Ocr_maternity {
   map["vaccine3"] = vaccine3;
   map["vaccine4"] = vaccine4;
   map["input_date"] = input_date;
+  map["input_time"]=input_time;
   map["ocr_imgpath"] = ocr_imgpath;
   map["memo"] = memo;
   return map;

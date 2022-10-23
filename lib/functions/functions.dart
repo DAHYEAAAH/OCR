@@ -9,6 +9,26 @@ import 'package:last_ocr/entities/Ocr_pregnant.dart';
 import 'package:ntp/ntp.dart';
 import 'package:path_provider/path_provider.dart';
 
+send_date_pregnant(List sendlist) async {
+  final api = 'http://211.107.210.141:3000/api/ocrPregnantSendDate';
+  final dio = Dio();
+
+  final data={
+    'everysunday':sendlist
+  };
+  Response response;
+  print("send_date_pregnant");
+  print(data);
+  response = await dio.post(api, data:data);
+  if(response.statusCode==200){
+    print("날짜보내기 성공");
+  }
+  else{
+    print("날짜보내기 실패");
+  }
+}
+
+
 // 서버로 임신사 사진 보내는 api
 Future<List> uploadimg_pregnant(File file)async{
   final api = 'http://211.107.210.141:3000/api/ocrImageUpload';

@@ -58,7 +58,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                 print("분만사 selectrow 결과");
                                 print(list);
 
-                                String returnfilepath = await downloadFile("ocrmatimages/"+list[18].toString().split("/").last);
+                                String returnfilepath = await downloadFile("ocrmatimages/"+list[19].toString().split("/").last);
 
                                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                     MaternityModifyPage(list, returnfilepath)));

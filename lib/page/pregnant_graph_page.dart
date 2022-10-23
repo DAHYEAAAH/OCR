@@ -1,5 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../functions/functions.dart';
 
 late double mating_week1 = 18;
 late double mating_week2 = 20;
@@ -37,32 +40,63 @@ class PregnantGraphPage extends StatefulWidget {
 }
 
 class PregnantGraphPageState extends State<PregnantGraphPage> {
-  var thisyear = DateTime.now().year;
-  var thismonth = DateTime.now().month;
+  var thisyear = DateTime.now().year;   // 년도
+  var thismonth = DateTime.now().month; // 월
 
-  void increase_month(){
+  changeMonth(){
+    List li=[];
+    var now = DateTime(2022,thismonth,1); //선택한 달의 1일을 기준날짜로 잡음
+
+    var firstSunday = DateTime(now.year, now.month, now.day - (now.weekday - 0)); //기준날짜가 속한 주의 일요일을 구함
+
+    if(firstSunday.day>now.day){ // 찾아낸 일요일이 이전달일경우 +7일을 함 (ex)10.1일이 속한 일요일 9월25일 =(변경)=> 10월 2일)
+      firstSunday = firstSunday.add(const Duration(days: 7));
+    }
+
+    var sunday = firstSunday;
+    List templist=[]; // [시작날짜,끝날짜]를 저장하기 위한 임시 리스트
+    templist.add(DateFormat('yyyy-MM-dd').format(sunday.add(const Duration(days:-6)))); //시작날짜계산법 : 일요일날짜-6
+    templist.add(DateFormat('yyyy-MM-dd').format(sunday)); // 끝날짜
+    li.add(templist); // [시작날짜,끝날짜] 형태로 리스트에 추가
+
+    while(true){
+      List templist=[];
+      var nextsunday = sunday.add(const Duration(days: 7)); // 다음주 일요일 계산법 : 일요일+7
+      if(nextsunday.day<sunday.day){ // 다음주 일요일이 다음달에 속할 경우 리스트에 추가하지 않고 반복문을 종료시킴.
+        break;
+      }
+      templist.add(DateFormat('yyyy-MM-dd').format(nextsunday.add(const Duration(days:-6)))); // 시작날짜계산법 : 다음주일요일-6
+      templist.add(DateFormat('yyyy-MM-dd').format(nextsunday));  // 끝날짜
+      li.add(templist); // [시작날짜, 끝날짜] 형태로 리스트에 추가
+      sunday = nextsunday; // 그 다음주를 계산하기 위해 sunday를 nextsunday로 변경
+    }
+    print(li);
+    send_date_pregnant(li); // 그래프 날짜보내는 api 호출
+  }
+
+
+  void increase_month(){ // 다음달 넘기기 버튼 누를때
     setState(() {
       thismonth++;
-      if(thismonth>12) {
+      if(thismonth>12) { // 다음년도로 넘어가기
         thismonth = 1;
         thisyear++;
       }
     });
   }
-  void decrease_month(){
+  void decrease_month(){  // 이전달 넘기기 버튼 누를때
     setState(() {
       thismonth--;
-      if(thismonth<1) {
+      if(thismonth<1) { // 이전년도로 넘어가기
         thismonth = 12;
         thisyear--;
       }
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-
+    changeMonth();
     return Scaffold(
       appBar: AppBar(
           title: Text("임신사 그래프")
@@ -77,11 +111,12 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                    onPressed: () { decrease_month();}, icon: Icon(Icons.navigate_before)
+                    onPressed: () { decrease_month();changeMonth();}, icon: Icon(Icons.navigate_before)
                 ),
                 Text('$thisyear'.toString()+"년 "+'$thismonth'.toString()+"월",style: TextStyle(fontSize: 25),),
+
                 IconButton(
-                    onPressed: () { increase_month();}, icon: Icon(Icons.navigate_next)
+                    onPressed: () { increase_month();changeMonth();}, icon: Icon(Icons.navigate_next)
                 )
               ]
             ),
