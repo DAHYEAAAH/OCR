@@ -313,7 +313,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: () {
                             // MaternityGraphPage로 넘어가기
                             Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => MaternityGraphPage()));
+                                builder: (context) => PregnantOwnerGraphPage()));
                           },
                           child: const Text('그래프')
                       ),

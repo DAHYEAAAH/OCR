@@ -72,6 +72,7 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
     }
     print(li);
     send_date_pregnant(li); // 그래프 날짜보내는 api 호출
+    // send_date_maternity(li);
   }
 
 

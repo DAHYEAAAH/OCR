@@ -10,7 +10,29 @@ import 'package:ntp/ntp.dart';
 import 'package:path_provider/path_provider.dart';
 
 send_date_pregnant(List sendlist) async {
+  print("send_date_pregnant");
   final api = 'http://211.107.210.141:3000/api/ocrPregnantSendDate';
+  final dio = Dio();
+
+  final data={
+    'everysunday':sendlist
+  };
+  Response response;
+  print(data);
+  response = await dio.post(api, data:data);
+  if(response.statusCode==200){
+    print("날짜보내기 성공");
+  }
+  else{
+    print("날짜보내기 실패");
+  }
+  print("returndata");
+  print(response.data);
+}
+
+send_date_maternity(List sendlist) async {
+  print("materntiy");
+  final api = 'http://211.107.210.141:3000//api/ocrMaternitySendDate';
   final dio = Dio();
 
   final data={
@@ -26,8 +48,35 @@ send_date_pregnant(List sendlist) async {
   else{
     print("날짜보내기 실패");
   }
+  print("returndata");
+  print(response.data);
 }
 
+ocrTargetInsertUpate(String yyyy, String mm, String sow_totalbaby, String sow_feedbaby, String sow_sevrer, String sow_cross) async {
+  print("ocrTargetInsertUpate");
+  final api = 'http://211.107.210.141:3000//api/ocrTargetInsertUpdate';
+  final dio = Dio();
+
+  final data={
+    'yyyy': yyyy,
+    'mm':mm,
+    'sow_totalbaby':sow_totalbaby,
+    'sow_feedbaby' : sow_feedbaby,
+    'sow_sevrer' : sow_sevrer,
+    'sow_cross' : sow_cross,
+  };
+  Response response;
+  print(data);
+  // response = await dio.post(api, data:data);
+  // if(response.statusCode==200){
+  //   print("목표값보내기 성공");
+  // }
+  // else{
+  //   print("목표값보내기 실패");
+  // }
+  print("returndata-목표값");
+  // print(response.data);
+}
 
 // 서버로 임신사 사진 보내는 api
 Future<List> uploadimg_pregnant(File file)async{

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:last_ocr/functions/functions.dart';
 
 late double mating_week1 = 18;
@@ -28,7 +29,8 @@ late double shipment_week3 = 32;
 late double shipment_week4 = 29;
 late double shipment_goal = 35;
 
-List<String> list = <String>['총산자수', '포유개시두수', '이유두수', '교배복수'];
+List<String> list = <String>['2021', '2022', '2023', '2024'];
+List<String> list2 = <String>['1', '2', '3', '4','5','6','7','8','9','10','11','12'];
 
 class PregnantOwnerGraphPage extends StatefulWidget {
   static const routeName = '/camera-page';
@@ -94,10 +96,13 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
     shipment_goal
   ];
 
-  final _valueList = ['총산자수', '포유개시두수', '이유두수', '교배복수'];
-  var _selectedValue;
+  final List<String> _valueList = ['총산자수', '포유개시두수', '이유두수', '교배복수'];
+  String _selectedValue = '총산자수';
 
-  final goal_Controller = TextEditingController();
+  final goal_Controller_cross = TextEditingController();
+  final goal_Controller_sevrer = TextEditingController();
+  final goal_Controller_total = TextEditingController();
+  final goal_Controller_feed = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -212,24 +217,52 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                   onPressed: () async {
                     showDialog(context: context, barrierDismissible: true, builder: (context) {
                           return AlertDialog(
-                              title: const Text('목표값을 설정해주세요'),
+                              title: Text("목표값을 설정해주세요"),
                               content:
                               Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                  DropdownButtonExample(),
-                                    TextField(
-                                      decoration: InputDecoration(
-                                        hintText: '숫자만 입력해주세요',),
-                                      textAlign: TextAlign.left,
-
-                                      keyboardType: TextInputType.number,
-                                      controller: goal_Controller,
-                                    ),
+                                    Row(children:<Widget>[
+                                        DropdownButtonExample(thisyear.toString()),DropdownButtonExample2(thismonth.toString())
+                                    ]),
+                                    Row(children:<Widget>[
+                                      Text("교배  "),
+                                      SizedBox(width: 10,),
+                                      SizedBox(width:50,child:TextField(
+                                        decoration: InputDecoration(
+                                          hintText: '',),
+                                        textAlign: TextAlign.left,
+                                        keyboardType: TextInputType.number,
+                                        controller: goal_Controller_cross,
+                                      )),
+                                      Text("이유  "),
+                                      SizedBox(width: 10,),
+                                      SizedBox(width:50,child:TextField(
+                                        decoration: InputDecoration(hintText: '',),
+                                        textAlign: TextAlign.left,
+                                        keyboardType: TextInputType.number,
+                                        controller: goal_Controller_sevrer,
+                                      ))]),
+                                    Row(children:<Widget>[
+                                      Text("총산  "),
+                                      SizedBox(width: 10,),
+                                      SizedBox(width:50,child:TextField(
+                                        decoration: InputDecoration(hintText: '',),
+                                        textAlign: TextAlign.left,
+                                        keyboardType: TextInputType.number,
+                                        controller: goal_Controller_total,
+                                      )),
+                                      Text("포유  "),
+                                      SizedBox(width: 10,),
+                                      SizedBox(width:50,child:TextField(
+                                        decoration: InputDecoration(hintText: '',),
+                                        textAlign: TextAlign.left,
+                                        keyboardType: TextInputType.number,
+                                        controller: goal_Controller_feed,
+                                      ))]),
                                   ]),
                               actions: <Widget>[
-
                                 ButtonBar(
                                   alignment: MainAxisAlignment.end,
                                   buttonPadding: EdgeInsets.all(8.0),
@@ -241,7 +274,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context, '전송');
-                                          print(goal_Controller.text);
+                                          ocrTargetInsertUpate(thisyear.toString(), thismonth.toString().padLeft(2, "0").toString(), goal_Controller_total.text.toString(), goal_Controller_feed.text.toString(), goal_Controller_sevrer.text.toString(), goal_Controller_cross.text.toString());
                                         },
                                         child: const Text('전송'),
                                       ),
@@ -795,17 +828,18 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
 }
 
 class DropdownButtonExample extends StatefulWidget {
-  const DropdownButtonExample({super.key});
-
+  final String thisyear;
+  const DropdownButtonExample(this.thisyear);
   @override
   State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
 }
 
 class _DropdownButtonExampleState extends State<DropdownButtonExample> {
-  String dropdownValue = list.first;
+
 
   @override
   Widget build(BuildContext context) {
+    String dropdownValue = widget.thisyear;
     return DropdownButton<String>(
       value: dropdownValue,
       onChanged: (String? value) {
@@ -815,6 +849,37 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
         });
       },
       items: list.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+}
+
+class DropdownButtonExample2 extends StatefulWidget {
+  final String thismonth;
+  const DropdownButtonExample2(this.thismonth);
+  @override
+  State<DropdownButtonExample2> createState() => _DropdownButtonExampleState2();
+}
+
+class _DropdownButtonExampleState2 extends State<DropdownButtonExample2> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    var dropdownValue = widget.thismonth;
+    return DropdownButton<String>(
+      value: dropdownValue,
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+        });
+      },
+      items: list2.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
