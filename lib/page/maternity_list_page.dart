@@ -51,19 +51,34 @@ class MaternityListPageState extends State<MaternityListPage> {
                             ListTile(
                               title: Text("모돈 번호 :" + sow_no[index]),
 
-                              trailing: Icon(Icons.keyboard_arrow_right),
-                              onTap: () async {
-                                List list = await maternity_selectrow(ocr_seq[index]);
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(onPressed: () async{
+                                    List list = await maternity_selectrow(ocr_seq[index]);
 
-                                print("분만사 selectrow 결과");
-                                print(list);
+                                    print("분만사 selectrow 결과");
+                                    print(list);
 
-                                String returnfilepath = await downloadFile("ocrmatimages/"+list[19].toString().split("/").last);
+                                    String returnfilepath = await downloadFile("ocrmatimages/"+list[19].toString().split("/").last);
 
-                                Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                    MaternityModifyPage(list, returnfilepath)));
-                                //   print("서버에게 받은 리스트 null 값임");
-                              },
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                        MaternityModifyPage(list, returnfilepath)));
+                                    //   print("서버에게 받은 리스트 null 값임");
+
+                                  }, icon: const Icon(Icons.edit)),
+                                  IconButton(onPressed: ()async{
+                                    await maternity_deleterow(ocr_seq[index]);
+                                    List<dynamic> list = await maternity_getocr();
+                                    print("maternity return get ocr->");
+                                    Navigator.pop(context,MaterialPageRoute(builder: (context)=> MaternityListPage(list)));
+                                    Navigator.push(context,MaterialPageRoute(builder: (context)=> MaternityListPage(list)));
+                                  },icon: const Icon(Icons.delete)),
+
+                                ],
+                              )
+
+
                             ) ,
                           Container(
                             height: 1,

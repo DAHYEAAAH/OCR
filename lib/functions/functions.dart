@@ -74,6 +74,25 @@ pregnant_selectrow(int num) async{
   return response.data;
 }
 
+pregnant_deleterow(int num) async{
+  final api ='http://211.107.210.141:3000/api/ocr_pregnantDelete';
+  final data = {
+    "ocr_seq": num, //pk
+  };
+  final dio = Dio();
+  Response response;
+  print("행 삭제 합니다");
+  response = await dio.post(api,data: data);
+  print(response.data);
+  if(response.statusCode == 200) {
+    print("행 삭제");
+    print("*******************");
+  }else{
+    print(" fail..."+response.statusCode.toString());
+  }
+  print(response);
+}
+
 // 서버에서 이미지 받는 api
 Future<String> downloadFile(String imgname) async {
   String returnfilepath = "";
@@ -234,6 +253,26 @@ maternity_getocr() async {
   print(list_add);
   return list_add;
 }
+maternity_deleterow(int num) async{
+  final api ='http://211.107.210.141:3000/api/ocr_maternityDelete';
+  final data = {
+    "ocr_seq": num, //pk
+  };
+  final dio = Dio();
+  Response response;
+  print("행 삭제 합니다");
+  response = await dio.post(api,data: data);
+  print(response.data);
+  if(response.statusCode == 200) {
+    print("행 삭제");
+    print("*******************");
+  }else{
+    print(" fail..."+response.statusCode.toString());
+  }
+  print(response);
+}
+
+
 
 // 결과를 toast로 띄우는 함수
 resultToast(String msg) {
