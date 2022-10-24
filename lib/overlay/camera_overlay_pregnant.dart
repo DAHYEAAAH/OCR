@@ -107,7 +107,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                 ),
                                 OutlinedButton(
                                   onPressed: () async {
-                                    //뭐라고 설명을 해야할지 모르겠습니다,, 그냥 박스,,인데...///
+                                    //로딩화면 알죠?
                                     showDialog(context: context, builder: (context){
                                       return Container(
                                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -116,10 +116,10 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                           color: Colors.white70,
                                         ),
                                         child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.circular(10.0)
-                                          ),
+                                          // decoration: BoxDecoration(
+                                          //     color: Colors.white,
+                                          //     borderRadius: BorderRadius.circular(10.0)
+                                          // ),
                                           width: 300.0,
                                           height: 200.0,
                                           alignment: AlignmentDirectional.center,
@@ -140,10 +140,11 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                               Container(
                                                 margin: const EdgeInsets.only(top: 25.0),
                                                 child: const Center(
-                                                  child: Text(
+                                                  child:
+                                                  Text(
                                                     "loading.. wait...",
                                                     style: TextStyle(
-                                                        color: Colors.white
+                                                        color: Colors.blue
                                                     ),
                                                   ),
                                                 ),

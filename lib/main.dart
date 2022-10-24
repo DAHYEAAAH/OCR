@@ -11,6 +11,7 @@ import 'package:last_ocr/page/maternity_page.dart';
 import 'package:last_ocr/page/pregnant_graph_page.dart';
 import 'package:last_ocr/page/pregnant_owner_graph_page.dart';
 import 'package:last_ocr/page/pregnant_page.dart';
+import 'overlay/camera_overlay_maternity.dart';
 import 'overlay/camera_overlay_pregnant.dart';
 
 void main() {
@@ -87,22 +88,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 showDialog(context: context,
                                                     builder: (context) {
                                                       return Container(
-                                                        padding: const EdgeInsets
-                                                            .fromLTRB(
-                                                            0, 0, 0, 0),
-                                                        alignment: Alignment
-                                                            .center,
+                                                        padding: const EdgeInsets.fromLTRB( 0, 0, 0, 0),
+                                                        alignment: Alignment.center,
                                                         decoration: const BoxDecoration(
-                                                          color: Colors.white70,
+                                                          color: Colors.white,
                                                         ),
                                                         child: Container(
-                                                          decoration: BoxDecoration(
-                                                              color: Colors
-                                                                  .blue[200],
-                                                              borderRadius: BorderRadius
-                                                                  .circular(
-                                                                  10.0)
-                                                          ),
+                                                          // decoration:
+                                                          // BoxDecoration(
+                                                          //     color: Colors
+                                                          //         .blue[200],
+                                                          //     borderRadius: BorderRadius
+                                                          //         .circular(
+                                                          //         10.0)
+                                                          // ),
                                                           width: 300.0,
                                                           height: 200.0,
                                                           alignment: AlignmentDirectional
@@ -121,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                     value: null,
                                                                     strokeWidth: 7.0,
                                                                   ),
+                                                                  // child: Icon(Icons.play_circle_filled),
                                                                 ),
                                                               ),
                                                               Container(
@@ -132,8 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                     "loading.. wait...",
                                                                     style: TextStyle(
                                                                         color: Colors
-                                                                            .white,
-                                                                        fontSize: 20
+                                                                            .blue,
+                                                                        fontSize: 20,
+                                                                      decoration: TextDecoration.none,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -210,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         TextButton.icon( // 카메라
                                           label: Text("CAMERA",style: TextStyle(color: Colors.black),),
                                           onPressed: () { // 선택하면 CameraOverlayPregnant로 넘어간다
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant())); },
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayMaternity())); },
                                           icon: Icon(Icons.camera_alt, size:40,color: Colors.black,),),
                                         TextButton.icon( // 갤러리
                                             label: Text("GALLERY",style: TextStyle(color: Colors.black),),
@@ -226,16 +227,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         alignment: Alignment
                                                             .center,
                                                         decoration: const BoxDecoration(
-                                                          color: Colors.white70,
+                                                          color: Colors.white,
                                                         ),
                                                         child: Container(
-                                                          decoration: BoxDecoration(
-                                                              color: Colors
-                                                                  .blue[200],
-                                                              borderRadius: BorderRadius
-                                                                  .circular(
-                                                                  10.0)
-                                                          ),
+                                                          // decoration: BoxDecoration(
+                                                          //     color: Colors
+                                                          //         .blue[200],
+                                                          //     borderRadius: BorderRadius
+                                                          //         .circular(
+                                                          //         10.0)
+                                                          // ),
                                                           width: 300.0,
                                                           height: 200.0,
                                                           alignment: AlignmentDirectional
@@ -264,9 +265,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                                                   child: Text(
                                                                     "loading.. wait...",
                                                                     style: TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize: 20
+                                                                        color: Colors.blue,
+                                                                        fontSize: 20,
+                                                                      decoration: TextDecoration.none,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -283,6 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
                                               String returnfilepath = await downloadFile("ocrmatimages/"+returnlist[0]);
 
+                                              Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
                                               await Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                   MaternityPage(returnlist, returnfilepath)), // MaternityPage로 넘어가기
                                               );

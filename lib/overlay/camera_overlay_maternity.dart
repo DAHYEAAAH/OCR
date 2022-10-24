@@ -118,13 +118,12 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                         alignment: Alignment.center,
                                         decoration: const BoxDecoration(
                                           color: Colors.white70,
-                                          backgroundBlendMode: BlendMode.darken
                                         ),
                                         child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.circular(10.0)
-                                          ),
+                                          // decoration: BoxDecoration(
+                                          //     color: Colors.white,
+                                          //     borderRadius: BorderRadius.circular(10.0)
+                                          // ),
                                           width: 300.0,
                                           height: 200.0,
                                           alignment: AlignmentDirectional.center,
@@ -148,7 +147,8 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                                   child: Text(
                                                     "loading.. wait...",
                                                     style: TextStyle(
-                                                        color: Colors.black
+                                                        color: Colors.blue,
+                                                      fontSize: 20,
                                                     ),
                                                   ),
                                                 ),
