@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_rx/get_rx.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:last_ocr/entities/Ocr_pregnant.dart';
 import 'package:last_ocr/functions/functions.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
@@ -14,6 +15,12 @@ import 'package:last_ocr/page/pregnant_page.dart';
 import 'overlay/camera_overlay_maternity.dart';
 import 'overlay/camera_overlay_pregnant.dart';
 
+var mating_week = List<double>.filled(5, 0, growable: true);
+
+late double mating_goal = 0;
+var thisyear = DateTime.now().year;   // 년도
+var thismonth = DateTime.now().month; // 월
+List li=[];
 void main() {
   runApp(MyApp());
 }
@@ -30,7 +37,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  var pregnants = <Ocr_pregnant>[].obs;
 
   @override
   Widget build(BuildContext context) {
@@ -177,10 +183,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: const Text('기록')
                       ),
                       OutlinedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             // PregnantGraphPage로 넘어가기
+                            await changeMonth();
                             Navigator.push(context, MaterialPageRoute(
-                                builder: (context) =>  PregnantGraphPage()));
+                                builder: (context) =>  PregnantGraphPage(mating_week, mating_goal)));
                           },
                           child: const Text('그래프')
                       ),
@@ -336,5 +343,50 @@ class _MyHomePageState extends State<MyHomePage> {
             )
         )
     );
+  }
+  changeMonth() async{
+
+    var now = DateTime(2022,thismonth,1); //선택한 달의 1일을 기준날짜로 잡음
+
+    var firstSunday = DateTime(now.year, now.month, now.day - (now.weekday - 0)); //기준날짜가 속한 주의 일요일을 구함
+
+    if(firstSunday.day>now.day){ // 찾아낸 일요일이 이전달일경우 +7일을 함 (ex)10.1일이 속한 일요일 9월25일 =(변경)=> 10월 2일)
+      firstSunday = firstSunday.add(const Duration(days: 7));
+    }
+
+    var sunday = firstSunday;
+    List templist=[]; // [시작날짜,끝날짜]를 저장하기 위한 임시 리스트
+    templist.add(DateFormat('yyyy-MM-dd').format(sunday.add(const Duration(days:-6)))); //시작날짜계산법 : 일요일날짜-6
+    templist.add(DateFormat('yyyy-MM-dd').format(sunday)); // 끝날짜
+    li.add(templist); // [시작날짜,끝날짜] 형태로 리스트에 추가
+
+    while(true){
+      List templist=[];
+      var nextsunday = sunday.add(const Duration(days: 7)); // 다음주 일요일 계산법 : 일요일+7
+      if(nextsunday.day<sunday.day){ // 다음주 일요일이 다음달에 속할 경우 리스트에 추가하지 않고 반복문을 종료시킴.
+        break;
+      }
+      templist.add(DateFormat('yyyy-MM-dd').format(nextsunday.add(const Duration(days:-6)))); // 시작날짜계산법 : 다음주일요일-6
+      templist.add(DateFormat('yyyy-MM-dd').format(nextsunday));  // 끝날짜
+      li.add(templist); // [시작날짜, 끝날짜] 형태로 리스트에 추가
+      sunday = nextsunday; // 그 다음주를 계산하기 위해 sunday를 nextsunday로 변경
+    }
+    print(li);
+
+    var pregnantdata= await send_date_pregnant(li);
+    print(pregnantdata.length);
+    for(int i=0; i<li.length; i++){
+      if(pregnantdata[i]['sow_cross']==null){
+        mating_week[i]=0;
+      }else{
+        mating_week[i] = pregnantdata[i]['sow_cross'];
+      }
+    }
+    print(mating_week);
+
+    var targetdata= await ocrTargetSelectedRow(thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
+    mating_goal = double.parse(targetdata[2]);
+    print(mating_goal);
+
   }
 }

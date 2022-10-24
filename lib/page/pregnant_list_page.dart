@@ -119,10 +119,10 @@ class PregnantListPageState extends State<PregnantListPage> {
                                             ],
                                           ),
                                         ) ,
-                                      Container( //리스트 감싸기
-                                        height: 1, //높이 1
-                                        color: Colors.black, //검은색 선으로
-                                      )
+                                      // Container( //리스트 감싸기
+                                      //   height: 1, //높이 1
+                                      //   color: Colors.black, //검은색 선으로
+                                      // )
                                     ],
                                   )
                               ),

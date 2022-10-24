@@ -1,14 +1,15 @@
+import 'dart:io';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../functions/functions.dart';
 
-late double mating_week1 = 18;
-late double mating_week2 = 20;
-late double mating_week3 = 35;
-late double mating_week4 =29;
-late double mating_goal = 32;
+
+var mating_week = List<double>.filled(5, 0, growable: true);
+
+late double mating_goal = 0;
 
 late double feedbaby_week1 = 24;
 late double feedbaby_week2 = 35;
@@ -31,9 +32,11 @@ late double shipment_goal = 35;
 class PregnantGraphPage extends StatefulWidget {
   static const routeName = '/pregnant-graph-page';
 
-  const PregnantGraphPage({Key? key, this.title}) : super(key: key);
-
-  final String? title;
+  // const PregnantGraphPage({Key? key, this.title}) : super(key: key);
+  final List<double> list_sow_cross ;
+  final double goal_sow_cross ;
+  const PregnantGraphPage(this.list_sow_cross,this.goal_sow_cross);
+  // final String? title;
 
   @override
   PregnantGraphPageState createState() => PregnantGraphPageState();
@@ -42,9 +45,9 @@ class PregnantGraphPage extends StatefulWidget {
 class PregnantGraphPageState extends State<PregnantGraphPage> {
   var thisyear = DateTime.now().year;   // 년도
   var thismonth = DateTime.now().month; // 월
+  List li=[];
+  changeMonth() async{
 
-  changeMonth(){
-    List li=[];
     var now = DateTime(2022,thismonth,1); //선택한 달의 1일을 기준날짜로 잡음
 
     var firstSunday = DateTime(now.year, now.month, now.day - (now.weekday - 0)); //기준날짜가 속한 주의 일요일을 구함
@@ -71,8 +74,25 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
       sunday = nextsunday; // 그 다음주를 계산하기 위해 sunday를 nextsunday로 변경
     }
     print(li);
-    send_date_pregnant(li); // 그래프 날짜보내는 api 호출
-    // send_date_maternity(li);
+
+    var pregnantdata= await send_date_pregnant(li);
+    for(int i=0; i<li.length; i++){
+      if(pregnantdata[i]['sow_cross']==null){
+        mating_week[i]=0;
+      }else{
+        mating_week[i] = pregnantdata[i]['sow_cross'];
+      }
+    }
+    print(mating_week);
+
+    var targetdata= await ocrTargetSelectedRow(thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
+    if(targetdata==null){
+      mating_goal=0;
+    }else {
+      mating_goal = double.parse(targetdata[2]);
+    }
+    print(mating_goal);
+
   }
 
 
@@ -97,7 +117,8 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
 
   @override
   Widget build(BuildContext context) {
-    changeMonth();
+    mating_week = widget.list_sow_cross;
+    mating_goal = widget.goal_sow_cross;
     return Scaffold(
       appBar: AppBar(
           title: Text("임신사 그래프")
@@ -109,17 +130,17 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget> [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                    onPressed: () { decrease_month();changeMonth();}, icon: Icon(Icons.navigate_before)
-                ),
-                Text('$thisyear'.toString()+"년 "+'$thismonth'.toString()+"월",style: TextStyle(fontSize: 25),),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () async { decrease_month();await changeMonth();}, icon: Icon(Icons.navigate_before)
+                  ),
+                  Text('$thisyear'.toString()+"년 "+'$thismonth'.toString()+"월",style: TextStyle(fontSize: 25),),
 
-                IconButton(
-                    onPressed: () { increase_month();changeMonth();}, icon: Icon(Icons.navigate_next)
-                )
-              ]
+                  IconButton(
+                      onPressed: () { increase_month();changeMonth();}, icon: Icon(Icons.navigate_next)
+                  )
+                ]
             ),
             Column(
               children: [
@@ -128,7 +149,8 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
                   child:Padding(
                     padding: EdgeInsets.fromLTRB(20, 20, 30, 30),
                     child: LineChart(
-                      mainChart_sow_cross(),
+
+                      mainChart_sow_cross(li.length),
                     ),
                   ),
                 ),
@@ -211,7 +233,8 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
 }
 
 //교배복수**********************
-LineChartData mainChart_sow_cross() {
+LineChartData mainChart_sow_cross(int length) {
+  print("Draww");
   List<Color> gradientColors_values = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
@@ -222,14 +245,14 @@ LineChartData mainChart_sow_cross() {
     const Color(0xffffdd00),
   ];
 
-  final oneweekMate = mating_week1;
-  final twoweekMate = mating_week2;
-  final threeweekMate = mating_week3;
-  final fourweekMate = mating_week4;
-  final goalMate = mating_goal;
+  print(mating_week);
+  double max=40;
+  if(mating_goal>40)
+    max = mating_goal+10;
 
 
-  return LineChartData(
+  if(length==4)
+    return LineChartData(
 
     gridData: FlGridData(
       show: true,
@@ -309,10 +332,10 @@ LineChartData mainChart_sow_cross() {
     lineBarsData: [
       LineChartBarData(
         spots: [
-          FlSpot(0, oneweekMate.toDouble()),
-          FlSpot(3, twoweekMate.toDouble()),
-          FlSpot(6, threeweekMate.toDouble()),
-          FlSpot(9, fourweekMate.toDouble()),
+          FlSpot(0, mating_week[0]),
+          FlSpot(3, mating_week[1]),
+          FlSpot(6, mating_week[2]),
+          FlSpot(9, mating_week[3]),
         ],
 
         isCurved: true,
@@ -325,10 +348,108 @@ LineChartData mainChart_sow_cross() {
       ),
       LineChartBarData(
         spots: [
-          FlSpot(0, goalMate.toDouble()),
-          FlSpot(3, goalMate.toDouble()),
-          FlSpot(6, goalMate.toDouble()),
-          FlSpot(9, goalMate.toDouble()),
+          FlSpot(0, mating_goal.toDouble()),
+          FlSpot(3, mating_goal.toDouble()),
+          FlSpot(6, mating_goal.toDouble()),
+          FlSpot(9, mating_goal.toDouble()),
+        ],
+        isCurved: true,
+        colors: gradientColorsAvg,
+        barWidth: 5,
+        isStrokeCapRound: true,
+        dotData: FlDotData(
+          show: true,
+        ),
+      ),
+    ],
+  );
+  else
+    return LineChartData(
+
+    gridData: FlGridData(
+      show: true,
+      drawVerticalLine: true,
+      horizontalInterval: 10,
+      drawHorizontalLine: true,
+
+      getDrawingHorizontalLine: (value) {
+        return FlLine(
+          color: Color(0xff000000),
+          strokeWidth: 1,
+        );
+      },
+      getDrawingVerticalLine: (value) {
+        return FlLine(
+          color: Color(0xff000000),
+          strokeWidth: 1,
+        );
+      },
+    ),
+
+    titlesData: FlTitlesData(
+      show: true,
+      bottomTitles: SideTitles(
+        showTitles: true,
+        reservedSize: 22,
+        textStyle: const TextStyle(
+            color: Color(0xff000000),
+            fontWeight: FontWeight.bold,
+            fontSize: 16),
+        getTitles: (value) {
+          // print('bottomTitles $value');
+          switch (value.toInt()) {
+            case 0:
+              return '1주';
+            case 3:
+              return '2주';
+            case 6:
+              return '3주';
+            case 9:
+              return '4주';
+            case 12:
+              return '5주';
+          }
+          return '';
+        },
+        margin: 8,
+      ),
+      leftTitles: SideTitles(
+        showTitles: true,
+        interval: 10,
+        textStyle: const TextStyle(
+          color: Color(0xff000000),
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
+
+      ),
+    ),
+    minX: 0,
+    maxX: 12,
+    minY: 0,
+    maxY: max,
+    lineBarsData: [
+      LineChartBarData(
+        spots: [
+          FlSpot(0, mating_week[0]),
+          FlSpot(3, mating_week[1]),
+          FlSpot(6, mating_week[2]),
+          FlSpot(9, mating_week[3]),
+          FlSpot(12, mating_week[4]),
+        ],
+
+        isCurved: true,
+        colors: gradientColors_values,
+        barWidth: 5,
+        isStrokeCapRound: true,
+        dotData: FlDotData(
+          show: true,
+        ),
+      ),
+      LineChartBarData(
+        spots: [
+          FlSpot(0, mating_goal.toDouble()),
+          FlSpot(12, mating_goal.toDouble()),
         ],
         isCurved: true,
         colors: gradientColorsAvg,

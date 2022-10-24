@@ -11,14 +11,14 @@ import 'package:path_provider/path_provider.dart';
 
 send_date_pregnant(List sendlist) async {
   print("send_date_pregnant");
-  final api = 'http://211.107.210.141:3000/api/ocrPregnantSendDate';
+  final api = 'https://www.dfxsoft.com/api/ocrPregnantSendDate';
   final dio = Dio();
 
   final data={
     'everysunday':sendlist
   };
   Response response;
-  print(data);
+  // print(data);
   response = await dio.post(api, data:data);
   if(response.statusCode==200){
     print("날짜보내기 성공");
@@ -26,21 +26,25 @@ send_date_pregnant(List sendlist) async {
   else{
     print("날짜보내기 실패");
   }
-  print("returndata");
+  print("pre-returndata");
   print(response.data);
+
+  List<dynamic> li = response.data;
+
+  return li;
 }
 
 send_date_maternity(List sendlist) async {
-  print("materntiy");
-  final api = 'http://211.107.210.141:3000/api/ocrMaternitySendDate';
+  // print("materntiy");
+  final api = 'https://www.dfxsoft.com/api/ocrMaternitySendDate';
   final dio = Dio();
 
   final data={
     'everysunday':sendlist
   };
   Response response;
-  print("send_date_pregnant");
-  print(data);
+  print("send_date_maternity");
+  // print(data);
   response = await dio.post(api, data:data);
   if(response.statusCode==200){
     print("날짜보내기 성공");
@@ -78,8 +82,7 @@ ocrTargetInsertUpate(String yyyy, String mm, String sow_totalbaby, String sow_fe
   print(response.data);
 }
 ocrTargetSelectedRow(String yyyy, String mm) async {
-  print("ocrTargetInsertUpate");
-  final api = 'http://211.107.210.141:3000/api/ocrTargetSelectedRow';
+  final api = 'https://www.dfxsoft.com/api/ocrTargetSelectedRow';
   final dio = Dio();
 
   final data={
@@ -90,10 +93,10 @@ ocrTargetSelectedRow(String yyyy, String mm) async {
   print(data);
   response = await dio.post(api, data:data);
   if(response.statusCode==200){
-    print("목표값보내기 성공");
+    print("목표값받기 성공");
   }
   else{
-    print("목표값보내기 실패");
+    print("목표값받기 실패");
   }
   print("returndata-목표값");
   print(response.data);
