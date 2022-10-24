@@ -16,8 +16,12 @@ import 'overlay/camera_overlay_maternity.dart';
 import 'overlay/camera_overlay_pregnant.dart';
 
 var mating_week = List<double>.filled(5, 0, growable: true);
+var feedbaby_week = List<double>.filled(5, 0, growable: true);
+var sevrer_week = List<double>.filled(5, 0, growable: true);
+var totalbaby_week = List<double>.filled(5, 0, growable: true);
 
-late double mating_goal = 0;
+var goals = List<double>.filled(6, 0);
+
 var thisyear = DateTime.now().year;   // 년도
 var thismonth = DateTime.now().month; // 월
 List li=[];
@@ -186,8 +190,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: () async {
                             // PregnantGraphPage로 넘어가기
                             await changeMonth();
+                            Navigator.of(context).popUntil((route) => route.isFirst);
                             Navigator.push(context, MaterialPageRoute(
-                                builder: (context) =>  PregnantGraphPage(mating_week, mating_goal)));
+                                builder: (context) =>  PregnantGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
                           },
                           child: const Text('그래프')
                       ),
@@ -384,9 +389,34 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     print(mating_week);
 
+    var maternitydata= await send_date_maternity(li);
+    print(maternitydata.length);
+    for(int i=0; i<li.length; i++){
+      if(maternitydata[i]['feedbaby']==null){
+        feedbaby_week[i]=0;
+      } else{
+        feedbaby_week[i] = maternitydata[i]['feedbaby'];
+      }
+      if(maternitydata[i]['sevrer']==null){
+        sevrer_week[i]=0;
+      }else{
+        sevrer_week[i] = maternitydata[i]['sevrer'];
+      }
+      if(maternitydata[i]['totalbaby']==null){
+        totalbaby_week[i]=0;
+      }else{
+        totalbaby_week[i] = maternitydata[i]['totalbaby'];
+      }
+    }
     var targetdata= await ocrTargetSelectedRow(thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
-    mating_goal = double.parse(targetdata[2]);
-    print(mating_goal);
-
+    goals[0] = double.parse(targetdata[0]);
+    goals[1] = double.parse(targetdata[1]);
+    goals[2] = double.parse(targetdata[2]);
+    goals[3] = double.parse(targetdata[3]);
+    goals[4] = double.parse(targetdata[4]);
+    goals[5] = double.parse(targetdata[5]);
+    print(goals);
+    li.clear();
   }
+
 }
