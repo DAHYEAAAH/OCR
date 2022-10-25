@@ -216,7 +216,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                                 decoration: const InputDecoration(hintText: " "),
                                 style: const TextStyle(fontSize: 20),
                                 keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,),
+                                textAlign: TextAlign.center, enabled: false,),
                             ]),
                             Column(children: const [
                               Text('-', style: TextStyle(fontSize: 20),
@@ -227,7 +227,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                                 decoration: const InputDecoration(hintText: " "),
                                 style: const TextStyle(fontSize: 20),
                                 keyboardType: TextInputType.text,
-                                textAlign: TextAlign.center,),
+                                textAlign: TextAlign.center, enabled: false,),
                             ]),
 
                           ],),

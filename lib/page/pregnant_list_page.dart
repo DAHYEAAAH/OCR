@@ -83,7 +83,9 @@ class PregnantListPageState extends State<PregnantListPage> {
                               child: (
                                   Stack(
                                     children: [
-                                      ListTile(
+                                      for(int i = 0 ; i < ocr_seq.length ; i++)
+
+                                        ListTile(
                                           // title: Text("모돈 번호 :" + sow_no[index].toString()),
                                         title: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

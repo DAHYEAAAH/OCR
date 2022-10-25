@@ -216,14 +216,14 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
                                 Text('모돈번호',style: TextStyle(fontSize: 20),textAlign: TextAlign.center,)
                               ]),
                               Column(children:[
-                                TextField(controller: sowID1_Controller,
+                                TextField(controller: sowID1_Controller, enabled: false,
                                   decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),keyboardType: TextInputType.number,textAlign: TextAlign.center,),
                               ]),
                               Column(children:[
                                 Text('-',style: TextStyle(fontSize: 20),textAlign: TextAlign.center,)
                               ], ),
                               Column(children:[
-                                TextField(controller: sowID2_Controller,
+                                TextField(controller: sowID2_Controller, enabled: false,
                                   decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),keyboardType: TextInputType.text,textAlign: TextAlign.center,),
                               ]),
 

@@ -41,6 +41,7 @@ class MaternityListPageState extends State<MaternityListPage> {
             child:Column(
               children: [
                 Row(children: <Widget>[
+
                   SizedBox(width: 20,),
                   Container(
                       width: 70.0,
