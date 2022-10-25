@@ -565,7 +565,7 @@ class MaternityPageState extends State<MaternityPage>{
 }
 //분만사 사진전송
 maternity_insert() async{
-  final api ='http://211.107.210.141:3000/api/ocrmaternityInsert';
+  final api ='https://www.dfxsoft.com/api/ocrmaternityInsert';
   final data = {
     "sow_no": sow_no,
     "sow_birth": sow_birth,

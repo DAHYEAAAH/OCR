@@ -574,7 +574,7 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
 }
 
 maternity_update() async {
-  final api ='http://211.107.210.141:3000/api/ocrmaternityUpdate';
+  final api ='https://www.dfxsoft.com/api/ocrmaternityUpdate';
   final data = {
     "ocr_seq": ocr_seq,
     "sow_no": sow_no,

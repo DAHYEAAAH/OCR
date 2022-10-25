@@ -56,8 +56,7 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
     );
 
     if (croppedfile != null) {
-      // imagefile = croppedfile;
-      setState(() { });
+      setState(() {});
     }else{
       print("Image is not cropped.");
     }
@@ -183,6 +182,50 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                               OutlinedButton(
                                   onPressed: () async {
                                     final croppedfile = await cropImage(file.path);
+                                    showDialog(context: context, builder: (context){
+                                      return Container(
+                                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(color: Colors.white,),
+                                        child: Container(
+                                          // decoration: BoxDecoration(
+                                          //     color: Colors.white,
+                                          //     borderRadius: BorderRadius.circular(10.0)
+                                          // ),
+                                          width: 300.0,
+                                          height: 200.0,
+                                          alignment: AlignmentDirectional.center,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              const Center(
+                                                child: SizedBox(
+                                                  height: 50.0,
+                                                  width: 50.0,
+                                                  child: CircularProgressIndicator(
+                                                    value: null,
+                                                    strokeWidth: 7.0,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 25.0),
+                                                child: const Center(
+                                                  child: Text(
+                                                    "loading.. wait...",
+                                                    style: TextStyle(
+                                                      color: Colors.blue,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
                                     List list = await uploadimg_maternity(File(croppedfile.path));
 
                                     GallerySaver.saveImage(croppedfile.path)

@@ -1,13 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get_rx/get_rx.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:last_ocr/entities/Ocr_pregnant.dart';
 import 'package:last_ocr/functions/functions.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
 import 'package:last_ocr/page/maternity_list_page.dart';
-import 'package:last_ocr/page/maternity_graph_page.dart';
 import 'package:last_ocr/page/maternity_page.dart';
 import 'package:last_ocr/page/pregnant_graph_page.dart';
 import 'package:last_ocr/page/pregnant_owner_graph_page.dart';

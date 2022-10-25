@@ -27,14 +27,14 @@ class PregnantOwnerGraphPage extends StatefulWidget {
   @override
   PregnantOwnerGraphPageState createState() => PregnantOwnerGraphPageState();
 }
-
+var thisyear = DateTime
+    .now()
+    .year;
+var thismonth = DateTime
+    .now()
+    .month;
 class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
-  var thisyear = DateTime
-      .now()
-      .year;
-  var thismonth = DateTime
-      .now()
-      .month;
+
   List li = [];
 
   changeMonth() async {
@@ -102,11 +102,16 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
           feedbaby_week[i] = maternitydata[i]['feedbaby'];
         }
       }
+
       if (targetdata == null) {
         mating_goal = "0";
         sevrer_goal = "0";
         totalbaby_goal = "0";
         feedbaby_goal = "0";
+        goal_Controller_cross.text = "0";
+        goal_Controller_sevrer.text = "0";
+        goal_Controller_total.text = "0";
+        goal_Controller_feed.text = "0";
       } else {
         mating_goal = targetdata[5];
         sevrer_goal = targetdata[4];
@@ -118,10 +123,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
         goal_Controller_feed.text = targetdata[3];
       }
     });
-    print(mating_goal);
-    print(sevrer_goal);
-    print(totalbaby_goal);
-    print(feedbaby_goal);
+
 
   }
 
@@ -144,6 +146,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
       }
     });
   }
+
   final goal_Controller_cross = TextEditingController();
   final goal_Controller_sevrer = TextEditingController();
   final goal_Controller_total = TextEditingController();
@@ -154,6 +157,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
     print("buildddd--------");
     changeMonth();
     if (double.parse(widget.goal[0]) == thisyear && double.parse(widget.goal[1]) == thismonth) {
+      print("new page");
       mating_week = widget.list_sow_cross;
       mating_goal = widget.goal[5];
       sevrer_week = widget.list_sow_sevrer;
@@ -335,22 +339,18 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                                       ),
                                       TextButton(
                                         onPressed: () async{
-                                          Navigator.pop(context, '전송');
 
-                                          ocrTargetInsertUpate(
+                                          await ocrTargetInsertUpate(
                                               thisyear.toString(),
                                               thismonth.toString().padLeft(
-                                                  2, "0").toString(),
-                                              goal_Controller_total.text.toString(),
-                                              goal_Controller_feed.text.toString(),
+                                                  2, "0").toString(), goal_Controller_total.text.toString(), goal_Controller_feed.text.toString(),
                                               goal_Controller_sevrer.text.toString(),
                                               goal_Controller_cross.text.toString());
-                                          goal_Controller_cross.clear();
-                                          goal_Controller_feed.clear();
-                                          goal_Controller_sevrer.clear();
-                                          goal_Controller_total.clear();
-                                          // Navigator.of(context).popUntil((route) => route.isFirst);
-                                          // Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantOwnerGraphPage(mating_week,sevrer_week, totalbaby_week,feedbaby_week,['2022','10',goal_Controller_cross.text,goal_Controller_sevrer.text,goal_Controller_total.text,goal_Controller_feed.text])));
+                                          print("textbutton");
+                                          print(thisyear);
+                                          print(thismonth);
+                                          Navigator.of(context).popUntil((route) => route.isFirst);
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantOwnerGraphPage(mating_week,sevrer_week, totalbaby_week,feedbaby_week,[thisyear.toString(),thismonth.toString(),goal_Controller_total.text.toString(),goal_Controller_feed.text.toString(),goal_Controller_sevrer.text.toString(),goal_Controller_cross.text.toString()])));
                                         },
                                         child: const Text('전송'),
                                       ),
@@ -377,6 +377,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
     print("Draww");
     print(li);
     print(mating_week);
+    print(mating_goal);
     List<Color> gradientColors_values = [
       const Color(0xff23b6e6),
       const Color(0xff02d39a),
@@ -431,17 +432,17 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                       .toString()
                       .split("-")
                       .last + "일";
-                case 3:
+                case 4:
                   return li[1][1]
                       .toString()
                       .split("-")
                       .last + "일";
-                case 6:
+                case 8:
                   return li[2][1]
                       .toString()
                       .split("-")
                       .last + "일";
-                case 9:
+                case 12:
                   return li[3][1]
                       .toString()
                       .split("-")
@@ -465,16 +466,16 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
         // //     show: true,
         // //     border: Border.all(color: const Color(0xff000000), width: 1)),
         minX: 0,
-        maxX: 9,
+        maxX: 12,
         minY: 0,
         maxY: max,
         lineBarsData: [
           LineChartBarData(
             spots: [
               FlSpot(0, mating_week[0]),
-              FlSpot(3, mating_week[1]),
-              FlSpot(6, mating_week[2]),
-              FlSpot(9, mating_week[3]),
+              FlSpot(4, mating_week[1]),
+              FlSpot(8, mating_week[2]),
+              FlSpot(12, mating_week[3]),
             ],
 
             isCurved: false,
@@ -488,9 +489,9 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
           LineChartBarData(
             spots: [
               FlSpot(0, double.parse(mating_goal)),
-              FlSpot(3, double.parse(mating_goal)),
-              FlSpot(6, double.parse(mating_goal)),
-              FlSpot(9, double.parse(mating_goal)),
+              FlSpot(4, double.parse(mating_goal)),
+              FlSpot(8, double.parse(mating_goal)),
+              FlSpot(12, double.parse(mating_goal)),
             ],
             isCurved: false,
             colors: gradientColorsAvg,
@@ -676,17 +677,17 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                       .toString()
                       .split("-")
                       .last + "일";
-                case 3:
+                case 4:
                   return li[1][1]
                       .toString()
                       .split("-")
                       .last + "일";
-                case 6:
+                case 8:
                   return li[2][1]
                       .toString()
                       .split("-")
                       .last + "일";
-                case 9:
+                case 12:
                   return li[3][1]
                       .toString()
                       .split("-")
@@ -707,16 +708,16 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
           ),
         ),
         minX: 0,
-        maxX: 9,
+        maxX: 12,
         minY: 0,
         maxY: max,
         lineBarsData: [
           LineChartBarData(
             spots: [
               FlSpot(0, sevrer_week[0].toDouble()),
-              FlSpot(3, sevrer_week[1].toDouble()),
-              FlSpot(6, sevrer_week[2].toDouble()),
-              FlSpot(9, sevrer_week[3].toDouble()),
+              FlSpot(4, sevrer_week[1].toDouble()),
+              FlSpot(8, sevrer_week[2].toDouble()),
+              FlSpot(12, sevrer_week[3].toDouble()),
             ],
 
             isCurved: false,
@@ -730,9 +731,9 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
           LineChartBarData(
             spots: [
               FlSpot(0, double.parse(sevrer_goal)),
-              FlSpot(3, double.parse(sevrer_goal)),
-              FlSpot(6, double.parse(sevrer_goal)),
-              FlSpot(9, double.parse(sevrer_goal)),
+              FlSpot(4, double.parse(sevrer_goal)),
+              FlSpot(8, double.parse(sevrer_goal)),
+              FlSpot(12, double.parse(sevrer_goal)),
             ],
             isCurved: false,
             colors: gradientColors_avg,
@@ -917,17 +918,17 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                       .toString()
                       .split("-")
                       .last + "일";
-                case 3:
+                case 4:
                   return li[1][1]
                       .toString()
                       .split("-")
                       .last + "일";
-                case 6:
+                case 8:
                   return li[2][1]
                       .toString()
                       .split("-")
                       .last + "일";
-                case 9:
+                case 12:
                   return li[3][1]
                       .toString()
                       .split("-")
@@ -948,16 +949,16 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
           ),
         ),
         minX: 0,
-        maxX: 9,
+        maxX: 12,
         minY: 0,
         maxY: max,
         lineBarsData: [
           LineChartBarData(
             spots: [
               FlSpot(0, totalbaby_week[0].toDouble()),
-              FlSpot(3, totalbaby_week[1].toDouble()),
-              FlSpot(6, totalbaby_week[2].toDouble()),
-              FlSpot(9, totalbaby_week[3].toDouble()),
+              FlSpot(4, totalbaby_week[1].toDouble()),
+              FlSpot(8, totalbaby_week[2].toDouble()),
+              FlSpot(12, totalbaby_week[3].toDouble()),
             ],
 
             isCurved: false,
@@ -971,9 +972,9 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
           LineChartBarData(
             spots: [
               FlSpot(0, double.parse(totalbaby_goal)),
-              FlSpot(3, double.parse(totalbaby_goal)),
-              FlSpot(6, double.parse(totalbaby_goal)),
-              FlSpot(9, double.parse(totalbaby_goal)),
+              FlSpot(4, double.parse(totalbaby_goal)),
+              FlSpot(8, double.parse(totalbaby_goal)),
+              FlSpot(12, double.parse(totalbaby_goal)),
             ],
             isCurved: false,
             colors: gradientColors_avg,
@@ -1168,12 +1169,12 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                       .toString()
                       .split("-")
                       .last + "일";
-                case 6:
+                case 8:
                   return li[2][1]
                       .toString()
                       .split("-")
                       .last + "일";
-                case 9:
+                case 12:
                   return li[3][1]
                       .toString()
                       .split("-")
@@ -1194,16 +1195,16 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
           ),
         ),
         minX: 0,
-        maxX: 9,
+        maxX: 12,
         minY: 0,
         maxY: max,
         lineBarsData: [
           LineChartBarData(
             spots: [
               FlSpot(0, feedbaby_week[0].toDouble()),
-              FlSpot(3, feedbaby_week[1].toDouble()),
-              FlSpot(6, feedbaby_week[2].toDouble()),
-              FlSpot(9, feedbaby_week[3].toDouble()),
+              FlSpot(4, feedbaby_week[1].toDouble()),
+              FlSpot(8, feedbaby_week[2].toDouble()),
+              FlSpot(12, feedbaby_week[3].toDouble()),
             ],
 
             isCurved: false,
@@ -1217,9 +1218,9 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
           LineChartBarData(
             spots: [
               FlSpot(0, double.parse(feedbaby_goal)),
-              FlSpot(3, double.parse(feedbaby_goal)),
-              FlSpot(6, double.parse(feedbaby_goal)),
-              FlSpot(9, double.parse(feedbaby_goal)),
+              FlSpot(4, double.parse(feedbaby_goal)),
+              FlSpot(8, double.parse(feedbaby_goal)),
+              FlSpot(12, double.parse(feedbaby_goal)),
             ],
             isCurved: false,
             colors: gradientColors_avg,

@@ -721,7 +721,7 @@ class PregnantPageState extends State<PregnantPage>{
 
 //임신사 사진전송 api
 pregnant_insert() async {
-  final api ='http://211.107.210.141:3000/api/ocrpregnatInsert';
+  final api ='https://www.dfxsoft.com/api/ocrpregnatInsert';
   final data = {
     "sow_no": sow_no,
     "sow_birth": sow_birth,

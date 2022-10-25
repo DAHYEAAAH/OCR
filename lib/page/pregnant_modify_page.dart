@@ -725,7 +725,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
 
 //임신사 수정 후 업데이트
 pregnant_update() async {
-  final api ='http://211.107.210.141:3000/api/ocrpregnatUpdate';
+  final api ='https://www.dfxsoft.com/api/ocrpregnatUpdate';
   final data = {
     "ocr_seq": ocr_seq ,
     "sow_no": sow_no,

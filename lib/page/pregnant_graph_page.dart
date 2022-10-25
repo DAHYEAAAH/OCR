@@ -279,11 +279,11 @@ LineChartData mainChart_sow_cross(List li) {
           switch (value.toInt()) {
             case 0:
               return li[0][1].toString().split("-").last+"일";
-            case 3:
+            case 4:
               return li[1][1].toString().split("-").last+"일";
-            case 6:
+            case 8:
               return li[2][1].toString().split("-").last+"일";
-            case 9:
+            case 12:
               return li[3][1].toString().split("-").last+"일";
           }
           return '';
@@ -304,16 +304,16 @@ LineChartData mainChart_sow_cross(List li) {
     // //     show: true,
     // //     border: Border.all(color: const Color(0xff000000), width: 1)),
     minX: 0,
-    maxX: 9,
+    maxX: 12,
     minY: 0,
     maxY: max,
     lineBarsData: [
       LineChartBarData(
         spots: [
           FlSpot(0, mating_week[0]),
-          FlSpot(3, mating_week[1]),
-          FlSpot(6, mating_week[2]),
-          FlSpot(9, mating_week[3]),
+          FlSpot(4, mating_week[1]),
+          FlSpot(8, mating_week[2]),
+          FlSpot(12, mating_week[3]),
         ],
 
         isCurved: false,
@@ -327,9 +327,9 @@ LineChartData mainChart_sow_cross(List li) {
       LineChartBarData(
         spots: [
           FlSpot(0, mating_goal.toDouble()),
-          FlSpot(3, mating_goal.toDouble()),
-          FlSpot(6, mating_goal.toDouble()),
-          FlSpot(9, mating_goal.toDouble()),
+          FlSpot(4, mating_goal.toDouble()),
+          FlSpot(8, mating_goal.toDouble()),
+          FlSpot(12, mating_goal.toDouble()),
         ],
         isCurved: false,
         colors: gradientColorsAvg,
@@ -495,11 +495,11 @@ LineChartData mainChart_sow_sevrer(List li) {
             switch (value.toInt()) {
               case 0:
                 return li[0][1].toString().split("-").last+"일";
-              case 3:
+              case 4:
                 return li[1][1].toString().split("-").last+"일";
-              case 6:
+              case 8:
                 return li[2][1].toString().split("-").last+"일";
-              case 9:
+              case 12:
                 return li[3][1].toString().split("-").last+"일";
             }
             return '';
@@ -517,16 +517,16 @@ LineChartData mainChart_sow_sevrer(List li) {
         ),
       ),
       minX: 0,
-      maxX: 9,
+      maxX: 12,
       minY: 0,
       maxY: max,
       lineBarsData: [
         LineChartBarData(
           spots: [
             FlSpot(0, sevrer_week[0].toDouble()),
-            FlSpot(3, sevrer_week[1].toDouble()),
-            FlSpot(6, sevrer_week[2].toDouble()),
-            FlSpot(9, sevrer_week[3].toDouble()),
+            FlSpot(4, sevrer_week[1].toDouble()),
+            FlSpot(8, sevrer_week[2].toDouble()),
+            FlSpot(12, sevrer_week[3].toDouble()),
           ],
 
           isCurved: false,
@@ -540,9 +540,9 @@ LineChartData mainChart_sow_sevrer(List li) {
         LineChartBarData(
           spots: [
             FlSpot(0, sevrer_goal.toDouble()),
-            FlSpot(3, sevrer_goal.toDouble()),
-            FlSpot(6, sevrer_goal.toDouble()),
-            FlSpot(9, sevrer_goal.toDouble()),
+            FlSpot(4, sevrer_goal.toDouble()),
+            FlSpot(8, sevrer_goal.toDouble()),
+            FlSpot(12, sevrer_goal.toDouble()),
           ],
           isCurved: false,
           colors: gradientColors_avg,
@@ -710,11 +710,11 @@ LineChartData mainChart_total_baby(List li) {
             switch (value.toInt()) {
               case 0:
                 return li[0][1].toString().split("-").last+"일";
-              case 3:
+              case 4:
                 return li[1][1].toString().split("-").last+"일";
-              case 6:
+              case 8:
                 return li[2][1].toString().split("-").last+"일";
-              case 9:
+              case 12:
                 return li[3][1].toString().split("-").last+"일";
             }
             return '';
@@ -732,16 +732,16 @@ LineChartData mainChart_total_baby(List li) {
         ),
       ),
       minX: 0,
-      maxX: 9,
+      maxX: 12,
       minY: 0,
       maxY: max,
       lineBarsData: [
         LineChartBarData(
           spots: [
             FlSpot(0, totalbaby_week[0].toDouble()),
-            FlSpot(3, totalbaby_week[1].toDouble()),
-            FlSpot(6, totalbaby_week[2].toDouble()),
-            FlSpot(9, totalbaby_week[3].toDouble()),
+            FlSpot(4, totalbaby_week[1].toDouble()),
+            FlSpot(8, totalbaby_week[2].toDouble()),
+            FlSpot(12, totalbaby_week[3].toDouble()),
           ],
 
           isCurved: false,
@@ -755,9 +755,9 @@ LineChartData mainChart_total_baby(List li) {
         LineChartBarData(
           spots: [
             FlSpot(0, totalbaby_goal.toDouble()),
-            FlSpot(3, totalbaby_goal.toDouble()),
-            FlSpot(6, totalbaby_goal.toDouble()),
-            FlSpot(9, totalbaby_goal.toDouble()),
+            FlSpot(4, totalbaby_goal.toDouble()),
+            FlSpot(8, totalbaby_goal.toDouble()),
+            FlSpot(12, totalbaby_goal.toDouble()),
           ],
           isCurved: false,
           colors: gradientColors_avg,
@@ -928,11 +928,11 @@ LineChartData mainChart_feed_baby(List li) {
             switch (value.toInt()) {
               case 0:
                 return li[0][1].toString().split("-").last+"일";
-              case 3:
+              case 4:
                 return li[1][1].toString().split("-").last+"일";
-              case 6:
+              case 8:
                 return li[2][1].toString().split("-").last+"일";
-              case 9:
+              case 12:
                 return li[3][1].toString().split("-").last+"일";
             }
             return '';
@@ -950,16 +950,16 @@ LineChartData mainChart_feed_baby(List li) {
         ),
       ),
       minX: 0,
-      maxX: 9,
+      maxX: 12,
       minY: 0,
       maxY: max,
       lineBarsData: [
         LineChartBarData(
           spots: [
             FlSpot(0, feedbaby_week[0].toDouble()),
-            FlSpot(3, feedbaby_week[1].toDouble()),
-            FlSpot(6, feedbaby_week[2].toDouble()),
-            FlSpot(9, feedbaby_week[3].toDouble()),
+            FlSpot(4, feedbaby_week[1].toDouble()),
+            FlSpot(8, feedbaby_week[2].toDouble()),
+            FlSpot(12, feedbaby_week[3].toDouble()),
           ],
 
           isCurved: false,
@@ -973,9 +973,9 @@ LineChartData mainChart_feed_baby(List li) {
         LineChartBarData(
           spots: [
             FlSpot(0, feedbaby_goal.toDouble()),
-            FlSpot(3, feedbaby_goal.toDouble()),
-            FlSpot(6, feedbaby_goal.toDouble()),
-            FlSpot(9, feedbaby_goal.toDouble()),
+            FlSpot(4, feedbaby_goal.toDouble()),
+            FlSpot(8, feedbaby_goal.toDouble()),
+            FlSpot(12, feedbaby_goal.toDouble()),
           ],
           isCurved: false,
           colors: gradientColors_avg,
