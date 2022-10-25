@@ -20,7 +20,7 @@ var feedbaby_week = List<double>.filled(5, 0, growable: true);
 var sevrer_week = List<double>.filled(5, 0, growable: true);
 var totalbaby_week = List<double>.filled(5, 0, growable: true);
 
-var goals = List<double>.filled(6, 0);
+var goals = List<String>.filled(6, "");
 
 var thisyear = DateTime.now().year;   // 년도
 var thismonth = DateTime.now().month; // 월
@@ -189,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       OutlinedButton(
                           onPressed: () async {
                             // PregnantGraphPage로 넘어가기
-                            await changeMonth();
+                            await preparegraph();
                             Navigator.of(context).popUntil((route) => route.isFirst);
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (context) =>  PregnantGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
@@ -324,10 +324,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: const Text('기록')
                       ),
                       OutlinedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             // MaternityGraphPage로 넘어가기
+                            await preparegraph();
+                            Navigator.of(context).popUntil((route) => route.isFirst);
                             Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => PregnantOwnerGraphPage()));
+                                builder: (context) => PregnantOwnerGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
                           },
                           child: const Text('그래프')
                       ),
@@ -349,7 +351,7 @@ class _MyHomePageState extends State<MyHomePage> {
         )
     );
   }
-  changeMonth() async{
+  preparegraph() async{
 
     var now = DateTime(2022,thismonth,1); //선택한 달의 1일을 기준날짜로 잡음
 
@@ -409,12 +411,12 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
     var targetdata= await ocrTargetSelectedRow(thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
-    goals[0] = double.parse(targetdata[0]);
-    goals[1] = double.parse(targetdata[1]);
-    goals[2] = double.parse(targetdata[2]);
-    goals[3] = double.parse(targetdata[3]);
-    goals[4] = double.parse(targetdata[4]);
-    goals[5] = double.parse(targetdata[5]);
+    goals[0] = targetdata[0];
+    goals[1] = targetdata[1];
+    goals[2] = targetdata[2];
+    goals[3] = targetdata[3];
+    goals[4] = targetdata[4];
+    goals[5] = targetdata[5];
     print(goals);
     li.clear();
   }

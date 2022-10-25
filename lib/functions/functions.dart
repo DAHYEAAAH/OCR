@@ -102,6 +102,7 @@ ocrTargetSelectedRow(String yyyy, String mm) async {
   }
   print("returndata-목표값");
   print(response.data);
+
   // 총산자수, 포유, 이유, 교배 순
   return response.data;
 }

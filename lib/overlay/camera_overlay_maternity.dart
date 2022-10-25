@@ -32,7 +32,7 @@ class CameraOverlayMaternity extends StatefulWidget {
 }
 
 class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
-  OverlayFormat format = OverlayFormat.cardID1;
+  OverlayFormat format = OverlayFormat.cardID2;
 
   cropImage(String cameraurl) async {
     File? croppedfile = await ImageCropper().cropImage(

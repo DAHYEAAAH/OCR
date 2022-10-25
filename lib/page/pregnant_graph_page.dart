@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../functions/functions.dart';
 
 
@@ -24,7 +21,7 @@ class PregnantGraphPage extends StatefulWidget {
   final List<double> list_sow_sevrer ;
   final List<double> list_sow_totalbaby ;
   final List<double> list_sow_feedbaby ;
-  final List<double> goal ; //년도,월,총산,포유,이유,교배 순
+  final List<String> goal ; //년도,월,총산,포유,이유,교배 순
   const PregnantGraphPage(this.list_sow_cross,this.list_sow_sevrer,this.list_sow_totalbaby,this.list_sow_feedbaby,this.goal);
   // final String? title;
 
@@ -36,6 +33,7 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
   var thisyear = DateTime.now().year;   // 년도
   var thismonth = DateTime.now().month; // 월
   List li=[];
+
   changeMonth() async{
     li.clear();
     var now = DateTime(2022,thismonth,1); //선택한 달의 1일을 기준날짜로 잡음
@@ -64,8 +62,8 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
       sunday = nextsunday; // 그 다음주를 계산하기 위해 sunday를 nextsunday로 변경
     }
     print(li);
-
-
+  }
+  getdata()async{
     var pregnantdata= await send_date_pregnant(li);
     var targetdata= await ocrTargetSelectedRow(thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
     var maternitydata= await send_date_maternity(li);
@@ -131,15 +129,16 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
   @override
   Widget build(BuildContext context) {
     print("buildddd--------");
-    if(widget.goal[0]==thisyear&&widget.goal[1]==thismonth) {
+    changeMonth();
+    if(double.parse(widget.goal[0])==thisyear&&double.parse(widget.goal[1])==thismonth) {
       mating_week = widget.list_sow_cross;
-      mating_goal = widget.goal[5];
+      mating_goal = double.parse(widget.goal[5]);
       sevrer_week = widget.list_sow_sevrer;
-      sevrer_goal = widget.goal[4];
+      sevrer_goal = double.parse(widget.goal[4]);
       totalbaby_week = widget.list_sow_totalbaby;
-      totalbaby_goal = widget.goal[2];
+      totalbaby_goal = double.parse(widget.goal[2]);
       feedbaby_week = widget.list_sow_feedbaby;
-      feedbaby_goal = widget.goal[3];
+      feedbaby_goal = double.parse(widget.goal[3]);
       print(mating_goal);print(sevrer_goal);print(totalbaby_goal);print(feedbaby_goal);
       print(mating_week);print(sevrer_week);print(totalbaby_week);print(feedbaby_week);
 
@@ -158,12 +157,11 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                      onPressed: () async { decrease_month(); changeMonth();}, icon: Icon(Icons.navigate_before)
+                      onPressed: () async { decrease_month(); changeMonth();getdata();}, icon: Icon(Icons.navigate_before)
                   ),
                   Text('$thisyear'.toString()+"년 "+'$thismonth'.toString()+"월",style: TextStyle(fontSize: 25),),
-
                   IconButton(
-                      onPressed: () { increase_month();changeMonth();}, icon: Icon(Icons.navigate_next)
+                      onPressed: () { increase_month();changeMonth();getdata();}, icon: Icon(Icons.navigate_next)
                   )
                 ]
             ),
@@ -247,203 +245,203 @@ LineChartData mainChart_sow_cross(List li) {
   if(li.length==4){
     return LineChartData(
 
-      gridData: FlGridData(
-        show: true,
-        drawVerticalLine: true,
-        horizontalInterval: 10,
-        drawHorizontalLine: true,
+    gridData: FlGridData(
+      show: true,
+      drawVerticalLine: true,
+      horizontalInterval: 10,
+      drawHorizontalLine: true,
 
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: Color(0xff000000),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: Color(0xff000000),
-            strokeWidth: 1,
-          );
-        },
-      ),
+      getDrawingHorizontalLine: (value) {
+        return FlLine(
+          color: Color(0xff000000),
+          strokeWidth: 1,
+        );
+      },
+      getDrawingVerticalLine: (value) {
+        return FlLine(
+          color: Color(0xff000000),
+          strokeWidth: 1,
+        );
+      },
+    ),
 
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 22,
-          textStyle: const TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-          getTitles: (value) {
-            // print('bottomTitles $value');
-            switch (value.toInt()) {
-              case 0:
-                return li[0][1].toString().replaceFirst('0', '').split("-").last+"일";
-              case 3:
-                return li[1][1].toString().split("-").last+"일";
-              case 6:
-                return li[2][1].toString().split("-").last+"일";
-              case 9:
-                return li[3][1].toString().split("-").last+"일";
-            }
-            return '';
-          },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          interval: 10,
-          textStyle: const TextStyle(
+    titlesData: FlTitlesData(
+      show: true,
+      bottomTitles: SideTitles(
+        showTitles: true,
+        reservedSize: 22,
+        textStyle: const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
+            fontSize: 16),
+        getTitles: (value) {
+          // print('bottomTitles $value');
+          switch (value.toInt()) {
+            case 0:
+              return li[0][1].toString().split("-").last+"일";
+            case 3:
+              return li[1][1].toString().split("-").last+"일";
+            case 6:
+              return li[2][1].toString().split("-").last+"일";
+            case 9:
+              return li[3][1].toString().split("-").last+"일";
+          }
+          return '';
+        },
+        margin: 8,
+      ),
+      leftTitles: SideTitles(
+        showTitles: true,
+        interval: 10,
+        textStyle: const TextStyle(
+          color: Color(0xff000000),
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
         ),
       ),
-      // // borderData: FlBorderData(
-      // //     show: true,
-      // //     border: Border.all(color: const Color(0xff000000), width: 1)),
-      minX: 0,
-      maxX: 9,
-      minY: 0,
-      maxY: max,
-      lineBarsData: [
-        LineChartBarData(
-          spots: [
-            FlSpot(0, mating_week[0]),
-            FlSpot(3, mating_week[1]),
-            FlSpot(6, mating_week[2]),
-            FlSpot(9, mating_week[3]),
-          ],
+    ),
+    // // borderData: FlBorderData(
+    // //     show: true,
+    // //     border: Border.all(color: const Color(0xff000000), width: 1)),
+    minX: 0,
+    maxX: 9,
+    minY: 0,
+    maxY: max,
+    lineBarsData: [
+      LineChartBarData(
+        spots: [
+          FlSpot(0, mating_week[0]),
+          FlSpot(3, mating_week[1]),
+          FlSpot(6, mating_week[2]),
+          FlSpot(9, mating_week[3]),
+        ],
 
-          isCurved: false,
-          colors: gradientColors_values,
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: true,
-          ),
+        isCurved: false,
+        colors: gradientColors_values,
+        barWidth: 5,
+        isStrokeCapRound: true,
+        dotData: FlDotData(
+          show: true,
         ),
-        LineChartBarData(
-          spots: [
-            FlSpot(0, mating_goal.toDouble()),
-            FlSpot(3, mating_goal.toDouble()),
-            FlSpot(6, mating_goal.toDouble()),
-            FlSpot(9, mating_goal.toDouble()),
-          ],
-          isCurved: false,
-          colors: gradientColorsAvg,
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: true,
-          ),
+      ),
+      LineChartBarData(
+        spots: [
+          FlSpot(0, mating_goal.toDouble()),
+          FlSpot(3, mating_goal.toDouble()),
+          FlSpot(6, mating_goal.toDouble()),
+          FlSpot(9, mating_goal.toDouble()),
+        ],
+        isCurved: false,
+        colors: gradientColorsAvg,
+        barWidth: 5,
+        isStrokeCapRound: true,
+        dotData: FlDotData(
+          show: true,
         ),
-      ],
-    );}
+      ),
+    ],
+  );}
   else{
     return LineChartData(
 
-      gridData: FlGridData(
-        show: true,
-        drawVerticalLine: true,
-        horizontalInterval: 10,
-        drawHorizontalLine: true,
+    gridData: FlGridData(
+      show: true,
+      drawVerticalLine: true,
+      horizontalInterval: 10,
+      drawHorizontalLine: true,
 
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: Color(0xff000000),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: Color(0xff000000),
-            strokeWidth: 1,
-          );
-        },
-      ),
+      getDrawingHorizontalLine: (value) {
+        return FlLine(
+          color: Color(0xff000000),
+          strokeWidth: 1,
+        );
+      },
+      getDrawingVerticalLine: (value) {
+        return FlLine(
+          color: Color(0xff000000),
+          strokeWidth: 1,
+        );
+      },
+    ),
 
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 22,
-          textStyle: const TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-          getTitles: (value) {
-            // print('bottomTitles $value');
-            switch (value.toInt()) {
-              case 0:
-                return li[0][1].toString().split("-").last+"일";
-              case 3:
-                return li[1][1].toString().split("-").last+"일";
-              case 6:
-                return li[2][1].toString().split("-").last+"일";
-              case 9:
-                return li[3][1].toString().split("-").last+"일";
-              case 12:
-                return li[4][1].toString().split("-").last+"일";
-            }
-            return '';
-          },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          interval: 10,
-          textStyle: const TextStyle(
+    titlesData: FlTitlesData(
+      show: true,
+      bottomTitles: SideTitles(
+        showTitles: true,
+        reservedSize: 22,
+        textStyle: const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
+            fontSize: 16),
+        getTitles: (value) {
+          // print('bottomTitles $value');
+          switch (value.toInt()) {
+            case 0:
+              return li[0][1].toString().split("-").last+"일";
+            case 3:
+              return li[1][1].toString().split("-").last+"일";
+            case 6:
+              return li[2][1].toString().split("-").last+"일";
+            case 9:
+              return li[3][1].toString().split("-").last+"일";
+            case 12:
+              return li[4][1].toString().split("-").last+"일";
+          }
+          return '';
+        },
+        margin: 8,
+      ),
+      leftTitles: SideTitles(
+        showTitles: true,
+        interval: 10,
+        textStyle: const TextStyle(
+          color: Color(0xff000000),
+          fontWeight: FontWeight.bold,
+          fontSize: 15,
+        ),
 
+      ),
+    ),
+    minX: 0,
+    maxX: 12,
+    minY: 0,
+    maxY: max,
+    lineBarsData: [
+      LineChartBarData(
+        spots: [
+          FlSpot(0, mating_week[0]),
+          FlSpot(3, mating_week[1]),
+          FlSpot(6, mating_week[2]),
+          FlSpot(9, mating_week[3]),
+          FlSpot(12, mating_week[4]),
+        ],
+
+        isCurved: false,
+        colors: gradientColors_values,
+        barWidth: 5,
+        isStrokeCapRound: true,
+        dotData: FlDotData(
+          show: true,
         ),
       ),
-      minX: 0,
-      maxX: 12,
-      minY: 0,
-      maxY: max,
-      lineBarsData: [
-        LineChartBarData(
-          spots: [
-            FlSpot(0, mating_week[0]),
-            FlSpot(3, mating_week[1]),
-            FlSpot(6, mating_week[2]),
-            FlSpot(9, mating_week[3]),
-            FlSpot(12, mating_week[4]),
-          ],
-
-          isCurved: false,
-          colors: gradientColors_values,
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: true,
-          ),
+      LineChartBarData(
+        spots: [
+          FlSpot(0, mating_goal.toDouble()),
+          FlSpot(3, mating_goal.toDouble()),
+          FlSpot(6, mating_goal.toDouble()),
+          FlSpot(9, mating_goal.toDouble()),
+          FlSpot(12, mating_goal.toDouble()),
+        ],
+        isCurved: true,
+        colors: gradientColorsAvg,
+        barWidth: 5,
+        isStrokeCapRound: true,
+        dotData: FlDotData(
+          show: true,
         ),
-        LineChartBarData(
-          spots: [
-            FlSpot(0, mating_goal.toDouble()),
-            FlSpot(3, mating_goal.toDouble()),
-            FlSpot(6, mating_goal.toDouble()),
-            FlSpot(9, mating_goal.toDouble()),
-            FlSpot(12, mating_goal.toDouble()),
-          ],
-          isCurved: true,
-          colors: gradientColorsAvg,
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: true,
-          ),
-        ),
-      ],
-    );}
+      ),
+    ],
+  );}
 }
 
 //이유두수******************
@@ -672,8 +670,8 @@ LineChartData mainChart_total_baby(List li) {
   ];
 
   double max=300;
-  if(sevrer_goal>300)
-    max = sevrer_goal+10;
+  if(totalbaby_goal>300)
+    max = totalbaby_goal+10;
 
   if(li.length==4) {
     return LineChartData(
@@ -888,8 +886,8 @@ LineChartData mainChart_feed_baby(List li) {
   ];
 
   double max=400;
-  if(sevrer_goal>400)
-    max = sevrer_goal+10;
+  if(feedbaby_goal>400)
+    max = feedbaby_goal+10;
 
   if(li.length==4) {
     return LineChartData(
