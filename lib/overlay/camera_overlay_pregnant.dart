@@ -7,7 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import '../functions/functions.dart';
 import '../page/pregnant_page.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-
+import 'package:flutter/cupertino.dart';
 
 main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,7 @@ main() {
 
 class CameraOverlayPregnant extends StatefulWidget {
 
-  static const routeName = '/graph-page';
+  static const routeName = '/camera-overlay-pregnant-page';
 
   const CameraOverlayPregnant({Key? key}) : super(key: key);
 
@@ -90,176 +90,455 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                       context: context,
                       barrierColor: Colors.black,
                       builder: (context) {
-                        return AlertDialog(
-                            actionsAlignment: MainAxisAlignment.center,
-                            backgroundColor: Colors.black,
-                            title: Row(
-                              children: [
-                                // 뒤로가기 버튼
-                                OutlinedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
+                        return Container(
+                          child: Stack(
+                            children: [
+                              Stack(fit: StackFit.expand,children:[
+                              Image.file(File(file.path))]),
+                              Stack(
+                                alignment: Alignment.center,
+                                fit: StackFit.loose,
+                                children: [
+                                  Align(
+                                  alignment: Alignment.center,
                                   child: Container(
-                                      alignment: Alignment.topLeft,
-                                      child: const Icon(Icons.arrow_back_rounded, color: Colors.white,)
+                                    width: width,
+                                    height: height,
+                                    decoration: ShapeDecoration(
+                                      color: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.zero,
+                                      // borderRadius: BorderRadius.circular(radius),
+                                      side: const BorderSide(width: 1, color: Colors.white))),
+                                      )
                                   ),
-                                ),
-                                OutlinedButton(
-                                  onPressed: () async {
-                                    //로딩화면 알죠?
-                                    showDialog(context: context, builder: (context){
-                                      return Container(
-                                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                        alignment: Alignment.center,
+                                  ColorFiltered(
+                                    colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcOut),
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          decoration: const BoxDecoration(
+                                          color: Colors.transparent,
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Container(
+                                            width: width,
+                                            height:height,
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              borderRadius: BorderRadius.zero),
+                                              // borderRadius: BorderRadius.circular(radius)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Material(
+                                    color: Colors.transparent,
+                                    child: Container(
                                         decoration: const BoxDecoration(
-                                          color: Colors.white70,
+                                          color: Colors.black12,
+                                          shape: BoxShape.circle,
                                         ),
-                                        child: Container(
-                                          // decoration: BoxDecoration(
-                                          //     color: Colors.white,
-                                          //     borderRadius: BorderRadius.circular(10.0)
-                                          // ),
-                                          width: 300.0,
-                                          height: 200.0,
-                                          alignment: AlignmentDirectional.center,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              const Center(
-                                                child: SizedBox(
-                                                  height: 50.0,
-                                                  width: 50.0,
-                                                  child: CircularProgressIndicator( // 로딩화면 애니메이션
-                                                    value: null,
-                                                    strokeWidth: 7.0,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: const EdgeInsets.only(top: 25.0),
-                                                child: const Center(
-                                                  child:
-                                                  Text(
-                                                    "loading.. wait...",
-                                                    style: TextStyle(
-                                                        color: Colors.blue
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                        margin: const EdgeInsets.all(25),
+                                        child: IconButton(
+                                          enableFeedback: true,
+                                          color: Colors.white,
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                          },
+                                          icon: const Icon(
+                                            Icons.arrow_back,
                                           ),
+                                          iconSize: 30,
+                                        ))),
+                              ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Material(
+                                    color: Colors.transparent,
+                                    child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.black12,
+                                          shape: BoxShape.circle,
                                         ),
-                                      );
-                                    });
-                                    // 서버로 임신사 사진 list에 넣어서 보내기
-                                    List list = await uploadimg_pregnant(File(file.path));
-
-                                    // 찍은 사진 갤러리에 저장
-                                    GallerySaver.saveImage(file.path)
-                                        .then((value) => print('>>>> save value= $value'))
-                                        .catchError((err) {print('error : $err');
-                                    });
-
-                                    // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
-                                    String returnfilepath = await downloadFile("ocrpreimages/" + list[0]);
-
-                                    Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
-                                    await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                          PregnantPage(list, returnfilepath)), // PregnantPage 넘어가기
-                                    );
-                                  },
-                                  child: Container( // 전송버튼
-                                      alignment: Alignment.topRight,
-                                      child: Icon(Icons.send, color: Colors.white,)
-                                  ),
-                                ),
-                              ],
-                            ),
-                            actions:[
-                              OutlinedButton(
-                                  onPressed: () async {
-                                    // 수동으로 자른 사진 croppedfile로 저장
-                                    final croppedfile = await cropImage(file.path);
-                                    showDialog(context: context, builder: (context){
-                                      return Container(
-                                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(color: Colors.white,),
-                                        child: Container(
-                                          // decoration: BoxDecoration(
-                                          //     color: Colors.white,
-                                          //     borderRadius: BorderRadius.circular(10.0)
-                                          // ),
-                                          width: 300.0,
-                                          height: 200.0,
-                                          alignment: AlignmentDirectional.center,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              const Center(
-                                                child: SizedBox(
-                                                  height: 50.0,
-                                                  width: 50.0,
-                                                  child: CircularProgressIndicator(
-                                                    value: null,
-                                                    strokeWidth: 7.0,
+                                        margin: const EdgeInsets.all(25),
+                                        child: IconButton(
+                                          enableFeedback: true,
+                                          color: Colors.white,
+                                          onPressed: () async {
+                                            final croppedfile = await cropImage(file.path);
+                                            showDialog(context: context, builder: (context){
+                                              return Container(
+                                                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(color: Colors.white,),
+                                                child: Container(
+                                                  // decoration: BoxDecoration(
+                                                  //     color: Colors.white,
+                                                  //     borderRadius: BorderRadius.circular(10.0)
+                                                  // ),
+                                                  width: 300.0,
+                                                  height: 200.0,
+                                                  alignment: AlignmentDirectional.center,
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: <Widget>[
+                                                      const Center(
+                                                        child: SizedBox(
+                                                          height: 50.0,
+                                                          width: 50.0,
+                                                          child: CircularProgressIndicator(
+                                                            value: null,
+                                                            strokeWidth: 7.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        margin: const EdgeInsets.only(top: 25.0),
+                                                        child: const Center(
+                                                          child: Text(
+                                                            "loading.. wait...",
+                                                            style: TextStyle(
+                                                              color: Colors.blue,
+                                                              fontSize: 20,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                              ),
-                                              Container(
-                                                margin: const EdgeInsets.only(top: 25.0),
-                                                child: const Center(
-                                                  child: Text(
-                                                    "loading.. wait...",
-                                                    style: TextStyle(
-                                                      color: Colors.blue,
-                                                      fontSize: 20,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                              );
+                                            });
+                                            // 서버로 수동으로 자른 임신사 사진 list에 넣어서 보내기
+                                            List list = await uploadimg_pregnant(File(croppedfile.path));
+
+                                            // 찍고 수동으로 자른 사진 갤러리에 저장
+                                            GallerySaver.saveImage(croppedfile.path)
+                                                .then((value) => print('>>>> save value= $value'))
+                                                .catchError((err) {print('error : $err');
+                                            });
+
+                                            // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
+                                            String returnfilepath = await downloadFile("ocrpreimages/" + list[0]); // 처음 화면으로 돌아가기
+
+                                            Navigator.of(context).popUntil((route) => route.isFirst);
+                                            await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                                PregnantPage(list, returnfilepath)), // PregnantPage 넘어가기
+                                            );
+                                          },
+                                          icon: const Icon(
+                                            Icons.edit,
                                           ),
+                                          iconSize: 30,
+                                        ))),
+                              ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Material(
+                                    color: Colors.transparent,
+                                    child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.black12,
+                                          shape: BoxShape.circle,
                                         ),
-                                      );
-                                    });
-                                    // 서버로 수동으로 자른 임신사 사진 list에 넣어서 보내기
-                                    List list = await uploadimg_pregnant(File(croppedfile.path));
+                                        margin: const EdgeInsets.all(25),
+                                        child: IconButton(
+                                          enableFeedback: true,
+                                          color: Colors.white,
+                                          onPressed: () async {
+                                            // 서버로 임신사 사진 list에 넣어서 보내기
+                                            showDialog(context: context, builder: (context){
+                                              return Container(
+                                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                alignment: Alignment.center,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white70,
+                                                ),
+                                                child: Container(
+                                                  // decoration: BoxDecoration(
+                                                  //     color: Colors.white,
+                                                  //     borderRadius: BorderRadius.circular(10.0)
+                                                  // ),
+                                                  width: 300.0,
+                                                  height: 200.0,
+                                                  alignment: AlignmentDirectional.center,
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: <Widget>[
+                                                      const Center(
+                                                        child: SizedBox(
+                                                          height: 50.0,
+                                                          width: 50.0,
+                                                          child: CircularProgressIndicator( // 로딩화면 애니메이션
+                                                            value: null,
+                                                            strokeWidth: 7.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        margin: const EdgeInsets.only(top: 25.0),
+                                                        child: const Center(
+                                                          child:
+                                                          Text(
+                                                            "loading.. wait...",
+                                                            style: TextStyle(
+                                                                color: Colors.blue
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            });
+                                            List list = await uploadimg_pregnant(File(file.path));
 
-                                    // 찍고 수동으로 자른 사진 갤러리에 저장
-                                    GallerySaver.saveImage(croppedfile.path)
-                                        .then((value) => print('>>>> save value= $value'))
-                                        .catchError((err) {print('error : $err');
-                                    });
+                                            // 찍은 사진 갤러리에 저장
+                                            GallerySaver.saveImage(file.path)
+                                                .then((value) => print('>>>> save value= $value'))
+                                                .catchError((err) {print('error : $err');
+                                            });
 
-                                    // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
-                                    String returnfilepath = await downloadFile("ocrpreimages/" + list[0]); // 처음 화면으로 돌아가기
+                                            // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
+                                            String returnfilepath = await downloadFile("ocrpreimages/" + list[0]);
 
-                                    Navigator.of(context).popUntil((route) => route.isFirst);
-                                    await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                          PregnantPage(list, returnfilepath)), // PregnantPage 넘어가기
-                                    );
-                                  },
-                                  child: const Icon(Icons.edit, color: Colors.white,))
+                                            Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
+                                            await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                                PregnantPage(list, returnfilepath)), // PregnantPage 넘어가기
+                                            );
+                                          },
+                                          icon: const Icon(
+                                            Icons.send,
+                                          ),
+                                          iconSize: 30,
+                                        ))),
+                              ),
                             ],
-                            // 사진 미리보기
-                            content:SizedBox(
-                                width: double.infinity,
-                                child: AspectRatio(
-                                  // aspectRatio: overlay.ratio!,
-                                  aspectRatio: width / height,
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              alignment: FractionalOffset.center,
-                                              image: FileImage(File(file.path),
-                                              )))))
-                            )
+                          ),
                         );
+                        // return AlertDialog(
+                        //     actionsAlignment: MainAxisAlignment.center,
+                        //     backgroundColor: Colors.black,
+                        //     title: Row(
+                        //       children: [
+                        //         // 뒤로가기 버튼
+                        //         OutlinedButton(
+                        //           onPressed: () {
+                        //             Navigator.of(context).pop();
+                        //           },
+                        //           child: Container(
+                        //               alignment: Alignment.topLeft,
+                        //               child: const Icon(Icons.arrow_back_rounded, color: Colors.white,)
+                        //           ),
+                        //         ),
+                        //         OutlinedButton(
+                        //           onPressed: () async {
+                        //             //로딩화면 알죠?
+                        //             showDialog(context: context, builder: (context){
+                        //               return Container(
+                        //                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        //                 alignment: Alignment.center,
+                        //                 decoration: const BoxDecoration(
+                        //                   color: Colors.white70,
+                        //                 ),
+                        //                 child: Container(
+                        //                   // decoration: BoxDecoration(
+                        //                   //     color: Colors.white,
+                        //                   //     borderRadius: BorderRadius.circular(10.0)
+                        //                   // ),
+                        //                   width: 300.0,
+                        //                   height: 200.0,
+                        //                   alignment: AlignmentDirectional.center,
+                        //                   child: Column(
+                        //                     crossAxisAlignment: CrossAxisAlignment.center,
+                        //                     mainAxisAlignment: MainAxisAlignment.center,
+                        //                     children: <Widget>[
+                        //                       const Center(
+                        //                         child: SizedBox(
+                        //                           height: 50.0,
+                        //                           width: 50.0,
+                        //                           child: CircularProgressIndicator( // 로딩화면 애니메이션
+                        //                             value: null,
+                        //                             strokeWidth: 7.0,
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                       Container(
+                        //                         margin: const EdgeInsets.only(top: 25.0),
+                        //                         child: const Center(
+                        //                           child:
+                        //                           Text(
+                        //                             "loading.. wait...",
+                        //                             style: TextStyle(
+                        //                                 color: Colors.blue
+                        //                             ),
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                     ],
+                        //                   ),
+                        //                 ),
+                        //               );
+                        //             });
+                        //             // 서버로 임신사 사진 list에 넣어서 보내기
+                        //             List list = await uploadimg_pregnant(File(file.path));
+                        //
+                        //             // 찍은 사진 갤러리에 저장
+                        //             GallerySaver.saveImage(file.path)
+                        //                 .then((value) => print('>>>> save value= $value'))
+                        //                 .catchError((err) {print('error : $err');
+                        //             });
+                        //
+                        //             // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
+                        //             String returnfilepath = await downloadFile("ocrpreimages/" + list[0]);
+                        //
+                        //             Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
+                        //             await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                        //                   PregnantPage(list, returnfilepath)), // PregnantPage 넘어가기
+                        //             );
+                        //           },
+                        //           child: Container( // 전송버튼
+                        //               alignment: Alignment.topRight,
+                        //               child: Icon(Icons.send, color: Colors.white,)
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     actions:[
+                        //       OutlinedButton(
+                        //           onPressed: () async {
+                        //             // 수동으로 자른 사진 croppedfile로 저장
+                        //             final croppedfile = await cropImage(file.path);
+                        //             showDialog(context: context, builder: (context){
+                        //               return Container(
+                        //                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                        //                 alignment: Alignment.center,
+                        //                 decoration: BoxDecoration(color: Colors.white,),
+                        //                 child: Container(
+                        //                   // decoration: BoxDecoration(
+                        //                   //     color: Colors.white,
+                        //                   //     borderRadius: BorderRadius.circular(10.0)
+                        //                   // ),
+                        //                   width: 300.0,
+                        //                   height: 200.0,
+                        //                   alignment: AlignmentDirectional.center,
+                        //                   child: Column(
+                        //                     crossAxisAlignment: CrossAxisAlignment.center,
+                        //                     mainAxisAlignment: MainAxisAlignment.center,
+                        //                     children: <Widget>[
+                        //                       const Center(
+                        //                         child: SizedBox(
+                        //                           height: 50.0,
+                        //                           width: 50.0,
+                        //                           child: CircularProgressIndicator(
+                        //                             value: null,
+                        //                             strokeWidth: 7.0,
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                       Container(
+                        //                         margin: const EdgeInsets.only(top: 25.0),
+                        //                         child: const Center(
+                        //                           child: Text(
+                        //                             "loading.. wait...",
+                        //                             style: TextStyle(
+                        //                               color: Colors.blue,
+                        //                               fontSize: 20,
+                        //                             ),
+                        //                           ),
+                        //                         ),
+                        //                       ),
+                        //                     ],
+                        //                   ),
+                        //                 ),
+                        //               );
+                        //               // return Stack(
+                        //               //   children: [
+                        //               //     Image.file(File(croppedfile.path)),
+                        //               //     Align(
+                        //               //         alignment: Alignment.center,
+                        //               //         child: Container(
+                        //               //           width: width,
+                        //               //           height: height,
+                        //               //           decoration: ShapeDecoration(
+                        //               //               color: Colors.transparent,
+                        //               //               shape: RoundedRectangleBorder(
+                        //               //                   borderRadius: BorderRadius.zero,
+                        //               //                   // borderRadius: BorderRadius.circular(radius),
+                        //               //                   side: const BorderSide(width: 1, color: Colors.white))),
+                        //               //         )),
+                        //               //     ColorFiltered(
+                        //               //       colorFilter: const ColorFilter.mode(Colors.black54, BlendMode.srcOut),
+                        //               //       child: Stack(
+                        //               //         children: [
+                        //               //           Container(
+                        //               //             decoration: const BoxDecoration(
+                        //               //               color: Colors.transparent,
+                        //               //             ),
+                        //               //             child: Align(
+                        //               //               alignment: Alignment.center,
+                        //               //               child: Container(
+                        //               //                 width: width,
+                        //               //                 height:height,
+                        //               //                 decoration: BoxDecoration(
+                        //               //                     color: Colors.black,
+                        //               //                     borderRadius: BorderRadius.zero),
+                        //               //                 // borderRadius: BorderRadius.circular(radius)),
+                        //               //               ),
+                        //               //             ),
+                        //               //           ),
+                        //               //         ],
+                        //               //       ),
+                        //               //     )
+                        //               //   ],
+                        //               // );
+                        //
+                        //             });
+                        //
+                        //             // 서버로 수동으로 자른 임신사 사진 list에 넣어서 보내기
+                        //             List list = await uploadimg_pregnant(File(croppedfile.path));
+                        //
+                        //             // 찍고 수동으로 자른 사진 갤러리에 저장
+                        //             GallerySaver.saveImage(croppedfile.path)
+                        //                 .then((value) => print('>>>> save value= $value'))
+                        //                 .catchError((err) {print('error : $err');
+                        //             });
+                        //
+                        //             // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
+                        //             String returnfilepath = await downloadFile("ocrpreimages/" + list[0]); // 처음 화면으로 돌아가기
+                        //
+                        //             Navigator.of(context).popUntil((route) => route.isFirst);
+                        //             await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                        //                   PregnantPage(list, returnfilepath)), // PregnantPage 넘어가기
+                        //             );
+                        //           },
+                        //           child: const Icon(Icons.edit, color: Colors.white,))
+                        //     ],
+                        //     // 사진 미리보기
+                        //     content:SizedBox(
+                        //         width: double.infinity,
+                        //         child: AspectRatio(
+                        //           // aspectRatio: overlay.ratio!,
+                        //           aspectRatio: width / height,
+                        //           child: Container(
+                        //               decoration: BoxDecoration(
+                        //                   image: DecorationImage(
+                        //                       alignment: FractionalOffset.center,
+                        //                       image: FileImage(File(file.path),
+                        //                       )))))
+                        //     )
+                        // );
                       },
                     ),
                     info:
