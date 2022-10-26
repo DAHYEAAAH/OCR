@@ -273,7 +273,7 @@ LineChartData mainChart_sow_cross(List li) {
         textStyle: const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
-            fontSize: 16),
+            fontSize: 15),
         getTitles: (value) {
           // print('bottomTitles $value');
           switch (value.toInt()) {
@@ -296,7 +296,7 @@ LineChartData mainChart_sow_cross(List li) {
         textStyle: const TextStyle(
           color: Color(0xff000000),
           fontWeight: FontWeight.bold,
-          fontSize: 15,
+          fontSize: 12,
         ),
       ),
     ),
@@ -372,7 +372,7 @@ LineChartData mainChart_sow_cross(List li) {
         textStyle: const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
-            fontSize: 16),
+            fontSize: 15),
         getTitles: (value) {
           // print('bottomTitles $value');
           switch (value.toInt()) {
@@ -397,7 +397,7 @@ LineChartData mainChart_sow_cross(List li) {
         textStyle: const TextStyle(
           color: Color(0xff000000),
           fontWeight: FontWeight.bold,
-          fontSize: 15,
+          fontSize: 12,
         ),
 
       ),
@@ -489,7 +489,7 @@ LineChartData mainChart_sow_sevrer(List li) {
           textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 16),
+              fontSize: 15),
           getTitles: (value) {
             // print('bottomTitles $value');
             switch (value.toInt()) {
@@ -512,7 +512,7 @@ LineChartData mainChart_sow_sevrer(List li) {
           textStyle: const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 12,
           ),
         ),
       ),
@@ -585,7 +585,7 @@ LineChartData mainChart_sow_sevrer(List li) {
           textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 16),
+              fontSize: 15),
           getTitles: (value) {
             // print('bottomTitles $value');
             switch (value.toInt()) {
@@ -610,7 +610,7 @@ LineChartData mainChart_sow_sevrer(List li) {
           textStyle: const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 12,
           ),
         ),
       ),
@@ -704,7 +704,7 @@ LineChartData mainChart_total_baby(List li) {
           textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 16),
+              fontSize: 15),
           getTitles: (value) {
             // print('bottomTitles $value');
             switch (value.toInt()) {
@@ -727,7 +727,7 @@ LineChartData mainChart_total_baby(List li) {
           textStyle: const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 12,
           ),
         ),
       ),
@@ -800,7 +800,7 @@ LineChartData mainChart_total_baby(List li) {
           textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 16),
+              fontSize: 15),
           getTitles: (value) {
             // print('bottomTitles $value');
             switch (value.toInt()) {
@@ -825,7 +825,7 @@ LineChartData mainChart_total_baby(List li) {
           textStyle: const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 12,
           ),
 
         ),
@@ -922,7 +922,7 @@ LineChartData mainChart_feed_baby(List li) {
           textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 16),
+              fontSize: 15),
           getTitles: (value) {
             // print('bottomTitles $value');
             switch (value.toInt()) {
@@ -945,7 +945,7 @@ LineChartData mainChart_feed_baby(List li) {
           textStyle: const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 12,
           ),
         ),
       ),
@@ -1021,7 +1021,7 @@ LineChartData mainChart_feed_baby(List li) {
           textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 16),
+              fontSize: 15),
           getTitles: (value) {
             // print('bottomTitles $value');
             switch (value.toInt()) {
@@ -1046,7 +1046,7 @@ LineChartData mainChart_feed_baby(List li) {
           textStyle: const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 12,
           ),
 
         ),

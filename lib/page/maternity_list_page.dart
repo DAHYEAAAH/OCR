@@ -47,27 +47,27 @@ class MaternityListPageState extends State<MaternityListPage> {
                       width: 70.0,
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
                       alignment: Alignment.center,
-                      child: Text("모돈번호", style: TextStyle(fontSize: 18),)
+                      child: Text("모돈번호", style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
                   ),
                   SizedBox(width: 20,),
                   Container(
                       width: 160.0,
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
                       alignment: Alignment.center,
-                      child: Text("업로드 시간", style: TextStyle(fontSize: 18),)
+                      child: Text("업로드 시간", style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
                   ),
                   SizedBox(width: 20,),
                   Container(
                       alignment: Alignment.center,
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
                       width: 50.0,
-                      child: Text("수정", style: TextStyle(fontSize: 18),)
+                      child: Text("수정", style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
                   ),
                   SizedBox(width: 10,),
                   Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-                    child: Text("삭제", style: TextStyle(fontSize: 18),)
+                    child: Text("삭제", style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
                   ),
                 ]),
                 Expanded(
@@ -86,7 +86,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                   ListTile(
                                       title: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children:[Text(sow_no[index]), Text(upload_day[index])]),
+                                          children:[Text(sow_no[index],textAlign: TextAlign.center,), Text(upload_day[index],textAlign: TextAlign.center,)]),
                                       trailing: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [

@@ -74,7 +74,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
 
     return Container(
         margin: EdgeInsets.only(left: 20,right: 20),
-        color: const Color(0xffd0cece),
+        color: Colors.white,
         width: MediaQuery
             .of(context)
             .size

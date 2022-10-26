@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:last_ocr/functions/functions.dart';
-import 'package:last_ocr/main.dart';
 
 var mating_week = new List<double>.filled(5,0);
 late String mating_goal = "";
@@ -288,9 +287,10 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                                       SizedBox(width: 50, child: TextField(
                                         decoration: InputDecoration(
                                           hintText: '',),
-                                        textAlign: TextAlign.left,
+                                        textAlign: TextAlign.center,
                                         keyboardType: TextInputType.number,
                                         controller: goal_Controller_cross,
+
                                       ))
                                     ]),
                                     Row(children: <Widget>[
@@ -299,7 +299,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                                       SizedBox(width: 50, child: TextField(
                                         decoration: InputDecoration(
                                           hintText: '',),
-                                        textAlign: TextAlign.left,
+                                        textAlign: TextAlign.center,
                                         keyboardType: TextInputType.number,
                                         controller: goal_Controller_sevrer,
                                       ))
@@ -310,7 +310,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                                       SizedBox(width: 50, child: TextField(
                                         decoration: InputDecoration(
                                           hintText: '',),
-                                        textAlign: TextAlign.left,
+                                        textAlign: TextAlign.center,
                                         keyboardType: TextInputType.number,
                                         controller: goal_Controller_total,
                                       ))
@@ -321,7 +321,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                                       SizedBox(width: 50, child: TextField(
                                         decoration: InputDecoration(
                                           hintText: '',),
-                                        textAlign: TextAlign.left,
+                                        textAlign: TextAlign.center,
                                         keyboardType: TextInputType.number,
                                         controller: goal_Controller_feed,
                                       ))
@@ -423,7 +423,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
                 color: Color(0xff000000),
                 fontWeight: FontWeight.bold,
-                fontSize: 16),
+                fontSize: 15),
             getTitles: (value) {
               // print('bottomTitles $value');
               switch (value.toInt()) {
@@ -458,7 +458,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 12,
             ),
           ),
         ),
@@ -535,7 +535,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
                 color: Color(0xff000000),
                 fontWeight: FontWeight.bold,
-                fontSize: 16),
+                fontSize: 15),
             getTitles: (value) {
               // print('bottomTitles $value');
               switch (value.toInt()) {
@@ -575,7 +575,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 12,
             ),
 
           ),
@@ -668,7 +668,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
                 color: Color(0xff000000),
                 fontWeight: FontWeight.bold,
-                fontSize: 16),
+                fontSize: 15),
             getTitles: (value) {
               // print('bottomTitles $value');
               switch (value.toInt()) {
@@ -703,7 +703,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 12,
             ),
           ),
         ),
@@ -776,7 +776,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
                 color: Color(0xff000000),
                 fontWeight: FontWeight.bold,
-                fontSize: 16),
+                fontSize: 15),
             getTitles: (value) {
               // print('bottomTitles $value');
               switch (value.toInt()) {
@@ -816,7 +816,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 12,
             ),
           ),
         ),
@@ -909,7 +909,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
                 color: Color(0xff000000),
                 fontWeight: FontWeight.bold,
-                fontSize: 16),
+                fontSize: 15),
             getTitles: (value) {
               // print('bottomTitles $value');
               switch (value.toInt()) {
@@ -944,7 +944,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 12,
             ),
           ),
         ),
@@ -1018,7 +1018,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
                 color: Color(0xff000000),
                 fontWeight: FontWeight.bold,
-                fontSize: 16),
+                fontSize: 15),
             getTitles: (value) {
               // print('bottomTitles $value');
               switch (value.toInt()) {
@@ -1058,7 +1058,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 12,
             ),
 
           ),
@@ -1155,7 +1155,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
                 color: Color(0xff000000),
                 fontWeight: FontWeight.bold,
-                fontSize: 16),
+                fontSize: 15),
             getTitles: (value) {
               // print('bottomTitles $value');
               switch (value.toInt()) {
@@ -1190,7 +1190,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 12,
             ),
           ),
         ),
@@ -1266,7 +1266,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
                 color: Color(0xff000000),
                 fontWeight: FontWeight.bold,
-                fontSize: 16),
+                fontSize: 15),
             getTitles: (value) {
               // print('bottomTitles $value');
               switch (value.toInt()) {
@@ -1306,7 +1306,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
             textStyle: const TextStyle(
               color: Color(0xff000000),
               fontWeight: FontWeight.bold,
-              fontSize: 15,
+              fontSize: 12,
             ),
 
           ),

@@ -190,15 +190,17 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                                       child: Container(
                                                         decoration: BoxDecoration(
                                                             image: DecorationImage(
-                                                                fit: BoxFit
-                                                                    .fill,
-                                                                alignment: FractionalOffset
-                                                                    .center,
+                                                                fit: BoxFit.fill,
+                                                                alignment: FractionalOffset.center,
                                                                 image: FileImage(
-                                                                  File(
-                                                                      croppedfile
-                                                                          .path),
-                                                                ))),
+                                                                  File(croppedfile.path),
+                                                                )
+                                                            ),
+                                                            border: Border(top:BorderSide(width:1,color: Colors.white),
+                                                                          bottom: BorderSide(width:1,color: Colors.white),
+                                                                          left: BorderSide(width:1,color: Colors.white),
+                                                                          right: BorderSide(width:1,color: Colors.white))
+                                                        ),
                                                         // decoration: BoxDecoration(
                                                         //     color: Colors.white,
                                                         //     borderRadius: BorderRadius.circular(10.0)
