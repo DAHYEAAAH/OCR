@@ -160,127 +160,6 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                         ))),
                               ),
                               Align(
-                                alignment: Alignment.topRight,
-                                child: Material(
-                                    color: Colors.transparent,
-                                    child: Container(
-                                        decoration: const BoxDecoration(
-                                          color: Colors.black12,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        margin: const EdgeInsets.all(25),
-                                        child: IconButton(
-                                          enableFeedback: true,
-                                          color: Colors.white,
-                                          onPressed: () async {
-                                            final croppedfile = await cropImage(file.path);
-                                            if(croppedfile != null) {
-                                              showDialog(context: context,
-                                                  builder: (context) {
-                                                    return Container(
-
-                                                      padding: const EdgeInsets
-                                                          .fromLTRB(
-                                                          20, 20, 20, 20),
-                                                      alignment: Alignment
-                                                          .center,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.black,),
-
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            image: DecorationImage(
-                                                                fit: BoxFit.fill,
-                                                                alignment: FractionalOffset.center,
-                                                                image: FileImage(
-                                                                  File(croppedfile.path),
-                                                                )
-                                                            ),
-                                                            border: Border(top:BorderSide(width:1,color: Colors.white),
-                                                                          bottom: BorderSide(width:1,color: Colors.white),
-                                                                          left: BorderSide(width:1,color: Colors.white),
-                                                                          right: BorderSide(width:1,color: Colors.white))
-                                                        ),
-                                                        // decoration: BoxDecoration(
-                                                        //     color: Colors.white,
-                                                        //     borderRadius: BorderRadius.circular(10.0)
-                                                        // ),
-                                                        width: width,
-                                                        height: height,
-                                                        alignment: AlignmentDirectional
-                                                            .center,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment
-                                                              .center,
-                                                          mainAxisAlignment: MainAxisAlignment
-                                                              .center,
-                                                          children: <Widget>[
-                                                            const Center(
-                                                              child: SizedBox(
-                                                                height: 50.0,
-                                                                width: 50.0,
-                                                                child: CircularProgressIndicator(
-                                                                  value: null,
-                                                                  strokeWidth: 7.0,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              margin: const EdgeInsets
-                                                                  .only(
-                                                                  top: 25.0),
-                                                              child: const Center(
-                                                                child: Text(
-                                                                  "loading.. wait...",
-                                                                  style: TextStyle(
-                                                                    color: Colors
-                                                                        .blue,
-                                                                    fontSize: 20,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  });
-                                              // 서버로 수동으로 자른 임신사 사진 list에 넣어서 보내기
-                                              List list = await uploadimg_pregnant(
-                                                  File(croppedfile.path));
-
-                                              // 찍고 수동으로 자른 사진 갤러리에 저장
-                                              GallerySaver.saveImage(
-                                                  croppedfile.path)
-                                                  .then((value) =>
-                                                  print(
-                                                      '>>>> save value= $value'))
-                                                  .catchError((err) {
-                                                print('error : $err');
-                                              });
-
-                                              // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
-                                              String returnfilepath = await downloadFile(
-                                                  "ocrpreimages/" +
-                                                      list[0]); // 처음 화면으로 돌아가기
-
-                                              Navigator.of(context).popUntil((
-                                                  route) => route.isFirst);
-                                              await Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        PregnantPage(list,
-                                                            returnfilepath)), // PregnantPage 넘어가기
-                                              );
-                                            }
-                                          },
-                                          icon: const Icon(
-                                            Icons.edit,
-                                          ),
-                                          iconSize: 30,
-                                        ))),
-                              ),
-                              Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Material(
                                     color: Colors.transparent,
@@ -294,6 +173,11 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                           enableFeedback: true,
                                           color: Colors.white,
                                           onPressed: () async {
+                                            // 찍은 사진 갤러리에 저장
+                                            GallerySaver.saveImage(file.path)
+                                                .then((value) => print('>>>> save value= $value'))
+                                                .catchError((err) {print('error : $err');
+                                            });
                                             // 서버로 임신사 사진 list에 넣어서 보내기
                                             showDialog(context: context, builder: (context){
                                               return Container(
@@ -342,12 +226,6 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                               );
                                             });
                                             List list = await uploadimg_pregnant(File(file.path));
-
-                                            // 찍은 사진 갤러리에 저장
-                                            GallerySaver.saveImage(file.path)
-                                                .then((value) => print('>>>> save value= $value'))
-                                                .catchError((err) {print('error : $err');
-                                            });
 
                                             // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
                                             String returnfilepath = await downloadFile("ocrpreimages/" + list[0]);
