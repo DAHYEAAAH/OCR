@@ -13,8 +13,8 @@ late double totalbaby_goal = 0;
 var feedbaby_week = new List<double>.filled(5,0);
 late double feedbaby_goal = 0;
 
-class PregnantGraphPage extends StatefulWidget {
-  static const routeName = '/pregnant-graph-page';
+class GraphPage extends StatefulWidget {
+  static const routeName = '/graph-page';
 
   // const PregnantGraphPage({Key? key, this.title}) : super(key: key);
   final List<double> list_sow_cross ;
@@ -22,14 +22,14 @@ class PregnantGraphPage extends StatefulWidget {
   final List<double> list_sow_totalbaby ;
   final List<double> list_sow_feedbaby ;
   final List<String> goal ; //년도,월,총산,포유,이유,교배 순
-  const PregnantGraphPage(this.list_sow_cross,this.list_sow_sevrer,this.list_sow_totalbaby,this.list_sow_feedbaby,this.goal);
+  const GraphPage(this.list_sow_cross,this.list_sow_sevrer,this.list_sow_totalbaby,this.list_sow_feedbaby,this.goal);
   // final String? title;
 
   @override
-  PregnantGraphPageState createState() => PregnantGraphPageState();
+  GraphPageState createState() => GraphPageState();
 }
 
-class PregnantGraphPageState extends State<PregnantGraphPage> {
+class GraphPageState extends State<GraphPage> {
   var thisyear = DateTime.now().year;   // 년도
   var thismonth = DateTime.now().month; // 월
   List li=[];
@@ -145,7 +145,7 @@ class PregnantGraphPageState extends State<PregnantGraphPage> {
     }
     return Scaffold(
       appBar: AppBar(
-          title: Text("임신사 그래프")
+          title: Text("그래프")
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(10, 20, 10, 50),

@@ -13,18 +13,18 @@ var feedbaby_week = new List<double>.filled(5,0);
 late String feedbaby_goal = "";
 
 
-class PregnantOwnerGraphPage extends StatefulWidget {
-  static const routeName = '/pregnant-owner-graph-page';
+class OwnerGraphPage extends StatefulWidget {
+  static const routeName = '/owner-graph-page';
 
   final List<double> list_sow_cross ;
   final List<double> list_sow_sevrer ;
   final List<double> list_sow_totalbaby ;
   final List<double> list_sow_feedbaby ;
   final List<String> goal ; //년도,월,총산,포유,이유,교배 순
-  const PregnantOwnerGraphPage(this.list_sow_cross,this.list_sow_sevrer,this.list_sow_totalbaby,this.list_sow_feedbaby,this.goal);
+  const OwnerGraphPage(this.list_sow_cross,this.list_sow_sevrer,this.list_sow_totalbaby,this.list_sow_feedbaby,this.goal);
 
   @override
-  PregnantOwnerGraphPageState createState() => PregnantOwnerGraphPageState();
+  OwnerGraphPageState createState() => OwnerGraphPageState();
 }
 var thisyear = DateTime
     .now()
@@ -32,7 +32,7 @@ var thisyear = DateTime
 var thismonth = DateTime
     .now()
     .month;
-class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
+class OwnerGraphPageState extends State<OwnerGraphPage> {
 
   List li = [];
 
@@ -350,7 +350,7 @@ class PregnantOwnerGraphPageState extends State<PregnantOwnerGraphPage> {
                                           print(thisyear);
                                           print(thismonth);
                                           Navigator.of(context).popUntil((route) => route.isFirst);
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantOwnerGraphPage(mating_week,sevrer_week, totalbaby_week,feedbaby_week,[thisyear.toString(),thismonth.toString(),goal_Controller_total.text.toString(),goal_Controller_feed.text.toString(),goal_Controller_sevrer.text.toString(),goal_Controller_cross.text.toString()])));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => OwnerGraphPage(mating_week,sevrer_week, totalbaby_week,feedbaby_week,[thisyear.toString(),thismonth.toString(),goal_Controller_total.text.toString(),goal_Controller_feed.text.toString(),goal_Controller_sevrer.text.toString(),goal_Controller_cross.text.toString()])));
                                         },
                                         child: const Text('전송'),
                                       ),

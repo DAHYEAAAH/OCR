@@ -178,11 +178,6 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                           enableFeedback: true,
                                           color: Colors.white,
                                           onPressed: () async {
-                                            // 서버로 임신사 사진 list에 넣어서 보내기
-                                            GallerySaver.saveImage(file.path)
-                                                .then((value) => print('>>>> save value= $value'))
-                                                .catchError((err) {print('error : $err');
-                                            });
                                             showDialog(context: context, builder: (context){
                                               return Container(
                                                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -230,15 +225,24 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                               );
                                             });
                                             List list = await uploadimg_maternity(File(file.path));
+                                            if(list[1].length==0||list[1][0]==""){
+                                              print("yes");
+                                              Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
+                                            }
+                                            else {
+                                              // 서버로 임신사 사진 list에 넣어서 보내기
+                                              GallerySaver.saveImage(file.path)
+                                                  .then((value) => print('>>>> save value= $value'))
+                                                  .catchError((err) {
+                                                print('error : $err');
+                                              });
+                                              String returnfilepath = await downloadFile("ocrmatimages/" + list[0]);
 
-
-
-                                            String returnfilepath = await downloadFile("ocrmatimages/" + list[0]);
-
-                                            Navigator.of(context).popUntil((route) => route.isFirst);
-                                            await Navigator.push(context,MaterialPageRoute(builder: (context) =>
-                                                MaternityPage(list, returnfilepath)),
-                                            );
+                                              Navigator.of(context).popUntil((route) => route.isFirst);
+                                              await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                                  MaternityPage(list, returnfilepath)),
+                                              );
+                                            }
                                           },
                                           icon: const Icon(
                                             Icons.send,

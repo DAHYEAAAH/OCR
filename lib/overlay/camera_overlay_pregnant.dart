@@ -173,11 +173,6 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                           enableFeedback: true,
                                           color: Colors.white,
                                           onPressed: () async {
-                                            // 찍은 사진 갤러리에 저장
-                                            GallerySaver.saveImage(file.path)
-                                                .then((value) => print('>>>> save value= $value'))
-                                                .catchError((err) {print('error : $err');
-                                            });
                                             // 서버로 임신사 사진 list에 넣어서 보내기
                                             showDialog(context: context, builder: (context){
                                               return Container(
@@ -226,14 +221,32 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                               );
                                             });
                                             List list = await uploadimg_pregnant(File(file.path));
-
-                                            // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
-                                            String returnfilepath = await downloadFile("ocrpreimages/" + list[0]);
-
+                                            if(list[1].length==0||list[1][0]==""){
+                                            print("yes");
                                             Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
-                                            await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                PregnantPage(list, returnfilepath)), // PregnantPage 넘어가기
-                                            );
+                                            }
+                                            else {
+                                              // 찍은 사진 갤러리에 저장
+                                              GallerySaver.saveImage(file.path)
+                                                  .then((value) => print(
+                                                  '>>>> save value= $value'))
+                                                  .catchError((err) {
+                                                print('error : $err');
+                                              });
+                                              // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
+                                              String returnfilepath = await downloadFile(
+                                                  "ocrpreimages/" + list[0]);
+
+                                              Navigator.of(context).popUntil((
+                                                  route) =>
+                                              route.isFirst); // 처음 화면으로 돌아가기
+                                              await Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PregnantPage(list,
+                                                            returnfilepath)), // PregnantPage 넘어가기
+                                              );
+                                            }
                                           },
                                           icon: const Icon(
                                             Icons.send,

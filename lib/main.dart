@@ -1,14 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:last_ocr/functions/functions.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
 import 'package:last_ocr/page/maternity_list_page.dart';
-import 'package:last_ocr/page/maternity_page.dart';
-import 'package:last_ocr/page/pregnant_graph_page.dart';
-import 'package:last_ocr/page/pregnant_owner_graph_page.dart';
-import 'package:last_ocr/page/pregnant_page.dart';
+import 'package:last_ocr/page/graph_page.dart';
+import 'package:last_ocr/page/owner_graph_page.dart';
 import 'overlay/camera_overlay_maternity.dart';
 import 'overlay/camera_overlay_pregnant.dart';
 
@@ -92,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             await preparegraph();
                             Navigator.of(context).popUntil((route) => route.isFirst);
                             Navigator.push(context, MaterialPageRoute(
-                                builder: (context) =>  PregnantGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
+                                builder: (context) =>  GraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
                           },
                           child: const Text('그래프')
                       ),
@@ -131,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             await preparegraph();
                             Navigator.of(context).popUntil((route) => route.isFirst);
                             Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => PregnantOwnerGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
+                                builder: (context) => OwnerGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
                           },
                           child: const Text('그래프')
                       ),
