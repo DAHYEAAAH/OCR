@@ -142,44 +142,42 @@ class MaternityPageState extends State<MaternityPage>{
       if(sowID1_Controller.text.isEmpty) {
         print(widget.listfromserver_mat);
 
-        sowID1_Controller.text = widget.listfromserver_mat[1][24].split('-')[0];
-        sowID2_Controller.text = widget.listfromserver_mat[1][24].split('-')[1];
+        sowID1_Controller.text = widget.listfromserver_mat[1][0].split('-')[0];
+        sowID2_Controller.text = widget.listfromserver_mat[1][0].split('-')[1];
 
-        birth_year_Controller.text = widget.listfromserver_mat[1][0];
-        birth_month_Controller.text = widget.listfromserver_mat[1][1];
-        birth_day_Controller.text = widget.listfromserver_mat[1][2];
+        birth_year_Controller.text = widget.listfromserver_mat[1][1];
+        birth_month_Controller.text = widget.listfromserver_mat[1][2];
+        birth_day_Controller.text = widget.listfromserver_mat[1][3];
 
-        adoption_year_Controller.text = widget.listfromserver_mat[1][3];
-        adoption_month_Controller.text = widget.listfromserver_mat[1][4];
-        adoption_day_Controller.text = widget.listfromserver_mat[1][5];
+        adoption_year_Controller.text = widget.listfromserver_mat[1][4];
+        adoption_month_Controller.text = widget.listfromserver_mat[1][5];
+        adoption_day_Controller.text = widget.listfromserver_mat[1][6];
 
-        expect_year_Controller.text = widget.listfromserver_mat[1][6];
+        // expect_year_Controller.text = widget.listfromserver_mat[1][7];
         expect_month_Controller.text = widget.listfromserver_mat[1][7];
         expect_day_Controller.text = widget.listfromserver_mat[1][8];
-
-        teen_month_Controller.text = widget.listfromserver_mat[1][13];
-        teen_day_Controller.text = widget.listfromserver_mat[1][14];
 
         givebirth_month_Controller.text = widget.listfromserver_mat[1][9];
         givebirth_day_Controller.text = widget.listfromserver_mat[1][10];
 
         totalbaby_Controller.text = widget.listfromserver_mat[1][11];
         feedbaby_Controller.text = widget.listfromserver_mat[1][12];
+        weight_Controller.text = widget.listfromserver_mat[1][13];
 
-        weight_Controller.text = widget.listfromserver_mat[1][25];
-        totalteen_Controller.text = widget.listfromserver_mat[1][15];
-        teenweight_Controller.text = widget.listfromserver_mat[1][26];
+        teen_month_Controller.text = widget.listfromserver_mat[1][14];
+        teen_day_Controller.text = widget.listfromserver_mat[1][15];
 
-        vaccine1_fir_Controller.text = widget.listfromserver_mat[1][16];
-        vaccine1_sec_Controller.text = widget.listfromserver_mat[1][17];
-        vaccine2_fir_Controller.text = widget.listfromserver_mat[1][18];
-        vaccine2_sec_Controller.text = widget.listfromserver_mat[1][19];
-        vaccine3_fir_Controller.text = widget.listfromserver_mat[1][20];
-        vaccine3_sec_Controller.text = widget.listfromserver_mat[1][21];
-        vaccine4_fir_Controller.text = widget.listfromserver_mat[1][22];
-        vaccine4_sec_Controller.text = widget.listfromserver_mat[1][23];
+        totalteen_Controller.text = widget.listfromserver_mat[1][16];
+        teenweight_Controller.text = widget.listfromserver_mat[1][17];
 
-        // memo_Controller.text = widget.listfromserver_mat[0];
+        vaccine1_fir_Controller.text = widget.listfromserver_mat[1][18];
+        vaccine1_sec_Controller.text = widget.listfromserver_mat[1][19];
+        vaccine2_fir_Controller.text = widget.listfromserver_mat[1][20];
+        vaccine2_sec_Controller.text = widget.listfromserver_mat[1][21];
+        vaccine3_fir_Controller.text = widget.listfromserver_mat[1][22];
+        vaccine3_sec_Controller.text = widget.listfromserver_mat[1][23];
+        vaccine4_fir_Controller.text = widget.listfromserver_mat[1][24];
+        vaccine4_sec_Controller.text = widget.listfromserver_mat[1][25];
 
         filename = widget.listfromserver_mat[0];
       }

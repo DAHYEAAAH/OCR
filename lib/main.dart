@@ -27,6 +27,8 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 class MyHomePage extends StatefulWidget {
+  static const routeName = '/mainpage';
+
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();

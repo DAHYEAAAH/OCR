@@ -143,44 +143,44 @@ class PregnantPageState extends State<PregnantPage>{
         print(widget.listfromserver_pre);
 
         // 서버로부터 받은 값 매핑
-        sowID1_Controller.text = widget.listfromserver_pre[1][23].split("-")[0];
-        sowID2_Controller.text = widget.listfromserver_pre[1][23].split("-")[1];
+        sowID1_Controller.text = widget.listfromserver_pre[1][0].split("-")[0];
+        sowID2_Controller.text = widget.listfromserver_pre[1][0].split("-")[1];
 
-        birth_year_Controller.text = widget.listfromserver_pre[1][0];
-        birth_month_Controller.text = widget.listfromserver_pre[1][1];
-        birth_day_Controller.text = widget.listfromserver_pre[1][2];
+        birth_year_Controller.text = widget.listfromserver_pre[1][1];
+        birth_month_Controller.text = widget.listfromserver_pre[1][2];
+        birth_day_Controller.text = widget.listfromserver_pre[1][3];
 
-        adoption_year_Controller.text = widget.listfromserver_pre[1][3];
-        adoption_month_Controller.text = widget.listfromserver_pre[1][4];
-        adoption_day_Controller.text = widget.listfromserver_pre[1][5];
+        adoption_year_Controller.text = widget.listfromserver_pre[1][4];
+        adoption_month_Controller.text = widget.listfromserver_pre[1][5];
+        adoption_day_Controller.text = widget.listfromserver_pre[1][6];
 
-        hormone_year_Controller.text = widget.listfromserver_pre[1][6];
-        hormone_month_Controller.text = widget.listfromserver_pre[1][7];
-        hormone_day_Controller.text = widget.listfromserver_pre[1][8];
+        hormone_year_Controller.text = widget.listfromserver_pre[1][7];
+        hormone_month_Controller.text = widget.listfromserver_pre[1][8];
+        hormone_day_Controller.text = widget.listfromserver_pre[1][9];
 
-        mate_month_Controller.text = widget.listfromserver_pre[1][9];
-        mate_day_Controller.text = widget.listfromserver_pre[1][10];
+        mate_month_Controller.text = widget.listfromserver_pre[1][10];
+        mate_day_Controller.text = widget.listfromserver_pre[1][11];
 
-        boar1ID1_Controller.text = widget.listfromserver_pre[1][24].split("-")[0];
-        boar1ID2_Controller.text = widget.listfromserver_pre[1][24].split("-")[1];
+        boar1ID1_Controller.text = widget.listfromserver_pre[1][12].split("-")[0];
+        boar1ID2_Controller.text = widget.listfromserver_pre[1][12].split("-")[1];
 
-        boar2ID1_Controller.text = widget.listfromserver_pre[1][25].split("-")[0];
-        boar2ID2_Controller.text = widget.listfromserver_pre[1][25].split("-")[1];
+        boar2ID1_Controller.text = widget.listfromserver_pre[1][13].split("-")[0];
+        boar2ID2_Controller.text = widget.listfromserver_pre[1][13].split("-")[1];
 
-        check_month_Controller.text = widget.listfromserver_pre[1][11];
-        check_day_Controller.text = widget.listfromserver_pre[1][12];
+        check_month_Controller.text = widget.listfromserver_pre[1][14];
+        check_day_Controller.text = widget.listfromserver_pre[1][15];
 
-        expect_month_Controller.text = widget.listfromserver_pre[1][13];
-        expect_day_Controller.text = widget.listfromserver_pre[1][14];
+        expect_month_Controller.text = widget.listfromserver_pre[1][16];
+        expect_day_Controller.text = widget.listfromserver_pre[1][17];
 
-        vaccine1_fir_Controller.text = widget.listfromserver_pre[1][15];
-        vaccine1_sec_Controller.text = widget.listfromserver_pre[1][16];
-        vaccine2_fir_Controller.text = widget.listfromserver_pre[1][17];
-        vaccine2_sec_Controller.text = widget.listfromserver_pre[1][18];
-        vaccine3_fir_Controller.text = widget.listfromserver_pre[1][19];
-        vaccine3_sec_Controller.text = widget.listfromserver_pre[1][20];
-        vaccine4_fir_Controller.text = widget.listfromserver_pre[1][21];
-        vaccine4_sec_Controller.text = widget.listfromserver_pre[1][22];
+        vaccine1_fir_Controller.text = widget.listfromserver_pre[1][18];
+        vaccine1_sec_Controller.text = widget.listfromserver_pre[1][19];
+        vaccine2_fir_Controller.text = widget.listfromserver_pre[1][20];
+        vaccine2_sec_Controller.text = widget.listfromserver_pre[1][21];
+        vaccine3_fir_Controller.text = widget.listfromserver_pre[1][22];
+        vaccine3_sec_Controller.text = widget.listfromserver_pre[1][23];
+        vaccine4_fir_Controller.text = widget.listfromserver_pre[1][24];
+        vaccine4_sec_Controller.text = widget.listfromserver_pre[1][25];
 
         // memo_Controller.text = widget.listfromserver_pre[0];
 

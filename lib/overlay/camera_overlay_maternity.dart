@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_camera_overlay/flutter_camera_overlay.dart';
 import 'package:flutter_camera_overlay/model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
@@ -226,8 +227,16 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                             });
                                             List list = await uploadimg_maternity(File(file.path));
                                             if(list[1].length==0||list[1][0]==""){
-                                              print("yes");
-                                              Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
+                                              print("ocr인식오류");
+                                              Navigator.pop(context, 'Yep!');
+                                              Navigator.pop(context, 'Yep!');
+                                              Fluttertoast.showToast(
+                                                  msg: "사진을 다시 찍어주세요",
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.TOP,
+                                                  timeInSecForIosWeb: 1,
+                                                  fontSize: 20.0
+                                              );
                                             }
                                             else {
                                               // 서버로 임신사 사진 list에 넣어서 보내기
