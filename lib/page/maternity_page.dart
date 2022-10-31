@@ -49,7 +49,6 @@ class MaternityPageState extends State<MaternityPage>{
   late String adoption_month;
   late String adoption_day;
 
-  late String expect_year;
   late String expect_month;
   late String expect_day;
 
@@ -100,7 +99,6 @@ class MaternityPageState extends State<MaternityPage>{
   final adoption_day_Controller = TextEditingController();
 
   //분만예정일
-  final expect_year_Controller = TextEditingController();
   final expect_month_Controller = TextEditingController();
   final expect_day_Controller = TextEditingController();
 
@@ -153,7 +151,6 @@ class MaternityPageState extends State<MaternityPage>{
         adoption_month_Controller.text = widget.listfromserver_mat[1][5];
         adoption_day_Controller.text = widget.listfromserver_mat[1][6];
 
-        // expect_year_Controller.text = widget.listfromserver_mat[1][7];
         expect_month_Controller.text = widget.listfromserver_mat[1][7];
         expect_day_Controller.text = widget.listfromserver_mat[1][8];
 
@@ -288,17 +285,13 @@ class MaternityPageState extends State<MaternityPage>{
                         margin: EdgeInsets.only(left: 20,right: 20),
                         child: Table(
                           border: TableBorder.all(),
-                          columnWidths: {0:FractionColumnWidth(0),1: FractionColumnWidth(.15), 2: FractionColumnWidth(.25), 3: FractionColumnWidth(.3),4: FractionColumnWidth(.3)},                  children: [
-                          TableRow( children: [
+                          columnWidths: {0:FractionColumnWidth(.0),1: FractionColumnWidth(.15), 2: FractionColumnWidth(.43), 3: FractionColumnWidth(.42)},
+                          children:[TableRow( children: [
                             TableCell(
                               child: SizedBox(height: 30,),
                             ),
                             Column(children:[
                               Text('분만예정일')
-                            ]),
-                            Column(children:[
-                              TextField(controller: expect_year_Controller,
-                                decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),keyboardType: TextInputType.number,textAlign: TextAlign.center,),
                             ]),
                             Column(children:[
                               TextField(controller: expect_month_Controller,
@@ -307,9 +300,8 @@ class MaternityPageState extends State<MaternityPage>{
                             Column(children:[
                               TextField(controller: expect_day_Controller,
                                 decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),keyboardType: TextInputType.number,textAlign: TextAlign.center,),
-                            ]),
-                          ],),
-                        ],
+                            ])]),
+                          ],
                         ),
                       ),
                       Container(
@@ -534,7 +526,7 @@ class MaternityPageState extends State<MaternityPage>{
                                 sow_no = sowID1_Controller.text + "-" + sowID2_Controller.text;
                                 sow_birth = birth_year_Controller.text +"-" + birth_month_Controller.text + "-" + birth_day_Controller.text;
                                 sow_buy = adoption_year_Controller.text + "-" +  adoption_month_Controller.text + "-" + adoption_day_Controller.text;
-                                sow_expectdate = expect_year_Controller.text + "-" + expect_month_Controller.text + "-" + expect_day_Controller.text;
+                                sow_expectdate = expect_month_Controller.text + "-" + expect_day_Controller.text;
                                 sow_givebirth = givebirth_month_Controller.text + "-" + givebirth_day_Controller.text;
                                 sow_totalbaby = totalbaby_Controller.text;
                                 sow_feedbaby = feedbaby_Controller.text;
