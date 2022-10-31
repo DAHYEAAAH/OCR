@@ -60,8 +60,7 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
       List templist = [];
       var nextsunday = sunday.add(
           const Duration(days: 7)); // 다음주 일요일 계산법 : 일요일+7
-      if (nextsunday.day <
-          sunday.day) { // 다음주 일요일이 다음달에 속할 경우 리스트에 추가하지 않고 반복문을 종료시킴.
+      if (nextsunday.day < sunday.day) { // 다음주 일요일이 다음달에 속할 경우 리스트에 추가하지 않고 반복문을 종료시킴.
         break;
       }
       templist.add(DateFormat('yyyy-MM-dd').format(

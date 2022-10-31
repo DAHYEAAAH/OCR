@@ -224,16 +224,41 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                             List list = await uploadimg_pregnant(File(file.path));
                                             if(list[1].length==0||(list[1][0]==""&&list[1][1]==""&&list[1][4]==""&&list[1][7]==""&&list[1][9]=="")){
                                               print("ocr인식오류");
-                                              Navigator.pop(context, 'Yep!');
-                                              Navigator.pop(context, 'Yep!');
 
-                                              Fluttertoast.showToast(
-                                                  msg: "사진을 다시 찍어주세요",
-                                                  toastLength: Toast.LENGTH_SHORT,
-                                                  gravity: ToastGravity.TOP,
-                                                  timeInSecForIosWeb: 1,
-                                                  fontSize: 20.0
-                                              );
+                                              Navigator.pop(context, 'Yep!');
+                                              showDialog(context: context, builder: (context){
+                                                return Container(
+                                                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                  alignment: Alignment.center,
+                                                  // decoration: const BoxDecoration(
+                                                  //   color: Colors.white70,
+                                                  // ),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white70,
+                                                        borderRadius: BorderRadius.circular(10.0)
+                                                    ),
+                                                    width: 300.0,
+                                                    height: 100.0,
+                                                    alignment: AlignmentDirectional.center,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        Text(
+                                                        "please take the picture again",
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.bold,
+                                                            color: Colors.black
+                                                        ))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                              await Future.delayed(Duration(seconds: 1));
+                                              Navigator.pop(context, 'Yep!');
+                                              Navigator.pop(context, 'Yep!');
                                             }
                                             else {
                                               // 찍은 사진 갤러리에 저장

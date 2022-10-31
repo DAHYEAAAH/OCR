@@ -188,15 +188,20 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
 
       }
     }
+
     return Scaffold(
         appBar: AppBar(
           title: Text("분만사"),
         ),
+
         body: Scrollbar(
-              thumbVisibility: true, //always show scrollbar
-              thickness: 10, //width of scrollbar
-              radius: Radius.circular(20), //corner radius of scrollbar
-              scrollbarOrientation: ScrollbarOrientation.right, //which side to show scrollbar
+            thumbVisibility: true, //always show scrollbar
+            thickness: 10, //width of scrollbar
+            radius: Radius.circular(20), //corner radius of scrollbar
+            scrollbarOrientation: ScrollbarOrientation.right,
+            child: GestureDetector( // 키보드 닫기 이벤트
+              onVerticalDragDown: (DragDownDetails details){ FocusScope.of(context).unfocus();},
+              onTap: () { FocusManager.instance.primaryFocus?.unfocus(); },
               child: SingleChildScrollView(
                 child: Column(
                   children:[
@@ -567,6 +572,7 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
                   ]
                 ),
               ),
+        )
         )
     );
 

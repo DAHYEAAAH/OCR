@@ -191,533 +191,536 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
             thickness: 10, //width of scrollbar
             radius: Radius.circular(20), //corner radius of scrollbar
             scrollbarOrientation: ScrollbarOrientation.right, //which side to show scrollbar
-            child: SingleChildScrollView(
-              child: Column(
-                children:[
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                    child: Table(
-                      textBaseline: TextBaseline.alphabetic,
-                      border: TableBorder.all(),
-                      columnWidths: const { 0: FractionColumnWidth(.0), 1: FractionColumnWidth(.4), 2: FractionColumnWidth(.4), 3: FractionColumnWidth(.1), 4: FractionColumnWidth(.1)},
-                      children: [
-                        TableRow(
-                          children: [
+            child: GestureDetector( // 키보드 닫기 이벤트
+              onVerticalDragDown: (DragDownDetails details){ FocusScope.of(context).unfocus();},
+              onTap: () { FocusManager.instance.primaryFocus?.unfocus(); },
+              child: SingleChildScrollView(
+                child: Column(
+                  children:[
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                      child: Table(
+                        textBaseline: TextBaseline.alphabetic,
+                        border: TableBorder.all(),
+                        columnWidths: const { 0: FractionColumnWidth(.0), 1: FractionColumnWidth(.4), 2: FractionColumnWidth(.4), 3: FractionColumnWidth(.1), 4: FractionColumnWidth(.1)},
+                        children: [
+                          TableRow(
+                            children: [
+                              const TableCell(
+                                child: SizedBox(height: 30,),
+                              ),
+                              Column(children: const [
+                                Text('모돈번호', style: TextStyle(fontSize: 20),
+                                  textAlign: TextAlign.center,)
+                              ],
+                              ),
+                              Column(children: [
+                                TextField(controller: sowID1_Controller,
+                                  decoration: const InputDecoration(hintText: " "),
+                                  style: const TextStyle(fontSize: 20),
+                                  keyboardType: TextInputType.number,
+                                  textAlign: TextAlign.center, enabled: false,),
+                              ]),
+                              Column(children: const [
+                                Text('-', style: TextStyle(fontSize: 20),
+                                  textAlign: TextAlign.center,)
+                              ],),
+                              Column(children: [
+                                TextField(controller: sowID2_Controller,
+                                  decoration: const InputDecoration(hintText: " "),
+                                  style: const TextStyle(fontSize: 20),
+                                  keyboardType: TextInputType.text,
+                                  textAlign: TextAlign.center, enabled: false,),
+                              ]),
+
+                            ],),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Table(
+                        border: TableBorder.all(),
+                        columnWidths: const {
+                          0: FractionColumnWidth(0),
+                          1: FractionColumnWidth(.15),
+                          2: FractionColumnWidth(.25),
+                          3: FractionColumnWidth(.3),
+                          4: FractionColumnWidth(.3)
+                        },
+                        children: [
+                          TableRow(children: [
                             const TableCell(
                               child: SizedBox(height: 30,),
                             ),
                             Column(children: const [
-                              Text('모돈번호', style: TextStyle(fontSize: 20),
-                                textAlign: TextAlign.center,)
-                            ],
-                            ),
+                              Text('출생일')
+                            ]),
                             Column(children: [
-                              TextField(controller: sowID1_Controller,
+                              TextField(controller: birth_year_Controller,
                                 decoration: const InputDecoration(hintText: " "),
                                 style: const TextStyle(fontSize: 20),
                                 keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center, enabled: false,),
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: [
+                              TextField(controller: birth_month_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: [
+                              TextField(controller: birth_day_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                          ],),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Table(
+                        border: TableBorder.all(),
+                        columnWidths: const {
+                          0: FractionColumnWidth(0),
+                          1: FractionColumnWidth(.15),
+                          2: FractionColumnWidth(.25),
+                          3: FractionColumnWidth(.3),
+                          4: FractionColumnWidth(.3)
+                        }, children: [
+                        TableRow(children: [
+                          const TableCell(
+                            child: SizedBox(height: 30,),
+                          ),
+                          Column(children: const [
+                            Text('구입일')
+                          ]),
+                          Column(children: [
+                            TextField(controller: adoption_year_Controller,
+                              decoration: const InputDecoration(hintText: " "),
+                              style: const TextStyle(fontSize: 20),
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,),
+                          ]),
+                          Column(children: [
+                            TextField(controller: adoption_month_Controller,
+                              decoration: const InputDecoration(hintText: " "),
+                              style: TextStyle(fontSize: 20),
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,),
+                          ]),
+                          Column(children: [
+                            TextField(controller: adoption_day_Controller,
+                              decoration: const InputDecoration(hintText: " "),
+                              style: TextStyle(fontSize: 20),
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,),
+                          ]),
+                        ],),
+                      ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Table(
+                        border: TableBorder.all(),
+                        columnWidths: const {
+                          0: FractionColumnWidth(0),
+                          1: FractionColumnWidth(.15),
+                          2: FractionColumnWidth(.25),
+                          3: FractionColumnWidth(.3),
+                          4: FractionColumnWidth(.3)
+                        }, children: [
+                        TableRow(children: [
+                          const TableCell(
+                            child: SizedBox(height: 30,),
+                          ),
+                          Column(children: const [
+                            Text('초발정일')
+                          ]),
+                          Column(children: [
+                            TextField(controller: hormone_year_Controller,
+                              decoration: const InputDecoration(hintText: " "),
+                              style: const TextStyle(fontSize: 20),
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,),
+                          ]),
+                          Column(children: [
+                            TextField(controller: hormone_month_Controller,
+                              decoration: const InputDecoration(hintText: " "),
+                              style: const TextStyle(fontSize: 20),
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,),
+                          ]),
+                          Column(children: [
+                            TextField(controller: hormone_day_Controller,
+                              decoration: const InputDecoration(hintText: " "),
+                              style: const TextStyle(fontSize: 20),
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,),
+                          ]),
+                        ],),
+                      ],
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: Table(
+                        border: TableBorder.all(),
+                        columnWidths: const {
+                          0: FractionColumnWidth(.0),
+                          1: FractionColumnWidth(.15),
+                          2: FractionColumnWidth(.43),
+                          3: FractionColumnWidth(.42)
+                        },
+                        children: [
+                          TableRow(children: [
+                            const TableCell(
+                              child: SizedBox(height: 30,),
+                            ),
+                            Column(children: const [
+                              Text('교배일')
+                            ]),
+                            Column(children: [
+                              TextField(controller: mate_month_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: [
+                              TextField(controller: mate_day_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                          ],),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Table(
+                        border: TableBorder.all(),
+                        columnWidths: const {
+                          0: FractionColumnWidth(.0),
+                          1: FractionColumnWidth(.15),
+                          2: FractionColumnWidth(.2),
+                          3: FractionColumnWidth(.05),
+                          4: FractionColumnWidth(.1),
+                          5: FractionColumnWidth(.15),
+                          6: FractionColumnWidth(.2),
+                          7: FractionColumnWidth(.05),
+                          8: FractionColumnWidth(.1)
+                        },
+                        children: [
+                          TableRow(children: [
+                            const TableCell(
+                              child: SizedBox(height: 30,),
+                            ),
+                            Column(children: const [
+                              Text('1차 웅돈번호', textAlign: TextAlign.center)
+                            ]),
+                            Column(children: [
+                              TextField(controller: boar1ID1_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
                             ]),
                             Column(children: const [
-                              Text('-', style: TextStyle(fontSize: 20),
-                                textAlign: TextAlign.center,)
-                            ],),
+                              Text('-', style: TextStyle(fontSize: 20))
+                            ]),
                             Column(children: [
-                              TextField(controller: sowID2_Controller,
+                              TextField(controller: boar1ID2_Controller,
                                 decoration: const InputDecoration(hintText: " "),
                                 style: const TextStyle(fontSize: 20),
                                 keyboardType: TextInputType.text,
-                                textAlign: TextAlign.center, enabled: false,),
+                                textAlign: TextAlign.center,),
                             ]),
-
+                            Column(children: const [
+                              Text('2차 웅돈번호', textAlign: TextAlign.center)
+                            ]),
+                            Column(children: [
+                              TextField(controller: boar2ID1_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: const [
+                              Text('-', style: TextStyle(fontSize: 20))
+                            ]),
+                            Column(children: [
+                              TextField(controller: boar2ID2_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.text,
+                                textAlign: TextAlign.center,),
+                            ]),
                           ],),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    child: Table(
-                      border: TableBorder.all(),
-                      columnWidths: const {
-                        0: FractionColumnWidth(0),
-                        1: FractionColumnWidth(.15),
-                        2: FractionColumnWidth(.25),
-                        3: FractionColumnWidth(.3),
-                        4: FractionColumnWidth(.3)
-                      },
-                      children: [
-                        TableRow(children: [
-                          const TableCell(
-                            child: SizedBox(height: 30,),
-                          ),
-                          Column(children: const [
-                            Text('출생일')
-                          ]),
-                          Column(children: [
-                            TextField(controller: birth_year_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: [
-                            TextField(controller: birth_month_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: [
-                            TextField(controller: birth_day_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                        ],),
-                      ],
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Table(
+                        border: TableBorder.all(),
+                        columnWidths: const {
+                          0: FractionColumnWidth(.0),
+                          1: FractionColumnWidth(.15),
+                          2: FractionColumnWidth(.43),
+                          3: FractionColumnWidth(.42)
+                        },
+                        children: [
+                          TableRow(children: [
+                            const TableCell(
+                              child: SizedBox(height: 30,),
+                            ),
+                            Column(children: const [
+                              Text('재발 확인일', textAlign: TextAlign.center)
+                            ]),
+                            Column(children: [
+                              TextField(controller: check_month_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: [
+                              TextField(controller: check_day_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                          ],),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    child: Table(
-                      border: TableBorder.all(),
-                      columnWidths: const {
-                        0: FractionColumnWidth(0),
-                        1: FractionColumnWidth(.15),
-                        2: FractionColumnWidth(.25),
-                        3: FractionColumnWidth(.3),
-                        4: FractionColumnWidth(.3)
-                      }, children: [
-                      TableRow(children: [
-                        const TableCell(
-                          child: SizedBox(height: 30,),
-                        ),
-                        Column(children: const [
-                          Text('구입일')
-                        ]),
-                        Column(children: [
-                          TextField(controller: adoption_year_Controller,
-                            decoration: const InputDecoration(hintText: " "),
-                            style: const TextStyle(fontSize: 20),
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,),
-                        ]),
-                        Column(children: [
-                          TextField(controller: adoption_month_Controller,
-                            decoration: const InputDecoration(hintText: " "),
-                            style: TextStyle(fontSize: 20),
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,),
-                        ]),
-                        Column(children: [
-                          TextField(controller: adoption_day_Controller,
-                            decoration: const InputDecoration(hintText: " "),
-                            style: TextStyle(fontSize: 20),
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,),
-                        ]),
-                      ],),
-                    ],
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: Table(
+                        border: TableBorder.all(),
+                        columnWidths: const {
+                          0: FractionColumnWidth(.0),
+                          1: FractionColumnWidth(.15),
+                          2: FractionColumnWidth(.43),
+                          3: FractionColumnWidth(.42)
+                        },
+                        children: [
+                          TableRow(children: [
+                            const TableCell(
+                              child: SizedBox(height: 30,),
+                            ),
+                            Column(children: const [
+                              Text('분만 예정일', textAlign: TextAlign.center)
+                            ]),
+                            Column(children: [
+                              TextField(controller: expect_month_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: [
+                              TextField(controller: expect_day_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                          ],),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    child: Table(
-                      border: TableBorder.all(),
-                      columnWidths: const {
-                        0: FractionColumnWidth(0),
-                        1: FractionColumnWidth(.15),
-                        2: FractionColumnWidth(.25),
-                        3: FractionColumnWidth(.3),
-                        4: FractionColumnWidth(.3)
-                      }, children: [
-                      TableRow(children: [
-                        const TableCell(
-                          child: SizedBox(height: 30,),
-                        ),
-                        Column(children: const [
-                          Text('초발정일')
-                        ]),
-                        Column(children: [
-                          TextField(controller: hormone_year_Controller,
-                            decoration: const InputDecoration(hintText: " "),
-                            style: const TextStyle(fontSize: 20),
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,),
-                        ]),
-                        Column(children: [
-                          TextField(controller: hormone_month_Controller,
-                            decoration: const InputDecoration(hintText: " "),
-                            style: const TextStyle(fontSize: 20),
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,),
-                        ]),
-                        Column(children: [
-                          TextField(controller: hormone_day_Controller,
-                            decoration: const InputDecoration(hintText: " "),
-                            style: const TextStyle(fontSize: 20),
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,),
-                        ]),
-                      ],),
-                    ],
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: Table(
+                        border: TableBorder.all(),
+                        columnWidths: const {
+                          0: FractionColumnWidth(.0),
+                          1: FractionColumnWidth(.15),
+                          2: FractionColumnWidth(.175),
+                          3: FractionColumnWidth(.175),
+                          4: FractionColumnWidth(.15),
+                          5: FractionColumnWidth(.175),
+                          6: FractionColumnWidth(.175)
+                        },
+                        children: [
+                          TableRow(children: [
+                            const TableCell(
+                              child: SizedBox(height: 30,),
+                            ),
+                            Column(children: const [
+                              Text('백신1')
+                            ]),
+                            Column(children: [
+                              TextField(controller: vaccine1_fir_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: [
+                              TextField(controller: vaccine1_sec_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: const [
+                              Text('백신2')
+                            ]),
+                            Column(children: [
+                              TextField(controller: vaccine2_fir_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: [
+                              TextField(controller: vaccine2_sec_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                          ],),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Table(
-                      border: TableBorder.all(),
-                      columnWidths: const {
-                        0: FractionColumnWidth(.0),
-                        1: FractionColumnWidth(.15),
-                        2: FractionColumnWidth(.43),
-                        3: FractionColumnWidth(.42)
-                      },
-                      children: [
-                        TableRow(children: [
-                          const TableCell(
-                            child: SizedBox(height: 30,),
-                          ),
-                          Column(children: const [
-                            Text('교배일')
-                          ]),
-                          Column(children: [
-                            TextField(controller: mate_month_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: [
-                            TextField(controller: mate_day_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                        ],),
-                      ],
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: Table(
+                        border: TableBorder.all(),
+                        columnWidths: const {
+                          0: FractionColumnWidth(.0),
+                          1: FractionColumnWidth(.15),
+                          2: FractionColumnWidth(.175),
+                          3: FractionColumnWidth(.175),
+                          4: FractionColumnWidth(.15),
+                          5: FractionColumnWidth(.175),
+                          6: FractionColumnWidth(.175)
+                        },
+                        children: [
+                          TableRow(children: [
+                            const TableCell(
+                              child: SizedBox(height: 30,),
+                            ),
+                            Column(children: const [
+                              Text('백신3')
+                            ]),
+                            Column(children: [
+                              TextField(controller: vaccine3_fir_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: [
+                              TextField(controller: vaccine3_sec_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: const [
+                              Text('백신4')
+                            ]),
+                            Column(children: [
+                              TextField(controller: vaccine4_fir_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                            Column(children: [
+                              TextField(controller: vaccine4_sec_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,),
+                            ]),
+                          ],),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    child: Table(
-                      border: TableBorder.all(),
-                      columnWidths: const {
-                        0: FractionColumnWidth(.0),
-                        1: FractionColumnWidth(.15),
-                        2: FractionColumnWidth(.2),
-                        3: FractionColumnWidth(.05),
-                        4: FractionColumnWidth(.1),
-                        5: FractionColumnWidth(.15),
-                        6: FractionColumnWidth(.2),
-                        7: FractionColumnWidth(.05),
-                        8: FractionColumnWidth(.1)
-                      },
-                      children: [
-                        TableRow(children: [
-                          const TableCell(
-                            child: SizedBox(height: 30,),
-                          ),
-                          Column(children: const [
-                            Text('1차 웅돈번호', textAlign: TextAlign.center)
-                          ]),
-                          Column(children: [
-                            TextField(controller: boar1ID1_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: const [
-                            Text('-', style: TextStyle(fontSize: 20))
-                          ]),
-                          Column(children: [
-                            TextField(controller: boar1ID2_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.text,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: const [
-                            Text('2차 웅돈번호', textAlign: TextAlign.center)
-                          ]),
-                          Column(children: [
-                            TextField(controller: boar2ID1_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: const [
-                            Text('-', style: TextStyle(fontSize: 20))
-                          ]),
-                          Column(children: [
-                            TextField(controller: boar2ID2_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.text,
-                              textAlign: TextAlign.center,),
-                          ]),
-                        ],),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    child: Table(
-                      border: TableBorder.all(),
-                      columnWidths: const {
-                        0: FractionColumnWidth(.0),
-                        1: FractionColumnWidth(.15),
-                        2: FractionColumnWidth(.43),
-                        3: FractionColumnWidth(.42)
-                      },
-                      children: [
-                        TableRow(children: [
-                          const TableCell(
-                            child: SizedBox(height: 30,),
-                          ),
-                          Column(children: const [
-                            Text('재발 확인일', textAlign: TextAlign.center)
-                          ]),
-                          Column(children: [
-                            TextField(controller: check_month_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: [
-                            TextField(controller: check_day_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                        ],),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Table(
-                      border: TableBorder.all(),
-                      columnWidths: const {
-                        0: FractionColumnWidth(.0),
-                        1: FractionColumnWidth(.15),
-                        2: FractionColumnWidth(.43),
-                        3: FractionColumnWidth(.42)
-                      },
-                      children: [
-                        TableRow(children: [
-                          const TableCell(
-                            child: SizedBox(height: 30,),
-                          ),
-                          Column(children: const [
-                            Text('분만 예정일', textAlign: TextAlign.center)
-                          ]),
-                          Column(children: [
-                            TextField(controller: expect_month_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: [
-                            TextField(controller: expect_day_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                        ],),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Table(
-                      border: TableBorder.all(),
-                      columnWidths: const {
-                        0: FractionColumnWidth(.0),
-                        1: FractionColumnWidth(.15),
-                        2: FractionColumnWidth(.175),
-                        3: FractionColumnWidth(.175),
-                        4: FractionColumnWidth(.15),
-                        5: FractionColumnWidth(.175),
-                        6: FractionColumnWidth(.175)
-                      },
-                      children: [
-                        TableRow(children: [
-                          const TableCell(
-                            child: SizedBox(height: 30,),
-                          ),
-                          Column(children: const [
-                            Text('백신1')
-                          ]),
-                          Column(children: [
-                            TextField(controller: vaccine1_fir_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: [
-                            TextField(controller: vaccine1_sec_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: const [
-                            Text('백신2')
-                          ]),
-                          Column(children: [
-                            TextField(controller: vaccine2_fir_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: [
-                            TextField(controller: vaccine2_sec_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                        ],),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Table(
-                      border: TableBorder.all(),
-                      columnWidths: const {
-                        0: FractionColumnWidth(.0),
-                        1: FractionColumnWidth(.15),
-                        2: FractionColumnWidth(.175),
-                        3: FractionColumnWidth(.175),
-                        4: FractionColumnWidth(.15),
-                        5: FractionColumnWidth(.175),
-                        6: FractionColumnWidth(.175)
-                      },
-                      children: [
-                        TableRow(children: [
-                          const TableCell(
-                            child: SizedBox(height: 30,),
-                          ),
-                          Column(children: const [
-                            Text('백신3')
-                          ]),
-                          Column(children: [
-                            TextField(controller: vaccine3_fir_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: [
-                            TextField(controller: vaccine3_sec_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: const [
-                            Text('백신4')
-                          ]),
-                          Column(children: [
-                            TextField(controller: vaccine4_fir_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                          Column(children: [
-                            TextField(controller: vaccine4_sec_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,),
-                          ]),
-                        ],),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    child: Table(
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Table(
 
-                      border: TableBorder.all(),
-                      columnWidths: const {
-                        0: FractionColumnWidth(0),
-                        1: FractionColumnWidth(.15),
-                        2: FractionColumnWidth(.85)
-                      },
-                      children: [
-                        TableRow(children: [
-                          const TableCell(
-                            child: SizedBox(height: 100,),
-                          ),
-                          Column(children: const [
-                            Text('특이사항')
-                          ]),
-                          Column(children: [
-                            TextField(controller: memo_Controller,
-                              decoration: const InputDecoration(hintText: " "),
-                              style: const TextStyle(fontSize: 20),
-                              keyboardType: TextInputType.text,
-                              textAlign: TextAlign.center,),
-                          ]),
-                        ],),
-                      ],
+                        border: TableBorder.all(),
+                        columnWidths: const {
+                          0: FractionColumnWidth(0),
+                          1: FractionColumnWidth(.15),
+                          2: FractionColumnWidth(.85)
+                        },
+                        children: [
+                          TableRow(children: [
+                            const TableCell(
+                              child: SizedBox(height: 100,),
+                            ),
+                            Column(children: const [
+                              Text('특이사항')
+                            ]),
+                            Column(children: [
+                              TextField(controller: memo_Controller,
+                                decoration: const InputDecoration(hintText: " "),
+                                style: const TextStyle(fontSize: 20),
+                                keyboardType: TextInputType.text,
+                                textAlign: TextAlign.center,),
+                            ]),
+                          ],),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10.0), // 위에 여백
-                  showImage(),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        FloatingActionButton(
-                          heroTag: 'send_button',
-                          child: Icon(Icons.arrow_circle_right_sharp),
-                          tooltip: 'ocr update',
-                          onPressed: () async{
-                            sow_no = sowID1_Controller.text + "-" + sowID2_Controller.text;
-                            sow_birth = birth_year_Controller.text + "-" + birth_month_Controller.text + "-" + birth_day_Controller.text;
-                            sow_buy = adoption_year_Controller.text + "-" + adoption_month_Controller.text + "-" + adoption_day_Controller.text;
-                            sow_estrus = hormone_year_Controller.text + "-" + hormone_month_Controller.text + "-" + hormone_day_Controller.text;
-                            sow_cross = mate_month_Controller.text + "-" + mate_day_Controller.text;
-                            boar_fir = boar1ID1_Controller.text + "-" + boar1ID2_Controller.text;
-                            boar_sec = boar2ID1_Controller.text + "-" + boar2ID2_Controller.text;
-                            checkdate = check_month_Controller.text + "-" + check_day_Controller.text;
-                            expectdate = expect_month_Controller.text + "-" + expect_day_Controller.text;
-                            vaccine1 = vaccine1_fir_Controller.text + "-" + vaccine1_sec_Controller.text;
-                            vaccine2 = vaccine2_fir_Controller.text + "-" + vaccine2_sec_Controller.text;
-                            vaccine3 = vaccine3_fir_Controller.text + "-" + vaccine3_sec_Controller.text;
-                            vaccine4 = vaccine4_fir_Controller.text + "-" + vaccine4_sec_Controller.text; // "ocr_imgpath":'17',
-                            memo = memo_Controller.text;
-                            ocr_seq = widget.listfromserver_pre_mo[0];
-                            sow_hang = widget.listfromserver_pre_mo[2];
-                            pregnant_update();
-                            List<dynamic> list = await pregnant_getocr();
-                            Navigator.of(context).popUntil((route) => route.isFirst);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(list)));
-                          },
-                        ),
-                      ],
-                  )
-                ],
-              ),
+                    SizedBox(height: 10.0), // 위에 여백
+                    showImage(),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          FloatingActionButton(
+                            heroTag: 'send_button',
+                            child: Icon(Icons.arrow_circle_right_sharp),
+                            tooltip: 'ocr update',
+                            onPressed: () async{
+                              sow_no = sowID1_Controller.text + "-" + sowID2_Controller.text;
+                              sow_birth = birth_year_Controller.text + "-" + birth_month_Controller.text + "-" + birth_day_Controller.text;
+                              sow_buy = adoption_year_Controller.text + "-" + adoption_month_Controller.text + "-" + adoption_day_Controller.text;
+                              sow_estrus = hormone_year_Controller.text + "-" + hormone_month_Controller.text + "-" + hormone_day_Controller.text;
+                              sow_cross = mate_month_Controller.text + "-" + mate_day_Controller.text;
+                              boar_fir = boar1ID1_Controller.text + "-" + boar1ID2_Controller.text;
+                              boar_sec = boar2ID1_Controller.text + "-" + boar2ID2_Controller.text;
+                              checkdate = check_month_Controller.text + "-" + check_day_Controller.text;
+                              expectdate = expect_month_Controller.text + "-" + expect_day_Controller.text;
+                              vaccine1 = vaccine1_fir_Controller.text + "-" + vaccine1_sec_Controller.text;
+                              vaccine2 = vaccine2_fir_Controller.text + "-" + vaccine2_sec_Controller.text;
+                              vaccine3 = vaccine3_fir_Controller.text + "-" + vaccine3_sec_Controller.text;
+                              vaccine4 = vaccine4_fir_Controller.text + "-" + vaccine4_sec_Controller.text; // "ocr_imgpath":'17',
+                              memo = memo_Controller.text;
+                              ocr_seq = widget.listfromserver_pre_mo[0];
+                              sow_hang = widget.listfromserver_pre_mo[2];
+                              pregnant_update();
+                              List<dynamic> list = await pregnant_getocr();
+                              Navigator.of(context).popUntil((route) => route.isFirst);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(list)));
+                            },
+                          ),
+                        ],
+                    )
+                  ],
+                ),
+              )
             )
-
         )
     );
   }
