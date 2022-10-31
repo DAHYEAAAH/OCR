@@ -222,7 +222,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                               );
                                             });
                                             List list = await uploadimg_pregnant(File(file.path));
-                                            if(list[1].length==0||list[1][0]==""){
+                                            if(list[1].length==0||(list[1][0]==""&&list[1][1]==""&&list[1][4]==""&&list[1][7]==""&&list[1][9]=="")){
                                               print("ocr인식오류");
                                               Navigator.pop(context, 'Yep!');
                                               Navigator.pop(context, 'Yep!');

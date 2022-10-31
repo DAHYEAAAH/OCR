@@ -88,7 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: () async {
                             // PregnantGraphPage로 넘어가기
                             await preparegraph();
-                            Navigator.of(context).popUntil((route) => route.isFirst);
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (context) =>  GraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
                           },
@@ -127,7 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: () async {
                             // MaternityGraphPage로 넘어가기
                             await preparegraph();
-                            Navigator.of(context).popUntil((route) => route.isFirst);
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => OwnerGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
                           },
@@ -135,17 +133,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      OutlinedButton(
-                          onPressed: () {
-                            delete_pregnant();
-                          },
-                          child: const Text('삭제')
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: <Widget>[
+                  //     OutlinedButton(
+                  //         onPressed: () {
+                  //           delete_pregnant();
+                  //         },
+                  //         child: const Text('삭제')
+                  //     ),
+                  //   ],
+                  // ),
                 ]
             )
         )
