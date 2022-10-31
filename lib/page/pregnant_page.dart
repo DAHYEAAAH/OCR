@@ -661,7 +661,7 @@ class PregnantPageState extends State<PregnantPage>{
                             children: [
                               TableRow(children: [
                                 const TableCell(
-                                  child: SizedBox(height: 100,),
+                                  child: SizedBox(height: 80,),
                                 ),
                                 Column(children: const [
                                   Text('특이사항')
@@ -671,7 +671,9 @@ class PregnantPageState extends State<PregnantPage>{
                                     decoration: const InputDecoration(hintText: " "),
                                     style: const TextStyle(fontSize: 20),
                                     keyboardType: TextInputType.text,
-                                    textAlign: TextAlign.center,),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                  ),
                                 ]),
                               ],),
                             ],

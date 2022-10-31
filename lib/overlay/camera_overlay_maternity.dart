@@ -225,7 +225,14 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                                 ),
                                               );
                                             });
+                                            // 서버로 임신사 사진 list에 넣어서 보내기
+
                                             List list = await uploadimg_maternity(File(file.path));
+                                            GallerySaver.saveImage(file.path)
+                                                .then((value) => print('>>>> save value= $value'))
+                                                .catchError((err) {
+                                              print('error : $err');
+                                            });
                                             if(list[1].length==0||(list[1][0]==""&&list[1][1]==""&&list[1][4]==""&&list[1][7]==""&&list[1][10]=="")){
                                               print("ocr인식오류");
 
@@ -252,6 +259,7 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                                         Text(
                                                             "please take the picture again",
                                                             style: TextStyle(
+                                                                fontSize: 17,
                                                                 fontWeight: FontWeight.bold,
                                                                 color: Colors.black
                                                             ))
@@ -265,12 +273,7 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                               Navigator.pop(context, 'Yep!');
                                             }
                                             else {
-                                              // 서버로 임신사 사진 list에 넣어서 보내기
-                                              GallerySaver.saveImage(file.path)
-                                                  .then((value) => print('>>>> save value= $value'))
-                                                  .catchError((err) {
-                                                print('error : $err');
-                                              });
+
                                               String returnfilepath = await downloadFile("ocrmatimages/" + list[0]);
 
                                               Navigator.of(context).popUntil((route) => route.isFirst);

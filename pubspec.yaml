@@ -58,6 +58,7 @@ dependencies:
   gallery_saver: ^2.0.1 # 임시 파일의 이미지와 비디오를 외부 저장소에 저장
   flutter_spinkit: ^5.1.0 # 애니메이션된 로딩 표시기 저장소
   ntp: ^1.0.8 # 정확한 시간을 얻을 수 있는 플러그인
+  carousel_slider: ^4.1.1
 dev_dependencies:
   flutter_test: # flutter용 테스트 라이브러리
     sdk: flutter

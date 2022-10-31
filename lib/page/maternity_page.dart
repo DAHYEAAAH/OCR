@@ -498,14 +498,14 @@ class MaternityPageState extends State<MaternityPage>{
                           children: [
                             TableRow(children: [
                               TableCell(
-                                child: SizedBox(height: 100,),
+                                child: SizedBox(height: 80,),
                               ),
                               Column(children:[
                                 Text('특이사항')
                               ]),
                               Column(children:[
                                 TextField(controller: memo_Controller,
-                                  decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),keyboardType: TextInputType.text,textAlign: TextAlign.center,),
+                                  decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),keyboardType: TextInputType.text,textAlign: TextAlign.center,maxLines: 2,),
                               ]),
                             ],),
                           ],

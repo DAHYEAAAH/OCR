@@ -54,36 +54,111 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
+          padding: EdgeInsets.fromLTRB(50, 100, 50, 100),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("임신사")
+                      Text("임신사"),
+                    ],
+                  ),
+                  SizedBox(height: 5,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+
+                    children: <Widget>[
+                      SizedBox(width:20,),
+                      OutlinedButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant()));
+                          },
+                        child: const Text('OCR',),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                        ),
+                      ),
+                      OutlinedButton(
+                        onPressed: ()async{
+                          //서버로부터 값 받아오기
+                          List<dynamic> list = await pregnant_getocr();
+                          print("pregnant get ocr->");
+                          print(list);
+                          // PregnantListPage로 넘어가기
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(list)));
+                        },
+                        child: const Text('기록'),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                        ),
+                      ),
+                      SizedBox(width:20,),
+                    ],
+                  ),
+                  SizedBox(height:20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("분만사"),
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
 
                     children: <Widget>[
+                      SizedBox(width:20,),
                       OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant()));
-                            },
-                          child: const Text('OCR')
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayMaternity()));
+                        },
+                        child: const Text('OCR'),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                        ),
                       ),
+
                       OutlinedButton(
-                          onPressed: ()async{
-                            //서버로부터 값 받아오기
-                            List<dynamic> list = await pregnant_getocr();
-                            print("pregnant get ocr->");
-                            print(list);
-                            // PregnantListPage로 넘어가기
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(list)));
-                          },
-                          child: const Text('기록')
+                        onPressed: () async{
+                          //서버로부터 값 받아오기
+                          List<dynamic> list = await maternity_getocr();
+                          print("maternity get ocr->");
+                          print(list);
+                          // MaternityListPage로 넘어가기
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => MaternityListPage(list)));
+                        },
+                        child: const Text('기록'),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                        ),
                       ),
+                      SizedBox(width:20,),
+                    ],
+                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: <Widget>[
+                  //     SizedBox(width: 20,),
+                      // SizedBox(width: 10,),
+
+                      // SizedBox(width: 150,),
+                      // OutlinedButton(
+                      //     onPressed: () async {
+                      //       // MaternityGraphPage로 넘어가기
+                      //       await preparegraph();
+                      //       Navigator.push(context, MaterialPageRoute(
+                      //           builder: (context) => OwnerGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
+                      //     },
+                      //     child: const Text('그래프')
+                      // ),
+                  //   ],
+                  // ),
+                  SizedBox(height: 30,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // SizedBox(width: 100,),
                       OutlinedButton(
                           onPressed: () async {
                             // PregnantGraphPage로 넘어가기
@@ -91,59 +166,14 @@ class _MyHomePageState extends State<MyHomePage> {
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (context) =>  GraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
                           },
-                          child: const Text('그래프')
+                          child: const Text('그래프'),
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.fromLTRB(90, 0, 90, 0),
+                          ),
                       ),
+                      // SizedBox(width: 70,)
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("분만사")
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      OutlinedButton(
-                          onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayMaternity()));
-                            },
-                          child: const Text('OCR')
-                      ),
-                      OutlinedButton(
-                          onPressed: () async{
-                            //서버로부터 값 받아오기
-                            List<dynamic> list = await maternity_getocr();
-                            print("maternity get ocr->");
-                            print(list);
-                            // MaternityListPage로 넘어가기
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => MaternityListPage(list)));
-                          },
-                          child: const Text('기록')
-                      ),
-                      OutlinedButton(
-                          onPressed: () async {
-                            // MaternityGraphPage로 넘어가기
-                            await preparegraph();
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => OwnerGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
-                          },
-                          child: const Text('그래프')
-                      ),
-                    ],
-                  ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: <Widget>[
-                  //     OutlinedButton(
-                  //         onPressed: () {
-                  //           delete_pregnant();
-                  //         },
-                  //         child: const Text('삭제')
-                  //     ),
-                  //   ],
-                  // ),
                 ]
             )
         )
