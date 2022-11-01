@@ -307,7 +307,7 @@ LineChartData mainChart_sow_cross(List li, int weeknum) {
           // print('bottomTitles $value');
           switch (value.toInt()) {
             case 0:
-              return weeknum.toString()+"\n"+Text(li[0][1].toString().split("-").last+"일");
+              return weeknum.toString()+"\n"+li[0][1].toString().split("-").last+"일";
               return li[0][1].toString().split("-").last+"일";
             case 4:
               return (weeknum+1).toString();
