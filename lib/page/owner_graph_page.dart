@@ -39,7 +39,7 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
   changeMonth() async {
     li.clear();
 
-    var now = DateTime(2022, thismonth, 1); //선택한 달의 1일을 기준날짜로 잡음
+    var now = DateTime(thisyear, thismonth, 1); //선택한 달의 1일을 기준날짜로 잡음
 
     var firstSunday = DateTime(
         now.year, now.month, now.day - (now.weekday - 0)); //기준날짜가 속한 주의 일요일을 구함

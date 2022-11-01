@@ -33,10 +33,13 @@ class GraphPageState extends State<GraphPage> {
   var thisyear = DateTime.now().year;   // 년도
   var thismonth = DateTime.now().month; // 월
   List li=[];
+  int count = 0;
+
 
   changeMonth() async{
+    count = 1;
     li.clear();
-    var now = DateTime(2022,thismonth,1); //선택한 달의 1일을 기준날짜로 잡음
+    var now = DateTime(thisyear,thismonth,1); //선택한 달의 1일을 기준날짜로 잡음
 
     var firstSunday = DateTime(now.year, now.month, now.day - (now.weekday - 0)); //기준날짜가 속한 주의 일요일을 구함
 
@@ -62,6 +65,28 @@ class GraphPageState extends State<GraphPage> {
       sunday = nextsunday; // 그 다음주를 계산하기 위해 sunday를 nextsunday로 변경
     }
     print(li);
+
+
+    var firstday = DateTime(int.parse(li[0][1].toString().split("-")[0]),1,1);
+
+    var firstweek = DateTime(firstday.year, firstday.month,firstday.day - (firstday.weekday - 0) ); //기준날짜가 속한 주의 일요일을 구함
+    if(firstweek.day>7){ // 찾아낸 일요일이 이전달일경우 +7일을 함 (ex)10.1일이 속한 일요일 9월25일 =(변경)=> 10월 2일)
+      firstweek = firstweek.add(const Duration(days: 7));
+
+    }
+    print('firstday');
+    print(firstday);
+    print(firstweek);
+    while(true){
+      if(firstweek.month==int.parse(li[0][1].toString().split("-")[1])&& firstweek.day==int.parse(li[0][1].toString().split("-")[2])){
+        break;
+      }
+      firstweek = firstweek.add(const Duration(days: 7));
+      count++;
+    }
+    print(firstweek);
+    print("count is");
+    print(count);
   }
   getdata()async{
     var pregnantdata= await send_date_pregnant(li);
@@ -172,7 +197,7 @@ class GraphPageState extends State<GraphPage> {
                   child:Padding(
                     padding: EdgeInsets.fromLTRB(20, 20, 30, 30),
                     child: LineChart(
-                      mainChart_sow_cross(li),
+                      mainChart_sow_cross(li,count),
                     ),
                   ),
                 ),
@@ -223,11 +248,15 @@ class GraphPageState extends State<GraphPage> {
     );
   }
 }
-
 //교배복수**********************
-LineChartData mainChart_sow_cross(List li) {
+LineChartData mainChart_sow_cross(List li, int weeknum) {
   print("Draww");
   print(li);
+  print(weeknum);
+
+  // int weeknum = calweeknum(li);
+
+
   List<Color> gradientColors_values = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
@@ -278,13 +307,17 @@ LineChartData mainChart_sow_cross(List li) {
           // print('bottomTitles $value');
           switch (value.toInt()) {
             case 0:
+              return weeknum.toString()+"\n"+Text(li[0][1].toString().split("-").last+"일");
               return li[0][1].toString().split("-").last+"일";
             case 4:
-              return li[1][1].toString().split("-").last+"일";
+              return (weeknum+1).toString();
+              // return li[1][1].toString().split("-").last+"일";
             case 8:
-              return li[2][1].toString().split("-").last+"일";
+              return (weeknum+2).toString();
+              // return li[2][1].toString().split("-").last+"일";
             case 12:
-              return li[3][1].toString().split("-").last+"일";
+              return (weeknum+3).toString();
+              // return li[3][1].toString().split("-").last+"일";
           }
           return '';
         },
@@ -377,15 +410,25 @@ LineChartData mainChart_sow_cross(List li) {
           // print('bottomTitles $value');
           switch (value.toInt()) {
             case 0:
-              return li[0][1].toString().split("-").last+"일";
+              return weeknum.toString();
+
+          // return li[0][1].toString().split("-").last+"일";
             case 3:
-              return li[1][1].toString().split("-").last+"일";
+              return (weeknum+1).toString();
+
+              // return li[1][1].toString().split("-").last+"일";
             case 6:
-              return li[2][1].toString().split("-").last+"일";
+              return (weeknum+2).toString();
+
+              // return li[2][1].toString().split("-").last+"일";
             case 9:
-              return li[3][1].toString().split("-").last+"일";
+              return (weeknum+3).toString();
+
+              // return li[3][1].toString().split("-").last+"일";
             case 12:
-              return li[4][1].toString().split("-").last+"일";
+              return (weeknum+4).toString();
+
+              // return li[4][1].toString().split("-").last+"일";
           }
           return '';
         },
