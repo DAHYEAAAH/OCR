@@ -79,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                         ),
                       ),
+                      SizedBox(width:20,),
                       OutlinedButton(
                         onPressed: ()async{
                           //서버로부터 값 받아오기
@@ -117,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                         ),
                       ),
-
+                      SizedBox(width:20,),
                       OutlinedButton(
                         onPressed: () async{
                           //서버로부터 값 받아오기
@@ -164,11 +165,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             // PregnantGraphPage로 넘어가기
                             await preparegraph();
                             Navigator.push(context, MaterialPageRoute(
-                                builder: (context) =>  GraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
+                                builder: (context) =>  GraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)
+                            ));
+                            //****사장님 그래프 페이지를 보여줄 경우 위에 GraphPage는 주석후, 아래 주석을 풀어주세요***//
+                            // Navigator.push(context, MaterialPageRoute(
+                            //     builder: (context) => OwnerGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals))
+                            // );
+
                           },
                           child: const Text('그래프'),
                           style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.fromLTRB(90, 0, 90, 0),
+                            padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
                           ),
                       ),
                       // SizedBox(width: 70,)
@@ -239,13 +246,22 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
     var targetdata= await ocrTargetSelectedRow(thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
-    goals[0] = targetdata[0];
-    goals[1] = targetdata[1];
-    goals[2] = targetdata[2];
-    goals[3] = targetdata[3];
-    goals[4] = targetdata[4];
-    goals[5] = targetdata[5];
-    print(goals);
+    if(targetdata==null){
+      goals[0]=now.year.toString();
+      goals[1]=now.month.toString();
+      goals[2]='0';
+      goals[3]='0';
+      goals[4]='0';
+      goals[5]='0';
+    }else {
+      goals[0] = targetdata[0];
+      goals[1] = targetdata[1];
+      goals[2] = targetdata[2];
+      goals[3] = targetdata[3];
+      goals[4] = targetdata[4];
+      goals[5] = targetdata[5];
+      print(goals);
+    }
     li.clear();
   }
 

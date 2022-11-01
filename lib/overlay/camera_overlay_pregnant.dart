@@ -223,14 +223,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                             });
                                             List list = await uploadimg_pregnant(File(file.path));
 
-                                            // 찍은 사진 갤러리에 저장
-                                            GallerySaver.saveImage(file.path)
-                                                .then((value) => print(
-                                                '>>>> save value= $value'))
-                                                .catchError((err) {
-                                              print('error : $err');
-                                            });
-                                            if(list[1].length==0||(list[1][0]==""&&list[1][1]==""&&list[1][4]==""&&list[1][7]==""&&list[1][9]=="")){
+                                            if(list[1].length==0||(list[1].every((x) => x == ""))){
                                               print("ocr인식오류");
 
                                               Navigator.pop(context, 'Yep!');
@@ -269,7 +262,15 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                               Navigator.pop(context, 'Yep!');
                                               Navigator.pop(context, 'Yep!');
                                             }
+
                                             else {
+                                              // 찍은 사진 갤러리에 저장
+                                              GallerySaver.saveImage(file.path)
+                                                  .then((value) => print(
+                                                  '>>>> save value= $value'))
+                                                  .catchError((err) {
+                                                print('error : $err');
+                                              });
                                               // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
                                               String returnfilepath = await downloadFile(
                                                   "ocrpreimages/" + list[0]);

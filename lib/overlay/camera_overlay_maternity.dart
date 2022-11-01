@@ -228,12 +228,8 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                             // 서버로 임신사 사진 list에 넣어서 보내기
 
                                             List list = await uploadimg_maternity(File(file.path));
-                                            GallerySaver.saveImage(file.path)
-                                                .then((value) => print('>>>> save value= $value'))
-                                                .catchError((err) {
-                                              print('error : $err');
-                                            });
-                                            if(list[1].length==0||(list[1][0]==""&&list[1][1]==""&&list[1][4]==""&&list[1][7]==""&&list[1][10]=="")){
+
+                                            if(list[1].length==0||(list[1].every((x) => x == ""))){
                                               print("ocr인식오류");
 
                                               Navigator.pop(context, 'Yep!');
@@ -272,8 +268,50 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                               Navigator.pop(context, 'Yep!');
                                               Navigator.pop(context, 'Yep!');
                                             }
-                                            else {
+                                            else if(list[1][12].contains("-")){
+                                              print("잘못된 현황판");
 
+                                              Navigator.pop(context, 'Yep!');
+                                              showDialog(context: context, builder: (context){
+                                                return Container(
+                                                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                  alignment: Alignment.center,
+                                                  // decoration: const BoxDecoration(
+                                                  //   color: Colors.white70,
+                                                  // ),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white70,
+                                                        borderRadius: BorderRadius.circular(10.0)
+                                                    ),
+                                                    width: 300.0,
+                                                    height: 100.0,
+                                                    alignment: AlignmentDirectional.center,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        Text(
+                                                            "임신사 카메라로 촬영해주세요",
+                                                            style: TextStyle(
+                                                                fontSize: 17,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.black
+                                                            ))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                              await Future.delayed(Duration(seconds: 1));
+                                              Navigator.of(context).popUntil((route) => route.isFirst);
+                                            }
+                                            else {
+                                              GallerySaver.saveImage(file.path)
+                                                  .then((value) => print('>>>> save value= $value'))
+                                                  .catchError((err) {
+                                                print('error : $err');
+                                              });
                                               String returnfilepath = await downloadFile("ocrmatimages/" + list[0]);
 
                                               Navigator.of(context).popUntil((route) => route.isFirst);
