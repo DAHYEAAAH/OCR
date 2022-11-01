@@ -251,7 +251,7 @@ pregnant_getocr() async {
       print(" success!"+ pregnants[i].ocr_seq.toString()+" " +pregnants[i].sow_no.toString());
       list_ocr_seq.add(pregnants[i].ocr_seq!.toInt());
       list_sow_no.add(pregnants[i].sow_no!.toString());
-      list_upload_day.add(pregnants[i].input_date.toString()+" "+pregnants[i].input_time.toString().split(":")[0]+"시"+pregnants[i].input_time.toString().split(":")[1]+"분");
+      list_upload_day.add(pregnants[i].input_date.toString()+" "+pregnants[i].input_time.toString().split(":")[0]+":"+pregnants[i].input_time.toString().split(":")[1]);
     }
   }
   else{
@@ -353,7 +353,7 @@ maternity_getocr() async {
       print(" success!"+ maternity[i].ocr_seq.toString()+" " +maternity[i].sow_no.toString());
       list_ocr_seq.add(maternity[i].ocr_seq!.toInt());
       list_sow_no.add(maternity[i].sow_no!.toString());
-      list_upload_day.add(maternity[i].input_date.toString()+" "+maternity[i].input_time.toString().split(":")[0]+"시"+maternity[i].input_time.toString().split(":")[1]+"분");
+      list_upload_day.add(maternity[i].input_date.toString()+" "+maternity[i].input_time.toString().split(":")[0]+":"+maternity[i].input_time.toString().split(":")[1]);
 
     }
   }

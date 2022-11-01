@@ -181,7 +181,6 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
         vaccine3_sec_Controller.text = widget.listfromserver_mat_mo[15].toString().split("-")[1];
         vaccine4_fir_Controller.text = widget.listfromserver_mat_mo[16].toString().split("-")[0];
         vaccine4_sec_Controller.text = widget.listfromserver_mat_mo[16].toString().split("-")[1];
-
       }
     }
 
