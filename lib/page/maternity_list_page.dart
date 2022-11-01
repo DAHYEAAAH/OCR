@@ -102,7 +102,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                                 MaternityModifyPage(list, returnfilepath)));
                                             //   print("서버에게 받은 리스트 null 값임");
 
-                                          }, icon: const Icon(Icons.edit)),
+                                          }, icon: const Icon(Icons.edit,color: Colors.black,)),
                                           IconButton(onPressed: () async {
                                             //사용자가 선택한 리스트 행 삭제
                                             showDialog(context: context,
@@ -141,7 +141,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                               );
                                             }
                                             );
-                                            }, icon: const Icon(Icons.delete)),
+                                            }, icon: const Icon(Icons.delete,color: Colors.black,)),
                                         ],
                                       )
                                   ),

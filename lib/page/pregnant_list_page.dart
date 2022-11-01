@@ -103,7 +103,7 @@ class PregnantListPageState extends State<PregnantListPage> {
 
                                               Navigator.push(context, MaterialPageRoute(builder: (context) =>
                                                   PregnantModifyPage(list,returnfilepath))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
-                                              }, icon: const Icon(Icons.edit)), //edit icon 사용
+                                              }, icon: const Icon(Icons.edit,color: Colors.black,)), //edit icon 사용
 
                                               //삭제 아이콘
                                               IconButton(onPressed: () async {
@@ -154,7 +154,7 @@ class PregnantListPageState extends State<PregnantListPage> {
                                                     }
                                                 );
 
-                                              }, icon: const Icon(Icons.delete)), //delete icon 사용
+                                              }, icon: const Icon(Icons.delete,color: Colors.black,)), //delete icon 사용
                                             ],
                                           ),
                                         ) ,
