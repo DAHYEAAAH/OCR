@@ -103,19 +103,48 @@ class MaternityListPageState extends State<MaternityListPage> {
                                             //   print("서버에게 받은 리스트 null 값임");
 
                                           }, icon: const Icon(Icons.edit)),
-                                          IconButton(onPressed: ()async{
-                                            await maternity_deleterow(ocr_seq[index]);
-                                            List<dynamic> list = await maternity_getocr();
-                                            print("maternity return get ocr->");
-                                            Navigator.pop(context,MaterialPageRoute(builder: (context)=> MaternityListPage(list)));
-                                            Navigator.push(context,MaterialPageRoute(builder: (context)=> MaternityListPage(list)));
-                                          },icon: const Icon(Icons.delete)),
+                                          IconButton(onPressed: () async {
+                                            //사용자가 선택한 리스트 행 삭제
+                                            showDialog(context: context,
+                                              barrierDismissible: true,
+                                              builder: (context) {
+                                              // return Expanded(
+                                              return AlertDialog(
+                                                scrollable: true,
+                                                title: Text("삭제하시겠습니까?",textAlign: TextAlign.center,),
+                                                content: Column(children: [
+                                                  Text("모돈번호 : "+sow_no[index]),
+                                                  Text("업로드시간 : "+upload_day[index]),
+                                                ],),
+                                                actions: <Widget>[
+                                                  ButtonBar(
+                                                  alignment: MainAxisAlignment.end,
+                                                  // buttonPadding: EdgeInsets.all(1.0),
+                                                  children: [
+                                                  TextButton( child: const Text('취소'), onPressed: () => Navigator.pop(context, '취소')),
+                                                  TextButton(
+                                                    onPressed: () async{
+                                                      await pregnant_deleterow(ocr_seq[index]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
 
+                                                      //서버로부터 리스트 다시 받고 다시 화면 새로고침
+                                                      List<dynamic> list = await maternity_getocr(); //서버로부터 list page에 띄울 리스트 받아오기
+                                                      print("maternity return get ocr->");
+                                                      Navigator.of(context).popUntil((route) => route.isFirst);
+                                                      print("pop 함");
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage(list)));
+                                                    },
+                                                    child: const Text('삭제'),
+                                                  ),
+                                                  ]
+                                                  )
+                                                ]
+                                              );
+                                            }
+                                            );
+                                            }, icon: const Icon(Icons.delete)),
                                         ],
                                       )
-
-
-                                  ) ,
+                                  ),
                                 // Container(
                                 //   height: 1,
                                 //   color: Colors.black,
@@ -134,3 +163,5 @@ class MaternityListPageState extends State<MaternityListPage> {
     );
   }
 }
+
+
