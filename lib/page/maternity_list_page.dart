@@ -113,6 +113,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                                   scrollable: true,
                                                   title: Text("삭제하시겠습니까?",textAlign: TextAlign.center,),
                                                   content: Column(children: [
+                                                    Text("",),
                                                     Text("모돈번호 " + sow_no[index]+ "가 삭제됩니다",textAlign: TextAlign.center,),
                                                   ],),
                                                 actions: <Widget>[
