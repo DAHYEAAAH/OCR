@@ -124,7 +124,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                                   TextButton( child: const Text('취소'), onPressed: () => Navigator.pop(context, '취소')),
                                                   TextButton(
                                                     onPressed: () async{
-                                                      await pregnant_deleterow(ocr_seq[index]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
+                                                      await maternity_deleterow(ocr_seq[index]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
 
                                                       //서버로부터 리스트 다시 받고 다시 화면 새로고침
                                                       List<dynamic> list = await maternity_getocr(); //서버로부터 list page에 띄울 리스트 받아오기

@@ -129,11 +129,13 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
   final memo_Controller = TextEditingController();
   final pxController = TextEditingController();
 
+  var flag = 0; // 서버에서 가져온 값을 한번만 표에 넣기 위함;
   @override
   Widget build(BuildContext context) {
 
     if(widget.listfromserver_pre_mo.isNotEmpty){
-      if(sowID1_Controller.text.isEmpty) {
+      if(flag==0) {
+        flag++;
         print("임신사 수정 페이지 : ");
         print(widget.listfromserver_pre_mo);
 
@@ -229,7 +231,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                                 TextField(controller: sowID2_Controller,
                                   decoration: const InputDecoration(hintText: " "),
                                   style: const TextStyle(fontSize: 20),
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.number,
                                   textAlign: TextAlign.center, enabled: false,),
                               ]),
 
@@ -440,7 +442,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                               TextField(controller: boar1ID2_Controller,
                                 decoration: const InputDecoration(hintText: " "),
                                 style: const TextStyle(fontSize: 20),
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,),
                             ]),
                             Column(children: const [
@@ -460,7 +462,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                               TextField(controller: boar2ID2_Controller,
                                 decoration: const InputDecoration(hintText: " "),
                                 style: const TextStyle(fontSize: 20),
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,),
                             ]),
                           ],),

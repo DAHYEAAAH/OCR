@@ -133,11 +133,12 @@ class MaternityPageState extends State<MaternityPage>{
 
   final memo_Controller = TextEditingController();
 
+  var flag = 0; // 서버에서 가져온 값을 한번만 표에 넣기 위함
   @override
   Widget build(BuildContext context) {
-
     if(widget.listfromserver_mat.isNotEmpty){
-      if(sowID1_Controller.text.isEmpty) {
+      if(flag==0) {
+        flag++;
         print(widget.listfromserver_mat);
 
         sowID1_Controller.text = widget.listfromserver_mat[1][0].split('-')[0];
@@ -217,7 +218,7 @@ class MaternityPageState extends State<MaternityPage>{
                                 ], ),
                                 Column(children:[
                                   TextField(controller: sowID2_Controller,
-                                    decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),keyboardType: TextInputType.text,textAlign: TextAlign.center,),
+                                    decoration: const InputDecoration(hintText: " "),style: TextStyle(fontSize: 20),keyboardType: TextInputType.number,textAlign: TextAlign.center,),
                                 ]),
 
                               ],),

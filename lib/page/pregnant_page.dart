@@ -134,12 +134,14 @@ class PregnantPageState extends State<PregnantPage>{
   final memo_Controller = TextEditingController();
   final pxController = TextEditingController();
 
+  var flag = 0; // 서버에서 가져온 값을 한번만 표에 넣기 위함
   @override
   Widget build(BuildContext context) {
 
     // 서버에서 받은 값이 들어있고, 현황판이 빈칸일때만 밑에 코드가 실행
     if(widget.listfromserver_pre.isNotEmpty){
-      if (sowID1_Controller.text.isEmpty) {
+      if (flag==0) {
+        flag++;
         print(widget.listfromserver_pre);
 
         // 서버로부터 받은 값 매핑
@@ -232,7 +234,7 @@ class PregnantPageState extends State<PregnantPage>{
                                     TextField(controller: sowID2_Controller,
                                       decoration: const InputDecoration(hintText: " "),
                                       style: const TextStyle(fontSize: 20),
-                                      keyboardType: TextInputType.text, // 키보드 영어자판 나오게
+                                      keyboardType: TextInputType.number, // 키보드 영어자판 나오게
                                       textAlign: TextAlign.center,),
                                   ]),
 
@@ -437,7 +439,7 @@ class PregnantPageState extends State<PregnantPage>{
                                   TextField(controller: boar1ID2_Controller,
                                     decoration: const InputDecoration(hintText: " "),
                                     style: const TextStyle(fontSize: 20),
-                                    keyboardType: TextInputType.text,
+                                    keyboardType: TextInputType.number,
                                     textAlign: TextAlign.center,),
                                 ]),
                                 Column(children: const [
@@ -457,7 +459,7 @@ class PregnantPageState extends State<PregnantPage>{
                                   TextField(controller: boar2ID2_Controller,
                                     decoration: const InputDecoration(hintText: " "),
                                     style: const TextStyle(fontSize: 20),
-                                    keyboardType: TextInputType.text,
+                                    keyboardType: TextInputType.number,
                                     textAlign: TextAlign.center,),
                                 ]),
                               ],),
