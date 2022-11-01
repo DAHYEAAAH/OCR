@@ -339,7 +339,7 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
                                       TextButton(
                                         onPressed: () async{
 
-                                          await ocrTargetInsertUpate(
+                                          await ocrTargetInsertUpdate(
                                               thisyear.toString(),
                                               thismonth.toString().padLeft(
                                                   2, "0").toString(), goal_Controller_total.text.toString(), goal_Controller_feed.text.toString(),

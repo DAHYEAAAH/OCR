@@ -8,9 +8,10 @@ import 'package:last_ocr/entities/Ocr_maternity.dart';
 import 'package:last_ocr/entities/Ocr_pregnant.dart';
 import 'package:ntp/ntp.dart';
 import 'package:path_provider/path_provider.dart';
+
 late final domain = "https://www.dfxsoft.com/api/";
 
-
+// 서버로 현재 날짜를 보내고 임신사의 교배복수 총합 받기
 send_date_pregnant(List sendlist) async {
   print("send_date_pregnant");
   final api = domain+'ocrPregnantSendDate';
@@ -36,6 +37,7 @@ send_date_pregnant(List sendlist) async {
   return li;
 }
 
+// 서버로 현재 날짜를 보내고 분만사의 총산자수, 포유개시두수, 이유두수의 총합 받기
 send_date_maternity(List sendlist) async {
   // print("materntiy");
   final api = domain+'ocrMaternitySendDate';
@@ -60,7 +62,8 @@ send_date_maternity(List sendlist) async {
   return li;
 }
 
-ocrTargetInsertUpate(String yyyy, String mm, String sow_totalbaby, String sow_feedbaby, String sow_sevrer, String sow_cross) async {
+// 서버에 현재 날짜와 교배복수, 총산자수, 포유개시두수, 이유두수의 목표값 보내고 받기
+ocrTargetInsertUpdate(String yyyy, String mm, String sow_totalbaby, String sow_feedbaby, String sow_sevrer, String sow_cross) async {
   print("ocrTargetInsertUpate");
   final api = domain+'ocrTargetInsertUpdate';
   final dio = Dio();
@@ -85,6 +88,8 @@ ocrTargetInsertUpate(String yyyy, String mm, String sow_totalbaby, String sow_fe
   print("returndata-목표값");
   print(response.data);
 }
+
+// 서버에 현재 날짜 보내고 목표값 받기
 ocrTargetSelectedRow(String yyyy, String mm) async {
   final api = domain+'ocrTargetSelectedRow';
   final dio = Dio();
@@ -105,9 +110,10 @@ ocrTargetSelectedRow(String yyyy, String mm) async {
   print("returndata-목표값");
   print(response.data);
 
-  // 총산자수, 포유, 이유, 교배 순
+  // 총산자수, 포유, 이유, 교배 순으로 계산 값을 받아온다
   return response.data;
 }
+
 // 서버로 임신사 사진 보내는 api
 Future<List> uploadimg_pregnant(File file)async{
   final api = domain+'ocrImageUpload';
@@ -152,6 +158,30 @@ pregnant_selectrow(int num) async{
   }
   return response.data;
 }
+
+// homepage img 임신사 전체 기록 불러오기
+homepage_img() async {
+  List list = [];
+  final api =domain+'launchersGetList';
+  final dio = Dio();
+  Response response = await dio.get(api);
+
+  if(response.statusCode == 200) {
+    List<dynamic> result = response.data;
+  }
+  else{
+    print(" fail..."+response.statusCode.toString());
+  }
+
+  for(int i = 0 ; i < 26 ; i++){
+    list.add(response.data[i]);
+  }
+
+  print(list);
+
+  return list;
+}
+
 
 pregnant_deleterow(int num) async{
   final api =domain+'ocr_pregnantDelete';
@@ -221,7 +251,7 @@ pregnant_getocr() async {
       print(" success!"+ pregnants[i].ocr_seq.toString()+" " +pregnants[i].sow_no.toString());
       list_ocr_seq.add(pregnants[i].ocr_seq!.toInt());
       list_sow_no.add(pregnants[i].sow_no!.toString());
-      list_upload_day.add(pregnants[i].input_date.toString()+" "+pregnants[i].input_time.toString().split(":")[0]+":"+pregnants[i].input_time.toString().split(":")[1]);
+      list_upload_day.add(pregnants[i].input_date.toString()+" "+pregnants[i].input_time.toString().split(":")[0]+"시"+pregnants[i].input_time.toString().split(":")[1]+"분");
     }
   }
   else{
@@ -323,7 +353,7 @@ maternity_getocr() async {
       print(" success!"+ maternity[i].ocr_seq.toString()+" " +maternity[i].sow_no.toString());
       list_ocr_seq.add(maternity[i].ocr_seq!.toInt());
       list_sow_no.add(maternity[i].sow_no!.toString());
-      list_upload_day.add(maternity[i].input_date.toString()+" "+maternity[i].input_time.toString().split(":")[0]+":"+maternity[i].input_time.toString().split(":")[1]);
+      list_upload_day.add(maternity[i].input_date.toString()+" "+maternity[i].input_time.toString().split(":")[0]+"시"+maternity[i].input_time.toString().split(":")[1]+"분");
 
     }
   }
