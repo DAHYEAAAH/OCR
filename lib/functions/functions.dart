@@ -404,3 +404,93 @@ resultToast(String msg) {
       fontSize: 16.0
   );
 }
+
+preparegraph() async{
+  var mating_week = List<double>.filled(5, 0, growable: true);
+  var feedbaby_week = List<double>.filled(5, 0, growable: true);
+  var sevrer_week = List<double>.filled(5, 0, growable: true);
+  var totalbaby_week = List<double>.filled(5, 0, growable: true);
+
+  var goals = List<String>.filled(6, "");
+
+  var thisyear = DateTime.now().year;   // 년도
+  var thismonth = DateTime.now().month; // 월
+  List li=[];
+
+  var now = DateTime(2022,thismonth,1); //선택한 달의 1일을 기준날짜로 잡음
+
+  var firstSunday = DateTime(now.year, now.month, now.day - (now.weekday - 0)); //기준날짜가 속한 주의 일요일을 구함
+
+  if(firstSunday.day>now.day){ // 찾아낸 일요일이 이전달일경우 +7일을 함 (ex)10.1일이 속한 일요일 9월25일 =(변경)=> 10월 2일)
+    firstSunday = firstSunday.add(const Duration(days: 7));
+  }
+
+  var sunday = firstSunday;
+  List templist=[]; // [시작날짜,끝날짜]를 저장하기 위한 임시 리스트
+  templist.add(DateFormat('yyyy-MM-dd').format(sunday.add(const Duration(days:-6)))); //시작날짜계산법 : 일요일날짜-6
+  templist.add(DateFormat('yyyy-MM-dd').format(sunday)); // 끝날짜
+  li.add(templist); // [시작날짜,끝날짜] 형태로 리스트에 추가
+
+  while(true){
+    List templist=[];
+    var nextsunday = sunday.add(const Duration(days: 7)); // 다음주 일요일 계산법 : 일요일+7
+    if(nextsunday.day<sunday.day){ // 다음주 일요일이 다음달에 속할 경우 리스트에 추가하지 않고 반복문을 종료시킴.
+      break;
+    }
+    templist.add(DateFormat('yyyy-MM-dd').format(nextsunday.add(const Duration(days:-6)))); // 시작날짜계산법 : 다음주일요일-6
+    templist.add(DateFormat('yyyy-MM-dd').format(nextsunday));  // 끝날짜
+    li.add(templist); // [시작날짜, 끝날짜] 형태로 리스트에 추가
+    sunday = nextsunday; // 그 다음주를 계산하기 위해 sunday를 nextsunday로 변경
+  }
+  print(li);
+
+  var pregnantdata= await send_date_pregnant(li);
+  print(pregnantdata.length);
+  for(int i=0; i<li.length; i++){
+    if(pregnantdata[i]['sow_cross']==null){
+      mating_week[i]=0;
+    }else{
+      mating_week[i] = pregnantdata[i]['sow_cross'];
+    }
+  }
+  print(mating_week);
+
+  var maternitydata= await send_date_maternity(li);
+  print(maternitydata.length);
+  for(int i=0; i<li.length; i++){
+    if(maternitydata[i]['feedbaby']==null){
+      feedbaby_week[i]=0;
+    } else{
+      feedbaby_week[i] = maternitydata[i]['feedbaby'];
+    }
+    if(maternitydata[i]['sevrer']==null){
+      sevrer_week[i]=0;
+    }else{
+      sevrer_week[i] = maternitydata[i]['sevrer'];
+    }
+    if(maternitydata[i]['totalbaby']==null){
+      totalbaby_week[i]=0;
+    }else{
+      totalbaby_week[i] = maternitydata[i]['totalbaby'];
+    }
+  }
+  var targetdata= await ocrTargetSelectedRow(thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
+  if(targetdata==null){
+    goals[0]=now.year.toString();
+    goals[1]=now.month.toString();
+    goals[2]='0';
+    goals[3]='0';
+    goals[4]='0';
+    goals[5]='0';
+  }else {
+    goals[0] = targetdata[0];
+    goals[1] = targetdata[1];
+    goals[2] = targetdata[2];
+    goals[3] = targetdata[3];
+    goals[4] = targetdata[4];
+    goals[5] = targetdata[5];
+    print(goals);
+  }
+  li.clear();
+  return [mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals];
+}

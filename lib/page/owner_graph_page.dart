@@ -278,7 +278,7 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
                   child: Icon(Icons.arrow_forward),
                   onPressed: () async {
                     showDialog(context: context,
-                        barrierDismissible: true,
+                        barrierDismissible: false,
                         builder: (context) {
                           // return Expanded(
                           return AlertDialog(
@@ -346,8 +346,13 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
                                     children: [
                                       TextButton(
                                         child: const Text('취소'),
-                                        onPressed: () =>
-                                            Navigator.pop(context, '취소'),
+                                        onPressed: () {
+                                            goal_Controller_cross.text = widget.goal[5].toString();
+                                            goal_Controller_sevrer.text = widget.goal[4].toString();
+                                            goal_Controller_total.text = widget.goal[2].toString();
+                                            goal_Controller_feed.text = widget.goal[3].toString();
+                                            Navigator.pop(context, '취소');
+                                        }
                                       ),
                                       TextButton(
                                         onPressed: () async{
