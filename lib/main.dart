@@ -67,7 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   SizedBox(height: 5,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-
                     children: <Widget>[
                       SizedBox(width:20,),
                       OutlinedButton(
@@ -137,24 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       SizedBox(width:20,),
                     ],
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: <Widget>[
-                  //     SizedBox(width: 20,),
-                      // SizedBox(width: 10,),
-
-                      // SizedBox(width: 150,),
-                      // OutlinedButton(
-                      //     onPressed: () async {
-                      //       // MaternityGraphPage로 넘어가기
-                      //       await preparegraph();
-                      //       Navigator.push(context, MaterialPageRoute(
-                      //           builder: (context) => OwnerGraphPage(mating_week,sevrer_week,totalbaby_week,feedbaby_week, goals)));
-                      //     },
-                      //     child: const Text('그래프')
-                      // ),
-                  //   ],
-                  // ),
                   SizedBox(height: 30,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

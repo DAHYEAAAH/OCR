@@ -213,7 +213,8 @@ Future<String> downloadFile(String imgname) async {
   try {
     var serverurl = domain+"ocrGetImage/"+imgname;
     print(serverurl);
-    var dir = await getApplicationDocumentsDirectory();
+    var dir = await getTemporaryDirectory();
+    // var dir = await getApplicationDocumentsDirectory();
     await dio.download(serverurl, '${dir.path}/'+imgname,
         onReceiveProgress: (rec, total) {
           print('Rec: $rec , Total: $total');

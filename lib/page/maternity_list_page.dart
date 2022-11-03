@@ -45,13 +45,13 @@ class MaternityListPageState extends State<MaternityListPage> {
                   Expanded(
                       child:ListView.separated( //리스트 뷰에서 리스트 별 나누기
                         padding: const EdgeInsets.all(8), //간격 : 8
-                        itemCount: ocr_seq.length, //ocr_seq.길이만큼 리스트뷰의 리스트 구분하기
+                        itemCount: sow_no.length, //ocr_seq.길이만큼 리스트뷰의 리스트 구분하기
                         itemBuilder: (BuildContext context, int index) {
                           return Container( //리스트별 Container로 감싸기
                             child: (
                                 Stack(
                                   children: [
-                                    for(int i = 0 ; i < ocr_seq.length ; i++)
+                                    // for(int i = 0 ; i < ocr_seq.length ; i++)
                                       ListTile(
                                           title: Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,7 +61,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                                 if(index!=0)
                                                   SizedBox(width: 50, child: IconButton(onPressed: () async {
                                                     List list = await maternity_selectrow(
-                                                        ocr_seq[index]); //사용자가 선택한 행의 인덱스값 서버로 넘기고, 받은 리스트 list에 넣기
+                                                        ocr_seq[index-1]); //사용자가 선택한 행의 인덱스값 서버로 넘기고, 받은 리스트 list에 넣기
                                                     print("분만사 selectrow 결과");
                                                     print(list);
 
@@ -122,7 +122,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                                                       TextButton(
                                                                         onPressed: () async {
                                                                           await maternity_deleterow(
-                                                                              ocr_seq[index]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
+                                                                              ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
 
                                                                           //서버로부터 리스트 다시 받고 다시 화면 새로고침
                                                                           List<
