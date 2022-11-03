@@ -44,7 +44,7 @@ dependencies:
   syncfusion_flutter_datagrid: ^20.2.43 # 표에서 데이터 표시, 조작
   intl: ^0.17.0 # message translation, plurals and genders, date/number formatting and parsing, and bidirectional text 기능 제공
   simple_gesture_detector: ^0.2.0 # 제스처 감지기
-  flutter_svg_provider: ^0.1.8 #to use svg images
+#  flutter_svg_provider: ^0.1.8 #to use svg images
   google_fonts: ^2.3.0 #to import google fonts and text theme
   flutter_secure_storage: ^3.3.5 # RSA로 암호화되는 AES 비밀키를 안전하게 저장하는 저장소
   fluttertoast: ^7.1.6 # toast기능 지원
@@ -59,6 +59,7 @@ dependencies:
   flutter_spinkit: ^5.1.0 # 애니메이션된 로딩 표시기 저장소
   ntp: ^1.0.8 # 정확한 시간을 얻을 수 있는 플러그인
   carousel_slider: ^4.1.1
+  flutter_launcher_icons: ^0.9.3
 dev_dependencies:
   flutter_test: # flutter용 테스트 라이브러리
     sdk: flutter

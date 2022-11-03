@@ -258,9 +258,21 @@ LineChartData mainChart_sow_cross(List li, int weeknum) {
     const Color(0xffffdd00),
   ];
 
+
+
   double max=40;
   if(mating_goal>40)
     max = mating_goal+10;
+  if(mating_week[0]>max)
+    max = mating_week[0];
+  if(mating_week[1]>max)
+    max = mating_week[1];
+  if(mating_week[2]>max)
+    max = mating_week[2];
+  if(mating_week[3]>max)
+    max = mating_week[3];
+
+
 
   if(li.length==4){
     return LineChartData(
@@ -362,6 +374,8 @@ LineChartData mainChart_sow_cross(List li, int weeknum) {
     ],
   );}
   else{
+    if(mating_week[4]>max)
+      max = mating_week[4];
     return LineChartData(
 
     gridData: FlGridData(
@@ -475,9 +489,19 @@ LineChartData mainChart_sow_sevrer(List li, int weeknum) {
     const Color(0xfffa0000),
     const Color(0xffffdd00),
   ];
-  double max=300;
+
+
+  double max= 500;
   if(sevrer_goal>300)
     max = sevrer_goal+10;
+  if(sevrer_week[0]>max)
+    max = sevrer_week[0];
+  if(sevrer_week[1]>max)
+    max = sevrer_week[1];
+  if(sevrer_week[2]>max)
+    max = sevrer_week[2];
+  if(sevrer_week[3]>max)
+    max = sevrer_week[3];
   if(li.length ==4)
     return LineChartData(
 
@@ -574,7 +598,9 @@ LineChartData mainChart_sow_sevrer(List li, int weeknum) {
         ),
       ],
     );
-  else
+  else {
+    if (sevrer_week[4] > max)
+      max = sevrer_week[4];
     return LineChartData(
 
       gridData: FlGridData(
@@ -610,15 +636,30 @@ LineChartData mainChart_sow_sevrer(List li, int weeknum) {
             // print('bottomTitles $value');
             switch (value.toInt()) {
               case 0:
-                return (weeknum+0).toString()+"주차\n~"+li[0][1].toString().split("-").last+"일";
+                return (weeknum + 0).toString() + "주차\n~" + li[0][1]
+                    .toString()
+                    .split("-")
+                    .last + "일";
               case 3:
-                return (weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일";
+                return (weeknum + 1).toString() + "주차\n~" + li[1][1]
+                    .toString()
+                    .split("-")
+                    .last + "일";
               case 6:
-                return (weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일";
+                return (weeknum + 2).toString() + "주차\n~" + li[2][1]
+                    .toString()
+                    .split("-")
+                    .last + "일";
               case 9:
-                return (weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일";
+                return (weeknum + 3).toString() + "주차\n~" + li[3][1]
+                    .toString()
+                    .split("-")
+                    .last + "일";
               case 12:
-                return (weeknum+4).toString()+"주차\n~"+li[4][1].toString().split("-").last+"일";
+                return (weeknum + 4).toString() + "주차\n~" + li[4][1]
+                    .toString()
+                    .split("-")
+                    .last + "일";
             }
             return '';
           },
@@ -674,6 +715,7 @@ LineChartData mainChart_sow_sevrer(List li, int weeknum) {
         ),
       ],
     );
+  }
 }
 
 //총산자수******************
@@ -689,10 +731,19 @@ LineChartData mainChart_total_baby(List li, int weeknum) {
     const Color(0xffffdd00),
   ];
 
+
+
   double max=300;
   if(totalbaby_goal>300)
     max = totalbaby_goal+10;
-
+  if(totalbaby_week[0]>max)
+    max = totalbaby_week[0];
+  if(totalbaby_week[1]>max)
+    max = totalbaby_week[1];
+  if(totalbaby_week[2]>max)
+    max = totalbaby_week[2];
+  if(totalbaby_week[3]>max)
+    max = totalbaby_week[3];
   if(li.length==4) {
     return LineChartData(
 
@@ -790,6 +841,8 @@ LineChartData mainChart_total_baby(List li, int weeknum) {
       ],
     );}
   else{
+    if(totalbaby_week[4]>max)
+      max = totalbaby_week[4];
     return LineChartData(
 
       gridData: FlGridData(
@@ -908,6 +961,14 @@ LineChartData mainChart_feed_baby(List li, int weeknum) {
   double max=400;
   if(feedbaby_goal>400)
     max = feedbaby_goal+10;
+  if(feedbaby_week[0]>max)
+    max = feedbaby_week[0];
+  if(feedbaby_week[1]>max)
+    max = feedbaby_week[1];
+  if(feedbaby_week[2]>max)
+    max = feedbaby_week[2];
+  if(feedbaby_week[3]>max)
+    max = feedbaby_week[3];
 
   if(li.length==4) {
     return LineChartData(
@@ -1009,8 +1070,9 @@ LineChartData mainChart_feed_baby(List li, int weeknum) {
     );
   }
   else{
+    if(feedbaby_week[4]>max)
+      max = feedbaby_week[4];
     return LineChartData(
-
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,

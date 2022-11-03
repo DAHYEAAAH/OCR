@@ -299,6 +299,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                     ),
                     info:
                     '박스에 맞춰 사진찍어주세요');
+
               } else {
                 return const Align(
                     alignment: Alignment.center,

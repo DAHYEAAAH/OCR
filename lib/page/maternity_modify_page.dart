@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:last_ocr/functions/functions.dart';
-
 import 'maternity_list_page.dart';
 
 late int ocr_seq;

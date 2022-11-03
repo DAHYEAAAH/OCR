@@ -192,7 +192,7 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
     }
     return Scaffold(
         appBar: AppBar(
-            title: Text("임신사 그래프")
+            title: Text("그래프")
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.fromLTRB(10, 20, 10, 50),
@@ -399,11 +399,17 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
       const Color(0xfffa0000),
       const Color(0xffffdd00),
     ];
-
     double max = 40;
     if (double.parse(mating_goal) > 40)
       max = double.parse(mating_goal) + 10;
-
+    if(mating_week[0]>max)
+      max = mating_week[0];
+    if(mating_week[1]>max)
+      max = mating_week[1];
+    if(mating_week[2]>max)
+      max = mating_week[2];
+    if(mating_week[3]>max)
+      max = mating_week[3];
     if (li.length == 4) {
       return LineChartData(
 
@@ -505,6 +511,8 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
       );
     }
     else {
+      if(mating_week[4]>max)
+        max = mating_week[4];
       return LineChartData(
 
         gridData: FlGridData(
@@ -619,9 +627,19 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
       const Color(0xfffa0000),
       const Color(0xffffdd00),
     ];
+
+
     double max = 300;
     if (double.parse(sevrer_goal) > 300)
       max = double.parse(sevrer_goal) + 10;
+    if(sevrer_week[0]>max)
+      max = sevrer_week[0];
+    if(sevrer_week[1]>max)
+      max = sevrer_week[1];
+    if(sevrer_week[2]>max)
+      max = sevrer_week[2];
+    if(sevrer_week[3]>max)
+      max = sevrer_week[3];
     if (li.length == 4)
       return LineChartData(
 
@@ -718,7 +736,9 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
           ),
         ],
       );
-    else
+    else {
+      if(sevrer_week[4]>max)
+        max = sevrer_week[4];
       return LineChartData(
 
         gridData: FlGridData(
@@ -754,16 +774,30 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
               // print('bottomTitles $value');
               switch (value.toInt()) {
                 case 0:
-                  return (weeknum+0).toString()+"주차\n~"+li[0][1].toString().split("-").last+"일";
+                  return (weeknum + 0).toString() + "주차\n~" + li[0][1]
+                      .toString()
+                      .split("-")
+                      .last + "일";
                 case 3:
-                  return (weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일";
+                  return (weeknum + 1).toString() + "주차\n~" + li[1][1]
+                      .toString()
+                      .split("-")
+                      .last + "일";
                 case 6:
-                  return (weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일";
+                  return (weeknum + 2).toString() + "주차\n~" + li[2][1]
+                      .toString()
+                      .split("-")
+                      .last + "일";
                 case 9:
-                  return (weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일";
+                  return (weeknum + 3).toString() + "주차\n~" + li[3][1]
+                      .toString()
+                      .split("-")
+                      .last + "일";
                 case 12:
-                  return (weeknum+4).toString()+"주차\n~"+li[4][1].toString().split("-").last+"일";
-
+                  return (weeknum + 4).toString() + "주차\n~" + li[4][1]
+                      .toString()
+                      .split("-")
+                      .last + "일";
               }
               return '';
             },
@@ -819,6 +853,7 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
           ),
         ],
       );
+    }
   }
 
 //총산자수******************
@@ -833,10 +868,18 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
       const Color(0xffffdd00),
     ];
 
+
     double max = 300;
     if (double.parse(totalbaby_goal) > 300)
       max = double.parse(totalbaby_goal) + 10;
-
+    if(totalbaby_week[0]>max)
+      max = totalbaby_week[0];
+    if(totalbaby_week[1]>max)
+      max = totalbaby_week[1];
+    if(totalbaby_week[2]>max)
+      max = totalbaby_week[2];
+    if(totalbaby_week[3]>max)
+      max = totalbaby_week[3];
     if (li.length == 4) {
       return LineChartData(
 
@@ -936,6 +979,8 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
       );
     }
     else {
+      if(totalbaby_week[4]>max)
+        max = totalbaby_week[4];
       return LineChartData(
 
         gridData: FlGridData(
@@ -1051,10 +1096,17 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
       const Color(0xfffa0000),
       const Color(0xffffdd00),
     ];
-
     double max = 400;
     if (double.parse(feedbaby_goal) > 400)
       max = double.parse(feedbaby_goal) + 10;
+    if(feedbaby_week[0]>max)
+      max = feedbaby_week[0];
+    if(feedbaby_week[1]>max)
+      max = feedbaby_week[1];
+    if(feedbaby_week[2]>max)
+      max = feedbaby_week[2];
+    if(feedbaby_week[3]>max)
+      max = feedbaby_week[3];
 
     if (li.length == 4) {
       return LineChartData(
@@ -1157,6 +1209,8 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
       );
     }
     else {
+      if(feedbaby_week[4]>max)
+        max = feedbaby_week[4];
       return LineChartData(
 
         gridData: FlGridData(

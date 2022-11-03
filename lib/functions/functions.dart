@@ -11,6 +11,8 @@ import 'package:path_provider/path_provider.dart';
 
 late final domain = "https://www.dfxsoft.com/api/";
 
+
+
 // 서버로 현재 날짜를 보내고 임신사의 교배복수 총합 받기
 send_date_pregnant(List sendlist) async {
   print("send_date_pregnant");
@@ -116,14 +118,16 @@ ocrTargetSelectedRow(String yyyy, String mm) async {
 
 // 서버로 임신사 사진 보내는 api
 Future<List> uploadimg_pregnant(File file)async{
-  final api = domain+'ocrImageUpload';
+  print("uploadimg_pregnant");
+  final api = 'http://192.168.1.39:3000/api/ocrImageUpload';
   final dio = Dio();
 
   DateTime currentTime = await NTP.now();
   currentTime = currentTime.toUtc().add(Duration(hours: 9));
   String formatDate = DateFormat('yyyyMMddHHmm').format(currentTime); //format변경
   String fileName = "pre"+formatDate+'.jpg';
-
+  print(api);
+  print(fileName);
   FormData _formData = FormData.fromMap({
     "file" : await MultipartFile.fromFile(file.path,
         filename: fileName, contentType : MediaType("image","jpg")),
