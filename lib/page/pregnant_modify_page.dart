@@ -31,8 +31,7 @@ class PregnantModifyPage extends StatefulWidget{
 
   // const PregnantPage({Key? key, this.title}) : super(key: key);
   final List listfromserver_pre_mo;
-  final String Imagefromserver_pre;
-  const PregnantModifyPage(this.listfromserver_pre_mo,this.Imagefromserver_pre);
+  const PregnantModifyPage(this.listfromserver_pre_mo);
 
   @override
   PregnantModifyPageState createState() => PregnantModifyPageState();
@@ -84,7 +83,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
             .size
             .width*1.414,
         child: Center(
-              child: widget.Imagefromserver_pre.isEmpty ? Text('No image selected.') : Image.file(File(widget.Imagefromserver_pre))));
+              child: Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrpreimages/"+widget.listfromserver_pre_mo[17].toString().split("/").last) ));
   }
 
   final sowID1_Controller = TextEditingController();
@@ -713,9 +712,8 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                               ocr_seq = widget.listfromserver_pre_mo[0];
                               sow_hang = widget.listfromserver_pre_mo[2];
                               pregnant_update();
-                              List<dynamic> list = await pregnant_getocr();
                               Navigator.of(context).popUntil((route) => route.isFirst);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(list)));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage()));
                             },
                           ),
                         ],

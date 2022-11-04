@@ -5,8 +5,8 @@ import 'package:last_ocr/page/pregnant_modify_page.dart';
 
 class PregnantListPage extends StatefulWidget {
 
-  final List<dynamic> listfromserver_list_pre ;
-  const PregnantListPage(this.listfromserver_list_pre);
+  const PregnantListPage({Key? key, this.title}) : super(key: key);
+  final String? title;
 
   @override
   PregnantListPageState createState() => PregnantListPageState();
@@ -14,24 +14,38 @@ class PregnantListPage extends StatefulWidget {
 
 class PregnantListPageState extends State<PregnantListPage> {
   int num  = 0;
+  late List listfromserver_list_pre;
+  final List<int> ocr_seq = <int>[];
+  final List<String> sow_no = <String>[];
+  final List<String> upload_day = <String>[];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    prepareList();
+
+  }
+  prepareList() async{
+    listfromserver_list_pre = await pregnant_getocr();
+    //서버로부터 값 받아오기
+    setState(() {
+      print("hey");
+
+      num = listfromserver_list_pre[0][0];
+      sow_no.add("모돈번호");
+      upload_day.add("업로드 시간");
+      for (int i = 1; i < num + 1; i ++) {
+        ocr_seq.add(listfromserver_list_pre[i][0]);
+        sow_no.add(listfromserver_list_pre[i][1]);
+        upload_day.add(listfromserver_list_pre[i][2]);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
-    final List<int> ocr_seq = <int>[];
-    final List<String> sow_no = <String>[];
-    final List<String> upload_day = <String>[];
-
-    if(widget.listfromserver_list_pre.isNotEmpty) {
-      num = widget.listfromserver_list_pre[0][0];
-      sow_no.add("모돈번호");
-      upload_day.add("업로드 시간");
-      for (int i = 1; i < num + 1; i ++) {
-        ocr_seq.add(widget.listfromserver_list_pre[i][0]);
-        sow_no.add(widget.listfromserver_list_pre[i][1]);
-        upload_day.add(widget.listfromserver_list_pre[i][2]);
-      }
-    }
 
     return Scaffold(
         appBar: AppBar(title: Text('임신사 기록보기')), //앱 상단의 제목 :  "분만사 기록보기"
@@ -60,18 +74,11 @@ class PregnantListPageState extends State<PregnantListPage> {
                                                 SizedBox(width:150, child: Text(upload_day[index],textAlign: TextAlign.center,)),
                                                 if(index!=0)
                                                   SizedBox(width: 50, child: IconButton(onPressed: () async {
-                                                    List list = await pregnant_selectrow(
-                                                        ocr_seq[index-1]); //사용자가 선택한 행의 인덱스값 서버로 넘기고, 받은 리스트 list에 넣기
+                                                    List list = await pregnant_selectrow(ocr_seq[index-1]); //사용자가 선택한 행의 인덱스값 서버로 넘기고, 받은 리스트 list에 넣기
                                                     print("임신사 selectrow 결과");
                                                     print(list);
-                                                    String returnfilepath = await downloadFile("ocrpreimages/" + list[17].toString().split("/").last); //이미지 다운로드
-
                                                     Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                PregnantModifyPage(
-                                                                    list,
-                                                                    returnfilepath))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
+                                                        MaterialPageRoute(builder: (context) => PregnantModifyPage(list))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
                                                   },
                                                       icon: const Icon(Icons.edit,
                                                         color: Colors.black,)),),
@@ -92,12 +99,7 @@ class PregnantListPageState extends State<PregnantListPage> {
                                                                     .center,),
                                                               content: Column(
                                                                 children: [
-                                                                  Text("",),
-                                                                  Text("모돈번호 " +
-                                                                      sow_no[index] +
-                                                                      "가 삭제됩니다",
-                                                                    textAlign: TextAlign
-                                                                        .center,),
+                                                                  Text("",), Text("모돈번호 " + sow_no[index] + "가 삭제됩니다", textAlign: TextAlign.center,),
                                                                 ],),
                                                               actions: <Widget>[
                                                                 ButtonBar(
@@ -106,44 +108,21 @@ class PregnantListPageState extends State<PregnantListPage> {
                                                                     // buttonPadding: EdgeInsets.all(1.0),
                                                                     children: [
                                                                       TextButton(
-                                                                        child: const Text(
-                                                                            '취소'),
-                                                                        onPressed: () =>
-                                                                            Navigator
-                                                                                .pop(
-                                                                                context,
-                                                                                '취소'),
+                                                                        child: const Text('취소'),
+                                                                        onPressed: () => Navigator.pop(context, '취소'),
                                                                       ),
                                                                       TextButton(
                                                                         onPressed: () async {
                                                                           await pregnant_deleterow(
                                                                               ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
 
-                                                                          //서버로부터 리스트 다시 받고 다시 화면 새로고침
-                                                                          List<
-                                                                              dynamic> list = await pregnant_getocr(); //서버로부터 list page에 띄울 리스트 받아오기
-                                                                          print(
-                                                                              "pregnant return get ocr->");
-                                                                          Navigator
-                                                                              .of(
-                                                                              context)
-                                                                              .popUntil((
-                                                                              route) =>
-                                                                          route
-                                                                              .isFirst);
-                                                                          print(
-                                                                              "pop 함");
-                                                                          Navigator
-                                                                              .push(
-                                                                              context,
-                                                                              MaterialPageRoute(
-                                                                                  builder: (
-                                                                                      context) =>
-                                                                                      PregnantListPage(
-                                                                                          list)));
+                                                                          print("pregnant return get ocr->");
+                                                                          Navigator.of(context).popUntil((route) => route.isFirst);
+                                                                          print("pop 함");
+                                                                          Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                                                                      PregnantListPage()));
                                                                         },
-                                                                        child: const Text(
-                                                                            '삭제'),
+                                                                        child: const Text('삭제'),
                                                                       ),
                                                                     ]
                                                                 )

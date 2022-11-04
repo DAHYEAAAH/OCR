@@ -5,8 +5,9 @@ import 'maternity_modify_page.dart';
 
 class MaternityListPage extends StatefulWidget {
 
-  final List<dynamic> listfromserver_list_pre ;
-  const MaternityListPage(this.listfromserver_list_pre);
+  const MaternityListPage({Key? key, this.title}) : super(key: key);
+  final String? title;
+
 
   @override
   MaternityListPageState createState() => MaternityListPageState();
@@ -14,24 +15,34 @@ class MaternityListPage extends StatefulWidget {
 
 class MaternityListPageState extends State<MaternityListPage> {
   int num  = 0;
+  late List listfromserver_list_mat;
+  final List<int> ocr_seq = <int>[];
+  final List<String> sow_no = <String>[];
+  final List<String> upload_day = <String>[];
 
   @override
-  Widget build(BuildContext context) {
-    WidgetsFlutterBinding.ensureInitialized();
-    final List<int> ocr_seq = <int>[];
-    final List<String> sow_no = <String>[];
-    final List<String> upload_day = <String>[];
-
-    if(widget.listfromserver_list_pre.isNotEmpty) {
-      num = widget.listfromserver_list_pre[0][0];
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    prepareList();
+  }
+  prepareList() async{
+    listfromserver_list_mat = await maternity_getocr();
+    setState(() {
+      print(listfromserver_list_mat);
+      num = listfromserver_list_mat[0][0];
       sow_no.add("모돈번호");
       upload_day.add("업로드 시간");
       for (int i = 1; i < num + 1; i ++) {
-        ocr_seq.add(widget.listfromserver_list_pre[i][0]);
-        sow_no.add(widget.listfromserver_list_pre[i][1]);
-        upload_day.add(widget.listfromserver_list_pre[i][2]);
+        ocr_seq.add(listfromserver_list_mat[i][0]);
+        sow_no.add(listfromserver_list_mat[i][1]);
+        upload_day.add(listfromserver_list_mat[i][2]);
       }
-    }
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized();
 
     return Scaffold(
         appBar: AppBar(title: Text('분만사 기록보기')), //앱 상단의 제목 :  "분만사 기록보기"
@@ -64,19 +75,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                                         ocr_seq[index-1]); //사용자가 선택한 행의 인덱스값 서버로 넘기고, 받은 리스트 list에 넣기
                                                     print("분만사 selectrow 결과");
                                                     print(list);
-
-                                                    String returnfilepath = await downloadFile(
-                                                        "ocrmatimages/" + list[19]
-                                                            .toString()
-                                                            .split("/")
-                                                            .last); //이미지 다운로드
-
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                MaternityModifyPage(
-                                                                    list,
-                                                                    returnfilepath))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityModifyPage(list))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
                                                   },
                                                       icon: const Icon(Icons.edit,
                                                         color: Colors.black,)),),
@@ -91,64 +90,30 @@ class MaternityListPageState extends State<MaternityListPage> {
                                                           // return Expanded(
                                                           return AlertDialog(
                                                               scrollable: true,
-                                                              title: Text(
-                                                                "삭제하시겠습니까?",
-                                                                textAlign: TextAlign
-                                                                    .center,),
+                                                              title: Text("삭제하시겠습니까?", textAlign: TextAlign.center,),
                                                               content: Column(
                                                                 children: [
                                                                   Text("",),
-                                                                  Text("모돈번호 " +
-                                                                      sow_no[index] +
-                                                                      "가 삭제됩니다",
-                                                                    textAlign: TextAlign
-                                                                        .center,),
+                                                                  Text("모돈번호 " + sow_no[index] + "가 삭제됩니다", textAlign: TextAlign.center,),
                                                                 ],),
                                                               actions: <Widget>[
                                                                 ButtonBar(
-                                                                    alignment: MainAxisAlignment
-                                                                        .end,
+                                                                    alignment: MainAxisAlignment.end,
                                                                     // buttonPadding: EdgeInsets.all(1.0),
                                                                     children: [
                                                                       TextButton(
-                                                                        child: const Text(
-                                                                            '취소'),
-                                                                        onPressed: () =>
-                                                                            Navigator
-                                                                                .pop(
-                                                                                context,
-                                                                                '취소'),
+                                                                        child: const Text('취소'),
+                                                                        onPressed: () => Navigator.pop(context, '취소'),
                                                                       ),
                                                                       TextButton(
                                                                         onPressed: () async {
-                                                                          await maternity_deleterow(
-                                                                              ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
+                                                                          await maternity_deleterow(ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
 
-                                                                          //서버로부터 리스트 다시 받고 다시 화면 새로고침
-                                                                          List<
-                                                                              dynamic> list = await maternity_getocr(); //서버로부터 list page에 띄울 리스트 받아오기
-                                                                          print(
-                                                                              "maternity return get ocr->");
-                                                                          Navigator
-                                                                              .of(
-                                                                              context)
-                                                                              .popUntil((
-                                                                              route) =>
-                                                                          route
-                                                                              .isFirst);
-                                                                          print(
-                                                                              "pop 함");
-                                                                          Navigator
-                                                                              .push(
-                                                                              context,
-                                                                              MaterialPageRoute(
-                                                                                  builder: (
-                                                                                      context) =>
-                                                                                      MaternityListPage(
-                                                                                          list)));
+                                                                          Navigator.of(context).popUntil((route) => route.isFirst);
+                                                                          print("pop 함");
+                                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage()));
                                                                         },
-                                                                        child: const Text(
-                                                                            '삭제'),
+                                                                        child: const Text('삭제'),
                                                                       ),
                                                                     ]
                                                                 )

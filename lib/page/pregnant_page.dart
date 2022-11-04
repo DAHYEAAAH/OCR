@@ -30,11 +30,8 @@ class PregnantPage extends StatefulWidget{
   // 서버에서 넘어오는 값을 저장할 listfromserver_pre를 list로 선언
   final List listfromserver_pre;
 
-  // 서버에서 넘어오는 사진변수를 Imagefromserver_pre로 선언
-  final String Imagefromserver_pre;
-
   // PregnantPage호출 시 리스트 입력 받음
-  const PregnantPage(this.listfromserver_pre, this.Imagefromserver_pre);
+  const PregnantPage(this.listfromserver_pre);
 
   // final String? title;
 
@@ -89,7 +86,7 @@ class PregnantPageState extends State<PregnantPage>{
             .size
             .width*1.414,
         child: Center(
-            child: widget.Imagefromserver_pre.isEmpty ? Text('No image selected.') : Image.file(File(widget.Imagefromserver_pre))));
+            child: Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrpreimages/"+widget.listfromserver_pre[0].toString())));
   }
 
   // 서버에서 받은 값이 수정가능하게 하기위해 TextEditingController로 선언
@@ -709,9 +706,8 @@ class PregnantPageState extends State<PregnantPage>{
                                   memo = memo_Controller.text;
 
                                   await pregnant_insert(); // 임신사 사진 전송 api 호출
-                                  List<dynamic> list = await pregnant_getocr(); // ocr돌린 값 list에 넣기
                                   Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(list))); // PregnantListPage로 넘어가기
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage())); // PregnantListPage로 넘어가기
                                 },
                                 child: const Icon(Icons.arrow_circle_right_sharp),
                               ),

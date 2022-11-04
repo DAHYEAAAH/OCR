@@ -312,11 +312,10 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                                                   .catchError((err) {
                                                 print('error : $err');
                                               });
-                                              String returnfilepath = await downloadFile("ocrmatimages/" + list[0]);
 
                                               Navigator.of(context).popUntil((route) => route.isFirst);
                                               await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                  MaternityPage(list, returnfilepath)),
+                                                  MaternityPage(list)),
                                               );
                                             }
                                           },

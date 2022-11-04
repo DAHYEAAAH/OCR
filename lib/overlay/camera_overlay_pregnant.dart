@@ -271,18 +271,10 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                                   .catchError((err) {
                                                 print('error : $err');
                                               });
-                                              // 서버에서 받은 사진 returnfilepath라는 이름으로 저장
-                                              String returnfilepath = await downloadFile(
-                                                  "ocrpreimages/" + list[0]);
 
-                                              Navigator.of(context).popUntil((
-                                                  route) =>
-                                              route.isFirst); // 처음 화면으로 돌아가기
+                                              Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
                                               await Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        PregnantPage(list,
-                                                            returnfilepath)), // PregnantPage 넘어가기
+                                                MaterialPageRoute(builder: (context) => PregnantPage(list)), // PregnantPage 넘어가기
                                               );
                                             }
                                           },

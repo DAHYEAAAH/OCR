@@ -8,7 +8,6 @@ import 'package:last_ocr/page/owner_graph_page.dart';
 import 'overlay/camera_overlay_maternity.dart';
 import 'overlay/camera_overlay_pregnant.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -72,12 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       SizedBox(width:20,),
                       OutlinedButton(
                         onPressed: ()async{
-                          //서버로부터 값 받아오기
-                          List<dynamic> list = await pregnant_getocr();
-                          print("pregnant get ocr->");
-                          print(list);
                           // PregnantListPage로 넘어가기
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(list)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage()));
                         },
                         child: const Text('기록'),
                         style: OutlinedButton.styleFrom(
@@ -96,7 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-
                     children: <Widget>[
                       SizedBox(width:20,),
                       OutlinedButton(
@@ -111,13 +105,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       SizedBox(width:20,),
                       OutlinedButton(
                         onPressed: () async{
-                          //서버로부터 값 받아오기
-                          List<dynamic> list = await maternity_getocr();
-                          print("maternity get ocr->");
-                          print(list);
                           // MaternityListPage로 넘어가기
                           Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => MaternityListPage(list)));
+                              builder: (context) => MaternityListPage()));
                         },
                         child: const Text('기록'),
                         style: OutlinedButton.styleFrom(
@@ -134,22 +124,29 @@ class _MyHomePageState extends State<MyHomePage> {
                       // SizedBox(width: 100,),
                       OutlinedButton(
                           onPressed: () async {
-                            // PregnantGraphPage로 넘어가기
-                            List graphdata = await preparegraph();
-                            // Navigator.push(context, MaterialPageRoute(
-                            //     builder: (context) =>  GraphPage(graphdata[0],graphdata[1],graphdata[2],graphdata[3],graphdata[4])
-                            // ));
-
-                            //****사장님 그래프 페이지를 보여줄 경우 위에 GraphPage는 주석후, 아래 주석을 풀어주세요***//
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => OwnerGraphPage(graphdata[0],graphdata[1],graphdata[2],graphdata[3],graphdata[4])
-                            ));
-
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  GraphPage()));
                           },
                           child: const Text('그래프'),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
                           ),
+                      ),
+                      // SizedBox(width: 70,)
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // SizedBox(width: 100,),
+                      OutlinedButton(
+                        onPressed: () async {
+                          // PregnantGraphPage로 넘어가기
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OwnerGraphPage()));
+                          },
+                        child: const Text('관리자용 그래프'),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
+                        ),
                       ),
                       // SizedBox(width: 70,)
                     ],

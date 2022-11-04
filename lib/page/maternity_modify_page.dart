@@ -31,8 +31,7 @@ class MaternityModifyPage extends StatefulWidget{
 
   // const MaternityPage({Key? key, this.title}) : super(key: key);
   final List listfromserver_mat_mo;
-  final String Imagefromserver_pre;
-  const MaternityModifyPage(this.listfromserver_mat_mo, this.Imagefromserver_pre);
+  const MaternityModifyPage(this.listfromserver_mat_mo);
 
   @override
   MaternityModifyPageState createState() => MaternityModifyPageState();
@@ -83,7 +82,8 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
             .of(context)
             .size
             .width*1.414,
-        child: Center( child: widget.Imagefromserver_pre.isEmpty ? Text('No image selected.') : Image.file(File(widget.Imagefromserver_pre))));
+        child: Center(
+            child: Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrmatimages/"+widget.listfromserver_mat_mo[19].toString().split("/").last)));
   }
 
   //모돈번호
@@ -551,11 +551,8 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
                               ocr_seq = widget.listfromserver_mat_mo[0];
                               sow_hang = widget.listfromserver_mat_mo[2];
                               maternity_update();
-                              List<dynamic> list = await maternity_getocr();
-                              print("modifypage-maternity_getocr");
-                              print(list);
                               Navigator.of(context).popUntil((route) => route.isFirst);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage(list)));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage()));
                             },
                           ),
                         ])
