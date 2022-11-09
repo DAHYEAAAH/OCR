@@ -1,16 +1,11 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_camera_overlay/model.dart';
-import 'package:flutter_camera_overlay/overlay_shape.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:last_ocr/page/maternity_page.dart';
-import 'package:path/path.dart';
-import '../functions/functions.dart';
 import '../page/pregnant_page.dart';
-import 'dart:io';
 import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:ntp/ntp.dart';
@@ -56,8 +51,6 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
       }
       setState(() {});
     });
-
-
   }
 
   @override
@@ -70,6 +63,7 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
   List<double> top   =[0,0,0,0];
   List<double> width =[0,0,0,0];
   List<double> height=[0,0,0,0];
+  int recog_count = 0;
   @override
   Widget build(BuildContext context) {
 
@@ -83,14 +77,14 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
     double phoneheight = size.height;
 
     up()async {
+      // while (true) {
       XFile file = await controller.takePicture();
       print("whidhs");
       print(phonewidth);
       print(phoneheight);
 
-      print(
-          "sendframeEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-      final api = 'http://172.17.135.16:4000/api/ocrImageUpload';
+      print("sendframeEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+      final api = 'https://www.dfxsoft.com/api/ocrImageUpload';
       final dio = Dio();
       DateTime currentTime = await NTP.now();
       currentTime = currentTime.toUtc().add(Duration(hours: 9));
@@ -111,154 +105,59 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
           }
       );
 
-      // Response response = await dio.get(
-      //     'http://172.17.135.16:4000/ocrs'
-      // );
       returnlist = response.data;
-
       setState(() {
-        if (returnlist[2].length == 5) {
-          left = [
-            returnlist[2][0][0][0] / density,
-            returnlist[2][1][0][0] / density,
-            returnlist[2][2][0][0] / density,
-            returnlist[2][3][0][0] / density,
-          ];
-          top = [
-            returnlist[2][0][0][1] / density,
-            returnlist[2][1][0][1] / density,
-            returnlist[2][2][0][1] / density,
-            returnlist[2][3][0][1] / density,
-          ];
-          width = [
-            returnlist[2][0][1][0] / density -
-                returnlist[2][0][0][0] / density,
-            returnlist[2][1][1][0] / density -
-                returnlist[2][1][0][0] / density,
-            returnlist[2][2][1][0] / density -
-                returnlist[2][2][0][0] / density,
-            returnlist[2][3][1][0] / density -
-                returnlist[2][3][0][0] / density
-          ];
-          height = [
-            returnlist[2][0][3][1] / density -
-                returnlist[2][0][0][1] / density,
-            returnlist[2][1][3][1] / density -
-                returnlist[2][1][0][1] / density,
-            returnlist[2][2][3][1] / density -
-                returnlist[2][2][0][1] / density,
-            returnlist[2][3][3][1] / density -
-                returnlist[2][3][0][1] / density
-          ];
-        }
-        else if (returnlist[2].length == 4) {
-          left = [
-            returnlist[2][0][0][0] / density,
-            returnlist[2][1][0][0] / density,
-            returnlist[2][2][0][0] / density,
-            0
-          ];
-          top = [
-            returnlist[2][0][0][1] / density,
-            returnlist[2][1][0][1] / density,
-            returnlist[2][2][0][1] / density,
-            0
-          ];
-          width = [
-            returnlist[2][0][1][0] / density -
-                returnlist[2][0][0][0] / density,
-            returnlist[2][1][1][0] / density -
-                returnlist[2][1][0][0] / density,
-            returnlist[2][2][1][0] / density -
-                returnlist[2][2][0][0] / density,
-            0
-          ];
-          height = [
-            returnlist[2][0][3][1] / density -
-                returnlist[2][0][0][1] / density,
-            returnlist[2][1][3][1] / density -
-                returnlist[2][1][0][1] / density,
-            returnlist[2][2][3][1] / density -
-                returnlist[2][2][0][1] / density,
-            0
-          ];
-        }
-        else if (returnlist[2].length == 3) {
-          left = [
-            returnlist[2][0][0][0] / density,
-            returnlist[2][1][0][0] / density,
-            0,
-            0
-          ];
-          top = [
-            returnlist[2][0][0][1] / density,
-            returnlist[2][1][0][1] / density,
-            0,
-            0
-          ];
-          width = [
-            returnlist[2][0][1][0] / density -
-                returnlist[2][0][0][0] / density,
-            returnlist[2][1][1][0] / density -
-                returnlist[2][1][0][0] / density,
-            0,
-            0
-          ];
-          height = [
-            returnlist[2][0][3][1] / density -
-                returnlist[2][0][0][1] / density,
-            returnlist[2][1][3][1] / density -
-                returnlist[2][1][0][1] / density,
-            0,
-            0
-          ];
-        }
-        else if (returnlist.length == 2) {
-          left[0] = returnlist[2][0][0][0] / density;
-          top[0] = returnlist[2][0][0][1] / density;
-          width = [
-            returnlist[2][0][1][0] / density -
-                returnlist[2][0][0][0] / density,
-            0,
-            0,
-            0
-          ];
-          height = [
-            returnlist[2][0][3][1] / density -
-                returnlist[2][0][0][1] / density,
-            0,
-            0,
-            0
-          ];
-        }
-        else {
-          width = [0, 0, 0, 0];
-          height = [0, 0, 0, 0];
+        left=[0,0,0,0]; top=[0,0,0,0]; width=[0,0,0,0]; height=[0,0,0,0];
+        recog_count=returnlist[2].length-1;
+        if(recog_count>0){
+          Map dic = returnlist[2];
+          List key = dic.keys.toList();
+          List values = dic.values.toList();
+          print(key);
+          print(values);
+          for (int i = 0; i < recog_count; i++) {
+            switch (key[i]) {
+              case '923':
+                left[0] = values[i][0][0] / density;
+                top[0] = values[i][0][1] / density;
+                width[0] = values[i][1][0] / density - values[i][0][0] / density;
+                height[0] = values[i][3][1] / density - values[i][0][1] / density;
+                break;
+              case '1001':
+                left[1] = values[i][0][0] / density;
+                top[1] = values[i][0][1] / density;
+                width[1] = values[i][1][0] / density - values[i][0][0] / density;
+                height[1] = values[i][3][1] / density - values[i][0][1] / density;
+                break;
+              case '1007':
+                left[2] = values[i][0][0] / density;
+                top[2] = values[i][0][1] / density;
+                width[2] = values[i][1][0] / density - values[i][0][0] / density;
+                height[2] = values[i][3][1] / density - values[i][0][1] / density;
+                break;
+              case '241':
+                left[3] = values[i][0][0] / density;
+                top[3] = values[i][0][1] / density;
+                width[3] = values[i][1][0] / density - values[i][0][0] / density;
+                height[3] = values[i][3][1] / density - values[i][0][1] / density;
+                break;
+            }
+          }
         }
       });
-
       if (returnlist[1].length > 0) {
         print("success - response is : ");
         print(returnlist);
-        Fluttertoast.showToast(
-            msg: "OCR인식 성공", toastLength: Toast.LENGTH_SHORT);
-        // widget.onCapture(file);
         open=0;
+        Fluttertoast.showToast(msg: "OCR인식 성공", toastLength: Toast.LENGTH_SHORT);
+        // widget.onCapture(file);
         // 찍은 사진 갤러리에 저장
-        GallerySaver.saveImage(file.path)
-            .then((value) =>
-            print(
-                '>>>> save value= $value'))
-            .catchError((err) {
-          print('error : $err');
-        });
+        GallerySaver.saveImage(file.path).then((value) => print('>>>> save value= $value'))
+            .catchError((err) {print('error : $err');});
 
-        Navigator.of(context).popUntil((route) =>
-        route.isFirst); // 처음 화면으로 돌아가기
+        Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
         await Navigator.push(context,
-          MaterialPageRoute(builder: (context) =>
-              MaternityPage(
-                  returnlist)), // PregnantPage 넘어가기
+          MaterialPageRoute(builder: (context) => MaternityPage(returnlist)), // PregnantPage 넘어가기
         );
       }
       else {
@@ -336,13 +235,15 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
                           fit: StackFit.expand,
                           children: [
                             SizedBox(height: 10,),
-                            width[0]!=0&&width[1]==0&&width[2]==0&&width[3]==0?
+                            recog_count==0?
+                            Text("0/4",style:TextStyle(backgroundColor: Colors.black,color: Colors.white),textAlign: TextAlign.center,):SizedBox(),
+                            recog_count==1?
                             Text("1/4",style:TextStyle(backgroundColor: Colors.black,color: Colors.white),textAlign: TextAlign.center,):SizedBox(),
-                            width[0]!=0&&width[1]!=0&&width[2]==0&&width[3]==0?
+                            recog_count==2?
                             Text("2/4",style:TextStyle(backgroundColor: Colors.black,color: Colors.white),textAlign: TextAlign.center,):SizedBox(),
-                            width[0]!=0&&width[1]!=0&&width[2]!=0&&width[3]==0?
+                            recog_count==3?
                             Text("3/4",style:TextStyle(backgroundColor: Colors.black,color: Colors.white),textAlign: TextAlign.center,):SizedBox(),
-                            width[0]!=0&&width[1]!=0&&width[2]!=0&&width[3]!=0?
+                            recog_count==4?
                             Text("4/4",style:TextStyle(backgroundColor: Colors.black,color: Colors.white),textAlign: TextAlign.center,):SizedBox(),
                             Positioned(
                               left: left[0],
@@ -350,10 +251,7 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
                               width: width[0],
                               height: height[0],
                               child: Container(
-                                child: left[0]<phonewidth/2&&top[0]<phoneheight/2?Image.asset('assets/drawable/marker_left_top.png'):
-                                left[0]>phonewidth/2&&top[0]<phoneheight/2?Image.asset('assets/drawable/marker_right_top.png'):
-                                left[0]<phonewidth/2&&top[0]>phoneheight/2?Image.asset('assets/drawable/marker_left_bottom.png'):
-                                Image.asset('assets/drawable/marker_right_bottom.png'),
+                                child: Image.asset('assets/drawable/marker_left_top.png'),
                                 decoration: BoxDecoration(
                                   color: Colors.black26,
                                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -367,15 +265,11 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
                               width: width[1],
                               height: height[1],
                               child: Container(
-                                child: left[1]<phonewidth/2&&top[1]<phoneheight/2?Image.asset('assets/drawable/marker_left_top.png'):
-                                left[1]>phonewidth/2&&top[1]<phoneheight/2?Image.asset('assets/drawable/marker_right_top.png'):
-                                left[1]<phonewidth/2&&top[1]>phoneheight/2?Image.asset('assets/drawable/marker_left_bottom.png'):
-                                Image.asset('assets/drawable/marker_right_bottom.png'),
-                                decoration: BoxDecoration(
-                                  color: Colors.black26,
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  // border: Border.all(color: Colors.pink, width: 2.0),
-                                ),
+                                child: Image.asset('assets/drawable/marker_right_top.png'),                             decoration: BoxDecoration(
+                                color: Colors.black26,
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                // border: Border.all(color: Colors.pink, width: 2.0),
+                              ),
                               ),
                             ),
                             Positioned(
@@ -384,10 +278,7 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
                               width: width[2],
                               height: height[2],
                               child: Container(
-                                child: left[2]<phonewidth/2&&top[2]<phoneheight/2?Image.asset('assets/drawable/marker_left_top.png'):
-                                left[2]>phonewidth/2&&top[2]<phoneheight/2?Image.asset('assets/drawable/marker_right_top.png'):
-                                left[2]<phonewidth/2&&top[2]>phoneheight/2?Image.asset('assets/drawable/marker_left_bottom.png'):
-                                Image.asset('assets/drawable/marker_right_bottom.png'),
+                                child: Image.asset('assets/drawable/marker_left_bottom.png'),
                                 decoration: BoxDecoration(
                                   color: Colors.black26,
                                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -401,15 +292,11 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
                               width: width[3],
                               height: height[3],
                               child: Container(
-                                child: left[3]<phonewidth/2&&top[3]<phoneheight/2?Image.asset('assets/drawable/marker_left_top.png'):
-                                left[3]>phonewidth/2&&top[3]<phoneheight/2?Image.asset('assets/drawable/marker_right_top.png'):
-                                left[3]<phonewidth/2&&top[3]>phoneheight/2?Image.asset('assets/drawable/marker_left_bottom.png'):
-                                Image.asset('assets/drawable/marker_right_bottom.png'),
-                                decoration: BoxDecoration(
-                                  color: Colors.black26,
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  // border: Border.all(color: Colors.pink, width: 2.0),
-                                ),
+                                child: Image.asset('assets/drawable/marker_right_bottom.png'),                             decoration: BoxDecoration(
+                                color: Colors.black26,
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                // border: Border.all(color: Colors.pink, width: 2.0),
+                              ),
                               ),
                             ),
                           ],
