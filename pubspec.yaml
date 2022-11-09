@@ -60,6 +60,8 @@ dependencies:
   ntp: ^1.0.8 # 정확한 시간을 얻을 수 있는 플러그인
   carousel_slider: ^4.1.1
   flutter_launcher_icons: ^0.9.3
+  starflut: ^0.9.5
+  uuid: ^3.0.6
 dev_dependencies:
   flutter_test: # flutter용 테스트 라이브러리
     sdk: flutter
@@ -81,6 +83,24 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/drawable/marker_left_bottom.png
+    - assets/drawable/marker_left_top.png
+    - assets/drawable/marker_right_bottom.png
+    - assets/drawable/marker_right_top.png
+  plugin:
+    platforms:
+      android:
+        package: com.srplab.starflut
+        pluginClass: StarflutPlugin
+      ios:
+        pluginClass: StarflutPlugin
+      linux:
+        pluginClass: StarflutPlugin
+      windows:
+        pluginClass: StarflutPlugin
+      macos:
+        pluginClass: StarflutPlugin
 
   # To add assets to your application, add an assets section, like this:
   # assets:

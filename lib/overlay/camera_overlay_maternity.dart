@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter_camera_overlay/flutter_camera_overlay.dart';
+import '../overlay/flutter_camera_overlay_maternity.dart';
 import 'package:flutter_camera_overlay/model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/http_parser.dart';
@@ -330,6 +330,7 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
                         );
                       },
                     ),
+                    flash: true,
                     info:
                     '박스에 맞춰 사진찍어주세요');
               } else {
