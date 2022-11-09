@@ -64,13 +64,14 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
     controller.dispose();
     super.dispose();
   }
-
-  List<double> left = [0,0,0,0];
-  List<double> top=[0,0,0,0];
-  List<double> width=[0,0,0,0];
+  var open = 1;
+  List<double> left  =[0,0,0,0];
+  List<double> top   =[0,0,0,0];
+  List<double> width =[0,0,0,0];
   List<double> height=[0,0,0,0];
   @override
   Widget build(BuildContext context) {
+
     var density = MediaQuery.of(context).devicePixelRatio;
     print("density");
     print(density);
@@ -81,10 +82,7 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
     double phoneheight = size.height;
 
     up()async {
-      // XFile file = await controller.takePicture();
-      // widget.onCapture(file);
-      // print("TABTABTABTABTABTABTABTABTABTABTABTABTABTAB");
-      while (true) {
+      // while (true) {
         XFile file = await controller.takePicture();
         print("whidhs");
         print(phonewidth);
@@ -92,7 +90,7 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
 
         print(
             "sendframeEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-        final api = 'https://www.dfxsoft.com/api/ocrImageUpload';
+        final api = 'http://172.17.135.16:4000/api/ocrImageUpload';
         final dio = Dio();
         DateTime currentTime = await NTP.now();
         currentTime = currentTime.toUtc().add(Duration(hours: 9));
@@ -120,79 +118,97 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
 
         setState(() {
           if (returnlist[2].length == 5) {
-            left=[
+            left = [
               returnlist[2][0][0][0] / density,
               returnlist[2][1][0][0] / density,
               returnlist[2][2][0][0] / density,
               returnlist[2][3][0][0] / density,
             ];
-            top=[
+            top = [
               returnlist[2][0][0][1] / density,
               returnlist[2][1][0][1] / density,
               returnlist[2][2][0][1] / density,
               returnlist[2][3][0][1] / density,
             ];
             width = [
-              returnlist[2][0][1][0] / density - returnlist[2][0][0][0] / density,
-              returnlist[2][1][1][0] / density - returnlist[2][1][0][0] / density,
-              returnlist[2][2][1][0] / density - returnlist[2][2][0][0] / density,
-              returnlist[2][3][1][0] / density - returnlist[2][3][0][0] / density
+              returnlist[2][0][1][0] / density -
+                  returnlist[2][0][0][0] / density,
+              returnlist[2][1][1][0] / density -
+                  returnlist[2][1][0][0] / density,
+              returnlist[2][2][1][0] / density -
+                  returnlist[2][2][0][0] / density,
+              returnlist[2][3][1][0] / density -
+                  returnlist[2][3][0][0] / density
             ];
             height = [
-              returnlist[2][0][3][1] / density - returnlist[2][0][0][1] / density,
-              returnlist[2][1][3][1] / density - returnlist[2][1][0][1] / density,
-              returnlist[2][2][3][1] / density - returnlist[2][2][0][1] / density,
-              returnlist[2][3][3][1] / density - returnlist[2][3][0][1] / density
+              returnlist[2][0][3][1] / density -
+                  returnlist[2][0][0][1] / density,
+              returnlist[2][1][3][1] / density -
+                  returnlist[2][1][0][1] / density,
+              returnlist[2][2][3][1] / density -
+                  returnlist[2][2][0][1] / density,
+              returnlist[2][3][3][1] / density -
+                  returnlist[2][3][0][1] / density
             ];
           }
           else if (returnlist[2].length == 4) {
-            left=[
+            left = [
               returnlist[2][0][0][0] / density,
               returnlist[2][1][0][0] / density,
               returnlist[2][2][0][0] / density,
               0
             ];
-            top=[
+            top = [
               returnlist[2][0][0][1] / density,
               returnlist[2][1][0][1] / density,
               returnlist[2][2][0][1] / density,
               0
             ];
             width = [
-              returnlist[2][0][1][0] / density - returnlist[2][0][0][0] / density,
-              returnlist[2][1][1][0] / density - returnlist[2][1][0][0] / density,
-              returnlist[2][2][1][0] / density - returnlist[2][2][0][0] / density,
+              returnlist[2][0][1][0] / density -
+                  returnlist[2][0][0][0] / density,
+              returnlist[2][1][1][0] / density -
+                  returnlist[2][1][0][0] / density,
+              returnlist[2][2][1][0] / density -
+                  returnlist[2][2][0][0] / density,
               0
             ];
             height = [
-              returnlist[2][0][3][1] / density - returnlist[2][0][0][1] / density,
-              returnlist[2][1][3][1] / density - returnlist[2][1][0][1] / density,
-              returnlist[2][2][3][1] / density - returnlist[2][2][0][1] / density,
+              returnlist[2][0][3][1] / density -
+                  returnlist[2][0][0][1] / density,
+              returnlist[2][1][3][1] / density -
+                  returnlist[2][1][0][1] / density,
+              returnlist[2][2][3][1] / density -
+                  returnlist[2][2][0][1] / density,
               0
             ];
           }
           else if (returnlist[2].length == 3) {
-            left=[
+            left = [
               returnlist[2][0][0][0] / density,
               returnlist[2][1][0][0] / density,
               0,
               0
             ];
-            top=[
+            top = [
               returnlist[2][0][0][1] / density,
               returnlist[2][1][0][1] / density,
               0,
               0
             ];
             width = [
-              returnlist[2][0][1][0] / density - returnlist[2][0][0][0] / density,
-              returnlist[2][1][1][0] / density - returnlist[2][1][0][0] / density,
+              returnlist[2][0][1][0] / density -
+                  returnlist[2][0][0][0] / density,
+              returnlist[2][1][1][0] / density -
+                  returnlist[2][1][0][0] / density,
               0,
               0
             ];
             height = [
-              returnlist[2][0][3][1] / density - returnlist[2][0][0][1] / density,
-              returnlist[2][1][3][1] / density - returnlist[2][1][0][1] / density,
+              returnlist[2][0][3][1] / density -
+                  returnlist[2][0][0][1] / density,
+              returnlist[2][1][3][1] / density -
+                  returnlist[2][1][0][1] / density,
               0,
               0
             ];
@@ -201,13 +217,15 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
             left[0] = returnlist[2][0][0][0] / density;
             top[0] = returnlist[2][0][0][1] / density;
             width = [
-              returnlist[2][0][1][0] / density - returnlist[2][0][0][0] / density,
+              returnlist[2][0][1][0] / density -
+                  returnlist[2][0][0][0] / density,
               0,
               0,
               0
             ];
             height = [
-              returnlist[2][0][3][1] / density - returnlist[2][0][0][1] / density,
+              returnlist[2][0][3][1] / density -
+                  returnlist[2][0][0][1] / density,
               0,
               0,
               0
@@ -224,7 +242,8 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
           print(returnlist);
           Fluttertoast.showToast(
               msg: "OCR인식 성공", toastLength: Toast.LENGTH_SHORT);
-
+          // widget.onCapture(file);
+          open=0;
           // 찍은 사진 갤러리에 저장
           GallerySaver.saveImage(file.path)
               .then((value) =>
@@ -241,16 +260,13 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
                 PregnantPage(
                     returnlist)), // PregnantPage 넘어가기
           );
-
-          break;
         }
         else {
           print("fail - response is : ");
           print(returnlist);
         }
-      }
+      // }
     }
-    up();
 
     Widget loadingWidget = widget.loadingWidget ??
         Container(
@@ -269,10 +285,10 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
 
     controller
         .setFlashMode(widget.flash == true ? FlashMode.auto : FlashMode.off);
-
-    return  GestureDetector(
+    if(open==1)up();
+    return GestureDetector(
         onTap: () async{
-
+          // up();
         },
         child:Container(
           color: Colors.black,
@@ -399,35 +415,205 @@ class _FlutterCameraOverlayState extends State<CameraOverlay> {
                       ],
                     ))
             ),
-            // Align(
-            //   alignment: Alignment.bottomCenter,
-            //   child: Material(
-            //       color: Colors.transparent,
-            //       child: Container(
-            //           decoration: const BoxDecoration(
-            //             color: Colors.black12,
-            //             shape: BoxShape.circle,
-            //           ),
-            //           margin: const EdgeInsets.all(25),
-            //           child: IconButton(
-            //             enableFeedback: true,
-            //             color: Colors.white,
-            //             onPressed: () async {
-            //               // for (int i = 10; i > 0; i--) {
-            //               //   await HapticFeedback.vibrate();
-            //               // }
-            //
-            //               // XFile file = await controller.takePicture();
-            //               // widget.onCapture(file);
-            //               // print("flutter_camera_overlay - camera charkakkk!");
-            //
-            //             },
-            //             icon: const Icon(
-            //               Icons.camera,
-            //             ),
-            //             iconSize: 72,
-            //           ))),
-            // ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.black12,
+                        shape: BoxShape.circle,
+                      ),
+                      margin: const EdgeInsets.all(25),
+                      child: SizedBox()
+                      // IconButton(
+                      //   enableFeedback: true,
+                      //   color: Colors.white,
+                      //   onPressed: () async {
+                      //     // for (int i = 10; i > 0; i--) {
+                      //     //   await HapticFeedback.vibrate();
+                      //     // }
+                      //     while (true) {
+                      //       XFile file = await controller.takePicture();
+                      //       print("whidhs");
+                      //       print(phonewidth);
+                      //       print(phoneheight);
+                      //
+                      //       print(
+                      //           "sendframeEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                      //       final api = 'https://www.dfxsoft.com/api/ocrImageUpload';
+                      //       final dio = Dio();
+                      //       DateTime currentTime = await NTP.now();
+                      //       currentTime = currentTime.toUtc().add(Duration(hours: 9));
+                      //       String formatDate = DateFormat('yyyyMMddHHmm').format(
+                      //           currentTime); //format변경
+                      //       String fileName = "pre" + formatDate + '.jpg';
+                      //
+                      //       FormData _formData = FormData.fromMap({
+                      //         "file": await MultipartFile.fromFile(file.path,
+                      //             filename: fileName, contentType: MediaType("image", "jpg")),
+                      //       });
+                      //
+                      //       Response response = await dio.post(
+                      //           api,
+                      //           data: _formData,
+                      //           onSendProgress: (rec, total) {
+                      //             // print('Rec: $rec , Total: $total');
+                      //           }
+                      //       );
+                      //
+                      //       // Response response = await dio.get(
+                      //       //     'http://172.17.135.16:4000/ocrs'
+                      //       // );
+                      //       returnlist = response.data;
+                      //
+                      //       setState(() {
+                      //         if (returnlist[2].length == 5) {
+                      //           left=[
+                      //             returnlist[2][0][0][0] / density,
+                      //             returnlist[2][1][0][0] / density,
+                      //             returnlist[2][2][0][0] / density,
+                      //             returnlist[2][3][0][0] / density,
+                      //           ];
+                      //           top=[
+                      //             returnlist[2][0][0][1] / density,
+                      //             returnlist[2][1][0][1] / density,
+                      //             returnlist[2][2][0][1] / density,
+                      //             returnlist[2][3][0][1] / density,
+                      //           ];
+                      //           width = [
+                      //             returnlist[2][0][1][0] / density - returnlist[2][0][0][0] / density,
+                      //             returnlist[2][1][1][0] / density - returnlist[2][1][0][0] / density,
+                      //             returnlist[2][2][1][0] / density - returnlist[2][2][0][0] / density,
+                      //             returnlist[2][3][1][0] / density - returnlist[2][3][0][0] / density
+                      //           ];
+                      //           height = [
+                      //             returnlist[2][0][3][1] / density - returnlist[2][0][0][1] / density,
+                      //             returnlist[2][1][3][1] / density - returnlist[2][1][0][1] / density,
+                      //             returnlist[2][2][3][1] / density - returnlist[2][2][0][1] / density,
+                      //             returnlist[2][3][3][1] / density - returnlist[2][3][0][1] / density
+                      //           ];
+                      //         }
+                      //         else if (returnlist[2].length == 4) {
+                      //           left=[
+                      //             returnlist[2][0][0][0] / density,
+                      //             returnlist[2][1][0][0] / density,
+                      //             returnlist[2][2][0][0] / density,
+                      //             0
+                      //           ];
+                      //           top=[
+                      //             returnlist[2][0][0][1] / density,
+                      //             returnlist[2][1][0][1] / density,
+                      //             returnlist[2][2][0][1] / density,
+                      //             0
+                      //           ];
+                      //           width = [
+                      //             returnlist[2][0][1][0] / density - returnlist[2][0][0][0] / density,
+                      //             returnlist[2][1][1][0] / density - returnlist[2][1][0][0] / density,
+                      //             returnlist[2][2][1][0] / density - returnlist[2][2][0][0] / density,
+                      //             0
+                      //           ];
+                      //           height = [
+                      //             returnlist[2][0][3][1] / density - returnlist[2][0][0][1] / density,
+                      //             returnlist[2][1][3][1] / density - returnlist[2][1][0][1] / density,
+                      //             returnlist[2][2][3][1] / density - returnlist[2][2][0][1] / density,
+                      //             0
+                      //           ];
+                      //         }
+                      //         else if (returnlist[2].length == 3) {
+                      //           left=[
+                      //             returnlist[2][0][0][0] / density,
+                      //             returnlist[2][1][0][0] / density,
+                      //             0,
+                      //             0
+                      //           ];
+                      //           top=[
+                      //             returnlist[2][0][0][1] / density,
+                      //             returnlist[2][1][0][1] / density,
+                      //             0,
+                      //             0
+                      //           ];
+                      //           width = [
+                      //             returnlist[2][0][1][0] / density - returnlist[2][0][0][0] / density,
+                      //             returnlist[2][1][1][0] / density - returnlist[2][1][0][0] / density,
+                      //             0,
+                      //             0
+                      //           ];
+                      //           height = [
+                      //             returnlist[2][0][3][1] / density - returnlist[2][0][0][1] / density,
+                      //             returnlist[2][1][3][1] / density - returnlist[2][1][0][1] / density,
+                      //             0,
+                      //             0
+                      //           ];
+                      //         }
+                      //         else if (returnlist.length == 2) {
+                      //           left[0] = returnlist[2][0][0][0] / density;
+                      //           top[0] = returnlist[2][0][0][1] / density;
+                      //           width = [
+                      //             returnlist[2][0][1][0] / density - returnlist[2][0][0][0] / density,
+                      //             0,
+                      //             0,
+                      //             0
+                      //           ];
+                      //           height = [
+                      //             returnlist[2][0][3][1] / density - returnlist[2][0][0][1] / density,
+                      //             0,
+                      //             0,
+                      //             0
+                      //           ];
+                      //         }
+                      //         else {
+                      //           width = [0, 0, 0, 0];
+                      //           height = [0, 0, 0, 0];
+                      //         }
+                      //       });
+                      //
+                      //       if (returnlist[1].length > 0) {
+                      //         print("success - response is : ");
+                      //         print(returnlist);
+                      //         Fluttertoast.showToast(
+                      //             msg: "OCR인식 성공", toastLength: Toast.LENGTH_SHORT);
+                      //
+                      //         // 찍은 사진 갤러리에 저장
+                      //         GallerySaver.saveImage(file.path)
+                      //             .then((value) =>
+                      //             print(
+                      //                 '>>>> save value= $value'))
+                      //             .catchError((err) {
+                      //           print('error : $err');
+                      //         });
+                      //
+                      //         Navigator.of(context).popUntil((route) =>
+                      //         route.isFirst); // 처음 화면으로 돌아가기
+                      //         await Navigator.push(context,
+                      //           MaterialPageRoute(builder: (context) =>
+                      //               PregnantPage(
+                      //                   returnlist)), // PregnantPage 넘어가기
+                      //         );
+                      //
+                      //         break;
+                      //       }
+                      //       else {
+                      //         print("fail - response is : ");
+                      //         print(returnlist);
+                      //       }
+                      //     }
+                      //
+                      //     // XFile file = await controller.takePicture();
+                      //     // widget.onCapture(file);
+                      //     // print("flutter_camera_overlay - camera charkakkk!");
+                      //
+                      //   },
+                      //   icon:
+                      //   const Icon(
+                      //     Icons.camera,
+                      //   ),
+                      //   iconSize: 72,
+                      //
+                      // )
+                )
+              ),
+            ),
           ]
       ),
     ));

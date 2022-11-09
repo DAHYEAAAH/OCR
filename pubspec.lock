@@ -539,13 +539,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
-  starflut:
-    dependency: "direct main"
-    description:
-      name: starflut
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.5"
   stream_channel:
     dependency: transitive
     description:
@@ -616,13 +609,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  uuid:
-    dependency: "direct main"
-    description:
-      name: uuid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.6"
   vector_math:
     dependency: transitive
     description:
