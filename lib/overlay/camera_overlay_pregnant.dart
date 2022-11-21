@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-// import 'package:flutter_camera_overlay/flutter_camera_overlay.dart';
+import 'package:flutter_camera_overlay/flutter_camera_overlay.dart';
 import 'package:flutter_camera_overlay/model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import '../functions/functions.dart';
 import '../page/pregnant_page.dart';
-import '../overlay/flutter_camera_overlay_pregnant.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -84,7 +83,6 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                       style: TextStyle(color: Colors.black),
                     ));
                 }
-
                 return CameraOverlay(
                     // 카메라 화면
                     snapshot.data!.first,
@@ -291,10 +289,8 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                         );
                       },
                     ),
-                    // flash: true,
-                    // info:
-                    // '박스에 맞춰 사진찍어주세요'
-                );
+                    info:
+                    '박스에 맞춰 사진찍어주세요');
 
               } else {
                 return const Align(
