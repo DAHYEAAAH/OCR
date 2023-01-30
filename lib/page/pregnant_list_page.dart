@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:last_ocr/functions/functions.dart';
-import 'package:last_ocr/page/pregnant_modify_page.dart';
+import 'package:flutter/services.dart';
+import '../functions/functions.dart';
+import '../page/pregnant_modify_page.dart';
 
 class PregnantListPage extends StatefulWidget {
 
@@ -24,14 +25,12 @@ class PregnantListPageState extends State<PregnantListPage> {
     // TODO: implement initState
     super.initState();
     prepareList();
-
   }
   prepareList() async{
     listfromserver_list_pre = await pregnant_getocr();
     //서버로부터 값 받아오기
     setState(() {
-      print("hey");
-
+      // print("hey");
       num = listfromserver_list_pre[0][0];
       sow_no.add("모돈번호");
       upload_day.add("업로드 시간");
@@ -66,78 +65,88 @@ class PregnantListPageState extends State<PregnantListPage> {
                                 Stack(
                                   children: [
                                     // for(int i = 0 ; i < sow_no.length ; i++)
-                                      ListTile(
-                                          title: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children:[
-                                                SizedBox(width:80, child: Text(sow_no[index],textAlign: TextAlign.center,)),
-                                                SizedBox(width:150, child: Text(upload_day[index],textAlign: TextAlign.center,)),
-                                                if(index!=0)
-                                                  SizedBox(width: 50, child: IconButton(onPressed: () async {
-                                                    List list = await pregnant_selectrow(ocr_seq[index-1]); //사용자가 선택한 행의 인덱스값 서버로 넘기고, 받은 리스트 list에 넣기
-                                                    print("임신사 selectrow 결과");
-                                                    print(list);
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(builder: (context) => PregnantModifyPage(list))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
-                                                  },
-                                                      icon: const Icon(Icons.edit,
-                                                        color: Colors.black,)),),
-                                                if(index==0)
-                                                  SizedBox(width: 50, child: Text("수정",textAlign: TextAlign.center,),),
-                                                if(index!=0)
-                                                  SizedBox(width: 50, child: IconButton(onPressed: () async {
-                                                    //사용자가 선택한 리스트 행 삭제
-                                                    showDialog(context: context,
-                                                        barrierDismissible: true,
-                                                        builder: (context) {
-                                                          // return Expanded(
-                                                          return AlertDialog(
-                                                              scrollable: true,
-                                                              title: Text(
-                                                                "삭제하시겠습니까?",
-                                                                textAlign: TextAlign
-                                                                    .center,),
-                                                              content: Column(
-                                                                children: [
-                                                                  Text("",), Text("모돈번호 " + sow_no[index] + "가 삭제됩니다", textAlign: TextAlign.center,),
-                                                                ],),
-                                                              actions: <Widget>[
-                                                                ButtonBar(
-                                                                    alignment: MainAxisAlignment
-                                                                        .end,
-                                                                    // buttonPadding: EdgeInsets.all(1.0),
-                                                                    children: [
-                                                                      TextButton(
-                                                                        child: const Text('취소'),
-                                                                        onPressed: () => Navigator.pop(context, '취소'),
-                                                                      ),
-                                                                      TextButton(
-                                                                        onPressed: () async {
-                                                                          await pregnant_deleterow(
-                                                                              ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
+                                      GestureDetector(
+                                        onTap: () async {
+                                          // print(index-1);
+                                          if(index-1 != -1) {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantModifyPage(ocr_seq[index-1])));
+                                          }
+                                        },
+                                        child: ListTile(
+                                            title: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children:<Widget>[
+                                                  Flexible(
+                                                    flex: 2,
+                                                    fit: FlexFit.tight,
+                                                    child: Container(
+                                                      child: Text(sow_no[index],textAlign: TextAlign.center),
+                                                      // color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                  Flexible(
+                                                    flex: 4,
+                                                    fit: FlexFit.tight,
+                                                    child: Container(
+                                                      child: Text(upload_day[index],textAlign: TextAlign.center),
+                                                      // color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                  if(index!=0)
+                                                    Flexible(fit: FlexFit.tight,child: IconButton(onPressed: () async {
+                                                      //사용자가 선택한 리스트 행 삭제
+                                                      showDialog(context: context,
+                                                          barrierDismissible: true,
+                                                          builder: (context) {
+                                                            // return Expanded(
+                                                            return AlertDialog(
+                                                                scrollable: true,
+                                                                title: Text(
+                                                                  "삭제하시겠습니까?",
+                                                                  textAlign: TextAlign
+                                                                      .center,),
+                                                                content: Column(
+                                                                  children: [
+                                                                    Text("",), Text("모돈번호 " + sow_no[index] + "가 삭제됩니다", textAlign: TextAlign.center,),
+                                                                  ],),
+                                                                actions: <Widget>[
+                                                                  ButtonBar(
+                                                                      alignment: MainAxisAlignment
+                                                                          .end,
+                                                                      // buttonPadding: EdgeInsets.all(1.0),
+                                                                      children: [
+                                                                        TextButton(
+                                                                          child: const Text('취소'),
+                                                                          onPressed: () => Navigator.pop(context, '취소'),
+                                                                        ),
+                                                                        TextButton(
+                                                                          onPressed: () async {
+                                                                            await pregnant_deleterow(
+                                                                                ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
 
-                                                                          print("pregnant return get ocr->");
-                                                                          Navigator.of(context).popUntil((route) => route.isFirst);
-                                                                          print("pop 함");
-                                                                          Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                                                      PregnantListPage()));
-                                                                        },
-                                                                        child: const Text('삭제'),
-                                                                      ),
-                                                                    ]
-                                                                )
-                                                              ]
-                                                          );
-                                                          // child: null,;
-                                                          // )
-                                                        }
-                                                    );
-                                                  },icon: const Icon(Icons.delete, color: Colors.black,)),)
-                                                else
-                                                  SizedBox(width: 50, child: Text("삭제",textAlign: TextAlign.center))
-                                              ]
-                                          )
-                                      ) ,
+                                                                            // print("pregnant return get ocr->");
+                                                                            Navigator.of(context).popUntil((route) => route.isFirst);
+                                                                            // print("pop 함");
+                                                                            Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                                                                PregnantListPage()));
+                                                                          },
+                                                                          child: const Text('삭제'),
+                                                                        ),
+                                                                      ]
+                                                                  )
+                                                                ]
+                                                            );
+                                                            // child: null,;
+                                                            // )
+                                                          }
+                                                      );
+                                                    },icon: const Icon(Icons.delete, color: Colors.black,)),)
+                                                  else
+                                                    Flexible(fit: FlexFit.tight,child: Text("삭제",textAlign: TextAlign.center))
+                                                ]
+                                            )
+                                        ) ,
+                                      ),
                                   ],
                                 )
                             ),

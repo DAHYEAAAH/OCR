@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:last_ocr/page/maternity_list_page.dart';
 import '../functions/functions.dart';
+import '../page/maternity_list_page.dart';
 
 late int ocr_seq;
 late String sow_no;
@@ -138,7 +137,7 @@ class MaternityPageState extends State<MaternityPage>{
     if(widget.listfromserver_mat.isNotEmpty){
       if(flag==0) {
         flag++;
-        print(widget.listfromserver_mat);
+        // print(widget.listfromserver_mat);
 
         sowID1_Controller.text = widget.listfromserver_mat[1][0].split('-')[0];
         sowID2_Controller.text = widget.listfromserver_mat[1][0].split('-')[1];
@@ -582,7 +581,7 @@ maternity_insert() async{
   final dio = Dio();
   Response response;
   response = await dio.post(api,data: data);
-  print(response);
+  // print(response);
   if(response.statusCode == 200){
     resultToast('Ocr 분만사 insert success... \n\n');
   }

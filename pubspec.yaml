@@ -60,6 +60,13 @@ dependencies:
   ntp: ^1.0.8 # 정확한 시간을 얻을 수 있는 플러그인
   carousel_slider: ^4.1.1
   flutter_launcher_icons: ^0.9.3
+  get_it: ^4.0.2
+  responsive_builder: ^0.2.0+2
+  get: ^4.6.5
+  socket_io_client: ^2.0.0-beta.4-nullsafety.0
+  shared_preferences: ^2.0.15
+  font_awesome_flutter: ^10.1.0
+  carousel_pro: ^1.0.0
 
 dev_dependencies:
   flutter_test: # flutter용 테스트 라이브러리
@@ -83,10 +90,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/drawable/marker_left_bottom.png
-    - assets/drawable/marker_left_top.png
-    - assets/drawable/marker_right_bottom.png
-    - assets/drawable/marker_right_top.png
+    - assets/
 
 
   # To add assets to your application, add an assets section, like this:

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:last_ocr/functions/functions.dart';
+import '../functions/functions.dart';
 import 'maternity_list_page.dart';
 
 late int ocr_seq;
@@ -30,8 +29,9 @@ class MaternityModifyPage extends StatefulWidget{
   static const routeName = '/OcrMaternityPage';
 
   // const MaternityPage({Key? key, this.title}) : super(key: key);
-  final List listfromserver_mat_mo;
-  const MaternityModifyPage(this.listfromserver_mat_mo);
+  // final List listfromserver_mat_mo;
+  final int seq_num;
+  const MaternityModifyPage(this.seq_num);
 
   @override
   MaternityModifyPageState createState() => MaternityModifyPageState();
@@ -69,6 +69,20 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
 
   late String teenweight;
 
+  late List listfromserver_mat_mo=[];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    prepareList();
+  }
+  prepareList() async{
+    listfromserver_mat_mo = await maternity_selectrow(widget.seq_num);
+    //서버로부터 값 받아오기
+    // setState(() {
+    //   print("hey");
+    // });
+  }
 
   Widget showImage() {
     return Container(
@@ -83,9 +97,8 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
             .size
             .width*1.414,
         child: Center(
-            child: Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrmatimages/"+widget.listfromserver_mat_mo[19].toString().split("/").last)));
+            child: listfromserver_mat_mo.isEmpty? Text("please wait"):Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrmatimages/"+listfromserver_mat_mo[19].toString().split("/").last)));
   }
-
   //모돈번호
   final sowID1_Controller = TextEditingController();
   final sowID2_Controller = TextEditingController();
@@ -140,46 +153,46 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
   var flag = 0; // 서버에서 가져온 값을 한번만 표에 넣기 위함
   @override
   Widget build(BuildContext context) {
-    if(widget.listfromserver_mat_mo.isNotEmpty){
+    if(listfromserver_mat_mo.isNotEmpty){
       if(flag==0) {
         flag++;
-        print("분만사 수정 페이지 : ");
-        print(widget.listfromserver_mat_mo);
-        sowID1_Controller.text = widget.listfromserver_mat_mo[1].toString().split("-")[0];
-        sowID2_Controller.text = widget.listfromserver_mat_mo[1].toString().split("-")[1];
+        // print("분만사 수정 페이지 : ");
+        // print(listfromserver_mat_mo);
+        sowID1_Controller.text = listfromserver_mat_mo[1].toString().split("-")[0];
+        sowID2_Controller.text = listfromserver_mat_mo[1].toString().split("-")[1];
 
-        birth_year_Controller.text = widget.listfromserver_mat_mo[3].toString().split("-")[0];
-        birth_month_Controller.text = widget.listfromserver_mat_mo[3].toString().split("-")[1];
-        birth_day_Controller.text = widget.listfromserver_mat_mo[3].toString().split("-")[2];
+        birth_year_Controller.text = listfromserver_mat_mo[3].toString().split("-")[0];
+        birth_month_Controller.text = listfromserver_mat_mo[3].toString().split("-")[1];
+        birth_day_Controller.text = listfromserver_mat_mo[3].toString().split("-")[2];
 
-        adoption_year_Controller.text = widget.listfromserver_mat_mo[4].toString().split("-")[0];
-        adoption_month_Controller.text = widget.listfromserver_mat_mo[4].toString().split("-")[1];
-        adoption_day_Controller.text = widget.listfromserver_mat_mo[4].toString().split("-")[2];
+        adoption_year_Controller.text = listfromserver_mat_mo[4].toString().split("-")[0];
+        adoption_month_Controller.text = listfromserver_mat_mo[4].toString().split("-")[1];
+        adoption_day_Controller.text = listfromserver_mat_mo[4].toString().split("-")[2];
 
-        expect_month_Controller.text = widget.listfromserver_mat_mo[5].toString().split("-")[0];
-        expect_day_Controller.text = widget.listfromserver_mat_mo[5].toString().split("-")[1];
+        expect_month_Controller.text = listfromserver_mat_mo[5].toString().split("-")[0];
+        expect_day_Controller.text = listfromserver_mat_mo[5].toString().split("-")[1];
 
-        givebirth_month_Controller.text = widget.listfromserver_mat_mo[6].toString().split("-")[0];
-        givebirth_day_Controller.text = widget.listfromserver_mat_mo[6].toString().split("-")[1];
+        givebirth_month_Controller.text = listfromserver_mat_mo[6].toString().split("-")[0];
+        givebirth_day_Controller.text = listfromserver_mat_mo[6].toString().split("-")[1];
 
-        totalbaby_Controller.text = widget.listfromserver_mat_mo[7].toString();
-        feedbaby_Controller.text = widget.listfromserver_mat_mo[8].toString();
-        weight_Controller.text = widget.listfromserver_mat_mo[9].toString();
+        totalbaby_Controller.text = listfromserver_mat_mo[7].toString();
+        feedbaby_Controller.text = listfromserver_mat_mo[8].toString();
+        weight_Controller.text = listfromserver_mat_mo[9].toString();
 
-        teen_month_Controller.text = widget.listfromserver_mat_mo[10].toString().split("-")[0];
-        teen_day_Controller.text = widget.listfromserver_mat_mo[10].toString().split("-")[1];
+        teen_month_Controller.text = listfromserver_mat_mo[10].toString().split("-")[0];
+        teen_day_Controller.text = listfromserver_mat_mo[10].toString().split("-")[1];
 
-        totalteen_Controller.text = widget.listfromserver_mat_mo[11];
-        teenweight_Controller.text = widget.listfromserver_mat_mo[12];
+        totalteen_Controller.text = listfromserver_mat_mo[11];
+        teenweight_Controller.text = listfromserver_mat_mo[12];
 
-        vaccine1_fir_Controller.text = widget.listfromserver_mat_mo[13].toString().split("-")[0];
-        vaccine1_sec_Controller.text = widget.listfromserver_mat_mo[13].toString().split("-")[1];
-        vaccine2_fir_Controller.text = widget.listfromserver_mat_mo[14].toString().split("-")[0];
-        vaccine2_sec_Controller.text = widget.listfromserver_mat_mo[14].toString().split("-")[1];
-        vaccine3_fir_Controller.text = widget.listfromserver_mat_mo[15].toString().split("-")[0];
-        vaccine3_sec_Controller.text = widget.listfromserver_mat_mo[15].toString().split("-")[1];
-        vaccine4_fir_Controller.text = widget.listfromserver_mat_mo[16].toString().split("-")[0];
-        vaccine4_sec_Controller.text = widget.listfromserver_mat_mo[16].toString().split("-")[1];
+        vaccine1_fir_Controller.text = listfromserver_mat_mo[13].toString().split("-")[0];
+        vaccine1_sec_Controller.text = listfromserver_mat_mo[13].toString().split("-")[1];
+        vaccine2_fir_Controller.text = listfromserver_mat_mo[14].toString().split("-")[0];
+        vaccine2_sec_Controller.text = listfromserver_mat_mo[14].toString().split("-")[1];
+        vaccine3_fir_Controller.text = listfromserver_mat_mo[15].toString().split("-")[0];
+        vaccine3_sec_Controller.text = listfromserver_mat_mo[15].toString().split("-")[1];
+        vaccine4_fir_Controller.text = listfromserver_mat_mo[16].toString().split("-")[0];
+        vaccine4_sec_Controller.text = listfromserver_mat_mo[16].toString().split("-")[1];
       }
     }
 
@@ -548,8 +561,8 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
                               vaccine4 = vaccine4_fir_Controller.text + "-" + vaccine4_sec_Controller.text;
                               // "ocr_imgpath":'17',
                               memo = memo_Controller.text;
-                              ocr_seq = widget.listfromserver_mat_mo[0];
-                              sow_hang = widget.listfromserver_mat_mo[2];
+                              ocr_seq = listfromserver_mat_mo[0];
+                              sow_hang = listfromserver_mat_mo[2];
                               maternity_update();
                               Navigator.of(context).popUntil((route) => route.isFirst);
                               Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage()));

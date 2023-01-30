@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:last_ocr/functions/functions.dart';
-import 'package:last_ocr/page/pregnant_list_page.dart';
+import '../page/pregnant_list_page.dart';
 
+import '../functions/functions.dart';
 
 late int ocr_seq;
 late String sow_no;
@@ -30,8 +29,9 @@ class PregnantModifyPage extends StatefulWidget{
   static const routeName = '/OcrPregnantPage';
 
   // const PregnantPage({Key? key, this.title}) : super(key: key);
-  final List listfromserver_pre_mo;
-  const PregnantModifyPage(this.listfromserver_pre_mo);
+  // final List listfromserver_pre_mo;
+  final int seq_num;
+  const PregnantModifyPage(this.seq_num);
 
   @override
   PregnantModifyPageState createState() => PregnantModifyPageState();
@@ -69,8 +69,23 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
   late String expect_month;
   late String expect_day;
 
-  Widget showImage() {
+  late List listfromserver_pre_mo=[];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    prepareList();
+  }
+  prepareList() async{
+    listfromserver_pre_mo = await pregnant_selectrow(widget.seq_num);
+    //서버로부터 값 받아오기
+    setState(() {
+      print("hey");
+    });
+  }
+
+  Widget showImage() {
     return Container(
         margin: EdgeInsets.only(left: 20,right: 20),
         color: Colors.white,
@@ -83,7 +98,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
             .size
             .width*1.414,
         child: Center(
-              child: Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrpreimages/"+widget.listfromserver_pre_mo[17].toString().split("/").last) ));
+              child: listfromserver_pre_mo.isEmpty? Text("please wait"):Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrpreimages/"+listfromserver_pre_mo[17].toString().split("/").last) ));
   }
 
   final sowID1_Controller = TextEditingController();
@@ -132,62 +147,60 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
   @override
   Widget build(BuildContext context) {
 
-    if(widget.listfromserver_pre_mo.isNotEmpty){
+    if(listfromserver_pre_mo.isNotEmpty){
       if(flag==0) {
         flag++;
         print("임신사 수정 페이지 : ");
-        print(widget.listfromserver_pre_mo);
+        print(listfromserver_pre_mo);
 
-        sowID1_Controller.text = widget.listfromserver_pre_mo[1].toString().split("-")[0];
-        sowID2_Controller.text = widget.listfromserver_pre_mo[1].toString().split("-")[1];
+        sowID1_Controller.text = listfromserver_pre_mo[1].toString().split("-")[0];
+        sowID2_Controller.text = listfromserver_pre_mo[1].toString().split("-")[1];
 
-        birth_year_Controller.text = widget.listfromserver_pre_mo[3].toString().split("-")[0];
-        birth_month_Controller.text = widget.listfromserver_pre_mo[3].toString().split("-")[1];
-        birth_day_Controller.text = widget.listfromserver_pre_mo[3].toString().split("-")[2];
+        birth_year_Controller.text = listfromserver_pre_mo[3].toString().split("-")[0];
+        birth_month_Controller.text = listfromserver_pre_mo[3].toString().split("-")[1];
+        birth_day_Controller.text = listfromserver_pre_mo[3].toString().split("-")[2];
 
-        adoption_year_Controller.text = widget.listfromserver_pre_mo[4].toString().split("-")[0];
-        adoption_month_Controller.text = widget.listfromserver_pre_mo[4].toString().split("-")[1];
-        adoption_day_Controller.text = widget.listfromserver_pre_mo[4].toString().split("-")[2];
+        adoption_year_Controller.text = listfromserver_pre_mo[4].toString().split("-")[0];
+        adoption_month_Controller.text = listfromserver_pre_mo[4].toString().split("-")[1];
+        adoption_day_Controller.text = listfromserver_pre_mo[4].toString().split("-")[2];
 
-        hormone_year_Controller.text = widget.listfromserver_pre_mo[5].toString().split("-")[0];
-        hormone_month_Controller.text = widget.listfromserver_pre_mo[5].toString().split("-")[1];
-        hormone_day_Controller.text = widget.listfromserver_pre_mo[5].toString().split("-")[2];
+        hormone_year_Controller.text = listfromserver_pre_mo[5].toString().split("-")[0];
+        hormone_month_Controller.text = listfromserver_pre_mo[5].toString().split("-")[1];
+        hormone_day_Controller.text = listfromserver_pre_mo[5].toString().split("-")[2];
 
-        mate_month_Controller.text = widget.listfromserver_pre_mo[6].toString().split("-")[0];
-        mate_day_Controller.text = widget.listfromserver_pre_mo[6].toString().split("-")[1];
+        mate_month_Controller.text = listfromserver_pre_mo[6].toString().split("-")[0];
+        mate_day_Controller.text = listfromserver_pre_mo[6].toString().split("-")[1];
 
-        boar1ID1_Controller.text = widget.listfromserver_pre_mo[7].toString().split("-")[0];
-        boar1ID2_Controller.text = widget.listfromserver_pre_mo[7].toString().split("-")[1];
+        boar1ID1_Controller.text = listfromserver_pre_mo[7].toString().split("-")[0];
+        boar1ID2_Controller.text = listfromserver_pre_mo[7].toString().split("-")[1];
 
-        boar2ID1_Controller.text = widget.listfromserver_pre_mo[8].toString().split("-")[0];
-        boar2ID2_Controller.text = widget.listfromserver_pre_mo[8].toString().split("-")[1];
+        boar2ID1_Controller.text = listfromserver_pre_mo[8].toString().split("-")[0];
+        boar2ID2_Controller.text = listfromserver_pre_mo[8].toString().split("-")[1];
 
-        check_month_Controller.text = widget.listfromserver_pre_mo[9].toString().split("-")[0];
-        check_day_Controller.text = widget.listfromserver_pre_mo[9].toString().split("-")[1];
+        check_month_Controller.text = listfromserver_pre_mo[9].toString().split("-")[0];
+        check_day_Controller.text = listfromserver_pre_mo[9].toString().split("-")[1];
 
-        expect_month_Controller.text = widget.listfromserver_pre_mo[10].toString().split("-")[0];
-        expect_day_Controller.text = widget.listfromserver_pre_mo[10].toString().split("-")[1];
+        expect_month_Controller.text = listfromserver_pre_mo[10].toString().split("-")[0];
+        expect_day_Controller.text = listfromserver_pre_mo[10].toString().split("-")[1];
 
-        vaccine1_fir_Controller.text = widget.listfromserver_pre_mo[11].toString().split("-")[0];
-        vaccine1_sec_Controller.text = widget.listfromserver_pre_mo[11].toString().split("-")[1];
-        vaccine2_fir_Controller.text = widget.listfromserver_pre_mo[12].toString().split("-")[0];
-        vaccine2_sec_Controller.text = widget.listfromserver_pre_mo[12].toString().split("-")[1];
-        vaccine3_fir_Controller.text = widget.listfromserver_pre_mo[13].toString().split("-")[0];
-        vaccine3_sec_Controller.text = widget.listfromserver_pre_mo[13].toString().split("-")[1];
-        vaccine4_fir_Controller.text = widget.listfromserver_pre_mo[14].toString().split("-")[0];
-        vaccine4_sec_Controller.text = widget.listfromserver_pre_mo[14].toString().split("-")[1];
+        vaccine1_fir_Controller.text = listfromserver_pre_mo[11].toString().split("-")[0];
+        vaccine1_sec_Controller.text = listfromserver_pre_mo[11].toString().split("-")[1];
+        vaccine2_fir_Controller.text = listfromserver_pre_mo[12].toString().split("-")[0];
+        vaccine2_sec_Controller.text = listfromserver_pre_mo[12].toString().split("-")[1];
+        vaccine3_fir_Controller.text = listfromserver_pre_mo[13].toString().split("-")[0];
+        vaccine3_sec_Controller.text = listfromserver_pre_mo[13].toString().split("-")[1];
+        vaccine4_fir_Controller.text = listfromserver_pre_mo[14].toString().split("-")[0];
+        vaccine4_sec_Controller.text = listfromserver_pre_mo[14].toString().split("-")[1];
 
-        memo_Controller.text = widget.listfromserver_pre_mo[18].toString();
+        memo_Controller.text = listfromserver_pre_mo[18].toString();
       }
     }
-
 
     return Scaffold(
         appBar: AppBar(
           title: Text("임신사"),
         ),
-        body:
-        Scrollbar(
+        body: Scrollbar(
             thumbVisibility: true, //always show scrollbar
             thickness: 10, //width of scrollbar
             radius: Radius.circular(20), //corner radius of scrollbar
@@ -213,8 +226,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                               Column(children: const [
                                 Text('모돈번호', style: TextStyle(fontSize: 20),
                                   textAlign: TextAlign.center,)
-                              ],
-                              ),
+                              ]),
                               Column(children: [
                                 TextField(controller: sowID1_Controller,
                                   decoration: const InputDecoration(hintText: " "),
@@ -225,7 +237,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                               Column(children: const [
                                 Text('-', style: TextStyle(fontSize: 20),
                                   textAlign: TextAlign.center,)
-                              ],),
+                              ]),
                               Column(children: [
                                 TextField(controller: sowID2_Controller,
                                   decoration: const InputDecoration(hintText: " "),
@@ -233,7 +245,6 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                                   keyboardType: TextInputType.number,
                                   textAlign: TextAlign.center, enabled: false,),
                               ]),
-
                             ],),
                         ],
                       ),
@@ -709,8 +720,8 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                               vaccine3 = vaccine3_fir_Controller.text + "-" + vaccine3_sec_Controller.text;
                               vaccine4 = vaccine4_fir_Controller.text + "-" + vaccine4_sec_Controller.text; // "ocr_imgpath":'17',
                               memo = memo_Controller.text;
-                              ocr_seq = widget.listfromserver_pre_mo[0];
-                              sow_hang = widget.listfromserver_pre_mo[2];
+                              ocr_seq = listfromserver_pre_mo[0];
+                              sow_hang = listfromserver_pre_mo[2];
                               pregnant_update();
                               Navigator.of(context).popUntil((route) => route.isFirst);
                               Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage()));
@@ -749,13 +760,13 @@ pregnant_update() async {
     // "ocr_imgpath":'17',
     "memo": memo,
   };
-  print(data);
+  // print(data);
   final dio = Dio();
   Response response;
   response = await dio.post(api,data: data);
   if(response.statusCode == 200){
-    //resultToast('Ocr 임신사 update success… \n\n');
-    print('Ocr 임신사 update success… \n\n');
+    resultToast('Ocr 임신사 update success… \n\n');
+    // print('Ocr 임신사 update success… \n\n');
   }
   return 0;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:last_ocr/functions/functions.dart';
+import '../functions/functions.dart';
 import 'maternity_modify_page.dart';
 
 class MaternityListPage extends StatefulWidget {
@@ -29,7 +29,7 @@ class MaternityListPageState extends State<MaternityListPage> {
   prepareList() async{
     listfromserver_list_mat = await maternity_getocr();
     setState(() {
-      print(listfromserver_list_mat);
+      // print(listfromserver_list_mat);
       num = listfromserver_list_mat[0][0];
       sow_no.add("모돈번호");
       upload_day.add("업로드 시간");
@@ -63,26 +63,35 @@ class MaternityListPageState extends State<MaternityListPage> {
                                 Stack(
                                   children: [
                                     // for(int i = 0 ; i < ocr_seq.length ; i++)
-                                      ListTile(
+                                    GestureDetector(
+                                      onTap: () async {
+                                        // print(index-1);
+                                        if(index-1 != -1) {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityModifyPage(ocr_seq[index-1]))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
+                                        }
+                                        },
+                                        child: ListTile(
                                           title: Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children:[
-                                                SizedBox(width:80, child: Text(sow_no[index],textAlign: TextAlign.center,)),
-                                                SizedBox(width:150, child: Text(upload_day[index],textAlign: TextAlign.center,)),
+                                                Flexible(
+                                                  flex: 2,
+                                                  fit: FlexFit.tight,
+                                                  child: Container(
+                                                    child: Text(sow_no[index],textAlign: TextAlign.center),
+                                                    // color: Colors.blue,
+                                                  ),
+                                                ),
+                                                Flexible(
+                                                  flex: 4,
+                                                  fit: FlexFit.tight,
+                                                  child: Container(
+                                                    child: Text(upload_day[index],textAlign: TextAlign.center),
+                                                    // color: Colors.blue,
+                                                  ),
+                                                ),
                                                 if(index!=0)
-                                                  SizedBox(width: 50, child: IconButton(onPressed: () async {
-                                                    List list = await maternity_selectrow(
-                                                        ocr_seq[index-1]); //사용자가 선택한 행의 인덱스값 서버로 넘기고, 받은 리스트 list에 넣기
-                                                    print("분만사 selectrow 결과");
-                                                    print(list);
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityModifyPage(list))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
-                                                  },
-                                                      icon: const Icon(Icons.edit,
-                                                        color: Colors.black,)),),
-                                                if(index==0)
-                                                  SizedBox(width: 50, child: Text("수정",textAlign: TextAlign.center,),),
-                                                if(index!=0)
-                                                  SizedBox(width: 50, child: IconButton(onPressed: () async {
+                                                  Flexible(fit: FlexFit.tight, child: IconButton(onPressed: () async {
                                                     //사용자가 선택한 리스트 행 삭제
                                                     showDialog(context: context,
                                                         barrierDismissible: true,
@@ -110,7 +119,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                                                           await maternity_deleterow(ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
 
                                                                           Navigator.of(context).popUntil((route) => route.isFirst);
-                                                                          print("pop 함");
+                                                                          // print("pop 함");
                                                                           Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage()));
                                                                         },
                                                                         child: const Text('삭제'),
@@ -125,10 +134,11 @@ class MaternityListPageState extends State<MaternityListPage> {
                                                     );
                                                   },icon: const Icon(Icons.delete, color: Colors.black,)),)
                                                 else
-                                                  SizedBox(width: 50, child: Text("삭제",textAlign: TextAlign.center))
+                                                  Flexible(fit: FlexFit.tight, child: Text("삭제",textAlign: TextAlign.center))
                                               ]
                                           )
-                                      ) ,
+                                        ) ,
+                                    ),
                                   ],
                                 )
                             ),

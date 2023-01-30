@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:last_ocr/functions/functions.dart';
+import 'package:last_ocr/page/TargetValueView.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
 import 'package:last_ocr/page/maternity_list_page.dart';
 import 'package:last_ocr/page/graph_page.dart';
@@ -134,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       // SizedBox(width: 70,)
                     ],
                   ),
+                  SizedBox(height: 30,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -141,9 +143,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       OutlinedButton(
                         onPressed: () async {
                           // PregnantGraphPage로 넘어가기
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => OwnerGraphPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => TargetValueView()));
                           },
-                        child: const Text('관리자용 그래프'),
+                        child: const Text('목표값'),
                         style: OutlinedButton.styleFrom(
                           padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
                         ),

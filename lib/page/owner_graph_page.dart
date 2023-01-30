@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import '../functions/functions.dart';
 import 'package:intl/intl.dart';
-import 'package:last_ocr/functions/functions.dart';
 
 var mating_week = new List<double>.filled(5,0);
 late String mating_goal = "0";
@@ -81,7 +81,7 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
         if(pregnantdata[i]['sow_cross']==null){
           mating_week[i]=0;
         }else{
-          mating_week[i] = pregnantdata[i]['sow_cross'];
+          mating_week[i] = pregnantdata[i]['sow_cross'].toDouble();
         }
       }
       print(mating_week);
@@ -206,7 +206,7 @@ class OwnerGraphPageState extends State<OwnerGraphPage> {
         if (pregnantdata[i]['sow_cross'] == null) {
           mating_week[i] = 0;
         } else {
-          mating_week[i] = pregnantdata[i]['sow_cross'];
+          mating_week[i] = pregnantdata[i]['sow_cross'].toDouble();
         }
         if (maternitydata[i]['sevrer'] == null) {
           sevrer_week[i] = 0;

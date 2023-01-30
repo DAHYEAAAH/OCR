@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:last_ocr/page/pregnant_list_page.dart';
+import '../page/pregnant_list_page.dart';
 import '../functions/functions.dart';
 
 // 서버에서 받을 값 변수 선언
@@ -139,7 +138,7 @@ class PregnantPageState extends State<PregnantPage>{
     if(widget.listfromserver_pre.isNotEmpty){
       if (flag==0) {
         flag++;
-        print(widget.listfromserver_pre);
+        // print(widget.listfromserver_pre);
 
         // 서버로부터 받은 값 매핑
         sowID1_Controller.text = widget.listfromserver_pre[1][0].split("-")[0];
@@ -743,11 +742,11 @@ pregnant_insert() async {
     "ocr_imgpath": filename,
     "memo":memo,
   };
-  print(data);
+  // print(data);
   final dio = Dio();
   Response response;
   response = await dio.post(api,data: data);
-  print(response);
+  // print(response);
   if(response.statusCode == 200){
     resultToast('Ocr 임신사 insert success... \n\n');
   }
