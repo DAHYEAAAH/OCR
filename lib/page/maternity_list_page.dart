@@ -4,8 +4,8 @@ import '../functions/functions.dart';
 import 'maternity_modify_page.dart';
 
 class MaternityListPage extends StatefulWidget {
-
-  const MaternityListPage({Key? key, this.title}) : super(key: key);
+  String companyCode;
+  MaternityListPage({Key? key, required this.companyCode, this.title}) : super(key: key);
   final String? title;
 
 
@@ -67,7 +67,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                       onTap: () async {
                                         // print(index-1);
                                         if(index-1 != -1) {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityModifyPage(ocr_seq[index-1]))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityModifyPage(widget.companyCode,ocr_seq[index-1]))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
                                         }
                                         },
                                         child: ListTile(
@@ -120,7 +120,7 @@ class MaternityListPageState extends State<MaternityListPage> {
 
                                                                           Navigator.of(context).popUntil((route) => route.isFirst);
                                                                           // print("pop 함");
-                                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage()));
+                                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage(companyCode: widget.companyCode)));
                                                                         },
                                                                         child: const Text('삭제'),
                                                                       ),

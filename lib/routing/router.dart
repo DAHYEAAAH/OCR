@@ -53,18 +53,18 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //   return _getPageRoute(EstrusPage());
     // case EstrusBarchartViewRoute:
     //   return _getPageRoute(EstrusBarchartScroll());
-    case OcrApiRoute:
-      return _getPageRoute(ocrCheckAuth());
-    case OcrGraphRoute:
-      return _getPageRoute(GraphPage());
-    case OcrPreRoute:
-      return _getPageRoute(CameraOverlayPregnant());
-    case OcrPreListRoute:
-      return _getPageRoute(PregnantListPage());
-    case OcrMatRoute:
-      return _getPageRoute(CameraOverlayMaternity());
-    case OcrMatListRoute:
-      return _getPageRoute(MaternityListPage());
+    // case OcrApiRoute:
+    //   return _getPageRoute(ocrCheckAuth());
+    // case OcrGraphRoute:
+    //   return _getPageRoute(GraphPage());
+    // case OcrPreRoute:
+    //   return _getPageRoute(CameraOverlayPregnant());
+    // case OcrPreListRoute:
+    //   return _getPageRoute(PregnantListPage());
+    // case OcrMatRoute:
+    //   return _getPageRoute(CameraOverlayMaternity());
+    // case OcrMatListRoute:
+    //   return _getPageRoute(MaternityListPage());
     case TestViewRoute:
       return _getPageRoute(TestView());
     case LogoutRoute:

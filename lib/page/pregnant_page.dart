@@ -28,9 +28,9 @@ class PregnantPage extends StatefulWidget{
 
   // 서버에서 넘어오는 값을 저장할 listfromserver_pre를 list로 선언
   final List listfromserver_pre;
-
+  String companyCode;
   // PregnantPage호출 시 리스트 입력 받음
-  const PregnantPage(this.listfromserver_pre);
+  PregnantPage(this.companyCode,this.listfromserver_pre);
 
   // final String? title;
 
@@ -706,7 +706,7 @@ class PregnantPageState extends State<PregnantPage>{
 
                                   await pregnant_insert(); // 임신사 사진 전송 api 호출
                                   Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage())); // PregnantListPage로 넘어가기
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(companyCode: widget.companyCode,))); // PregnantListPage로 넘어가기
                                 },
                                 child: const Icon(Icons.arrow_circle_right_sharp),
                               ),

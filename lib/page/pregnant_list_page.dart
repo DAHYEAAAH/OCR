@@ -5,8 +5,8 @@ import '../functions/functions.dart';
 import '../page/pregnant_modify_page.dart';
 
 class PregnantListPage extends StatefulWidget {
-
-  const PregnantListPage({Key? key, this.title}) : super(key: key);
+  String companyCode;
+  PregnantListPage({Key? key, required this.companyCode, this.title}) : super(key: key);
   final String? title;
 
   @override
@@ -69,7 +69,7 @@ class PregnantListPageState extends State<PregnantListPage> {
                                         onTap: () async {
                                           // print(index-1);
                                           if(index-1 != -1) {
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantModifyPage(ocr_seq[index-1])));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantModifyPage(widget.companyCode,ocr_seq[index-1])));
                                           }
                                         },
                                         child: ListTile(
@@ -128,7 +128,7 @@ class PregnantListPageState extends State<PregnantListPage> {
                                                                             Navigator.of(context).popUntil((route) => route.isFirst);
                                                                             // print("pop 함");
                                                                             Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                                                PregnantListPage()));
+                                                                                PregnantListPage(companyCode: widget.companyCode,)));
                                                                           },
                                                                           child: const Text('삭제'),
                                                                         ),

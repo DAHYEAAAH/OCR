@@ -17,8 +17,8 @@ var goals = List<String>.filled(6, "0");
 
 class GraphPage extends StatefulWidget {
   static const routeName = '/graph-page';
-
-  const GraphPage({Key? key, this.title}) : super(key: key);
+  String companyCode;
+  GraphPage({Key? key, required this.companyCode,this.title}) : super(key: key);
   final String? title;
 
   @override

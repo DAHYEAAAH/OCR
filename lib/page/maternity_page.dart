@@ -25,10 +25,10 @@ late String filename;
 
 class MaternityPage extends StatefulWidget{
   static const routeName = '/OcrMaternityPage';
-
+  String companyCode;
   // const MaternityPage({Key? key, this.title}) : super(key: key);
   final List listfromserver_mat;
-  const MaternityPage(this.listfromserver_mat);
+  MaternityPage(this.companyCode, this.listfromserver_mat);
 
   @override
   MaternityPageState createState() => MaternityPageState();
@@ -542,7 +542,7 @@ class MaternityPageState extends State<MaternityPage>{
 
                                 await maternity_insert();
                                 Navigator.of(context).popUntil((route) => route.isFirst);
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage(companyCode:widget.companyCode)));
 
                                 },
                               child: Icon(Icons.arrow_circle_right_sharp),

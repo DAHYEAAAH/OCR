@@ -40,7 +40,9 @@ class _MyAppState extends State<MyApp> {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
+  List<String> dropdownList = ['안성', '영천', '경주'];
+  String selectedDropdown = '안성';
+  String index_of_farm = '0';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +51,37 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DropdownButton(
+                        value: selectedDropdown,
+                        items: dropdownList.map((String item) {
+                          return DropdownMenuItem<String>(
+                            child: Text('$item'),
+                            value: item,
+                          );
+                        }).toList(),
+                        onChanged: (dynamic value) {
+                          setState(() {
+                            selectedDropdown = value;
+                            switch(selectedDropdown){
+                              case "안성":
+                                index_of_farm = '0';
+                                break;
+                              case "영천":
+                                index_of_farm = '1';
+                                break;
+                              case "경주":
+                                index_of_farm = '2';
+                                break;
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height:20,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -62,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       SizedBox(width:20,),
                       OutlinedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant(companyCode: index_of_farm)));
                           },
                         child: const Text('OCR',),
                         style: OutlinedButton.styleFrom(
@@ -73,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       OutlinedButton(
                         onPressed: ()async{
                           // PregnantListPage로 넘어가기
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(companyCode: index_of_farm,)));
                         },
                         child: const Text('기록'),
                         style: OutlinedButton.styleFrom(
@@ -96,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       SizedBox(width:20,),
                       OutlinedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayMaternity()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayMaternity(companyCode: index_of_farm)));
                         },
                         child: const Text('OCR'),
                         style: OutlinedButton.styleFrom(
@@ -108,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: () async{
                           // MaternityListPage로 넘어가기
                           Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => MaternityListPage()));
+                              builder: (context) => MaternityListPage(companyCode: index_of_farm,)));
                         },
                         child: const Text('기록'),
                         style: OutlinedButton.styleFrom(
@@ -125,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       // SizedBox(width: 100,),
                       OutlinedButton(
                           onPressed: () async {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  GraphPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  GraphPage(companyCode: index_of_farm,)));
                           },
                           child: const Text('그래프'),
                           style: OutlinedButton.styleFrom(
@@ -143,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       OutlinedButton(
                         onPressed: () async {
                           // PregnantGraphPage로 넘어가기
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TargetValueView()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => TargetValueView(companyCode: index_of_farm,)));
                           },
                         child: const Text('목표값'),
                         style: OutlinedButton.styleFrom(

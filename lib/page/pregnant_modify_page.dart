@@ -27,11 +27,11 @@ late String filename;
 class PregnantModifyPage extends StatefulWidget{
 
   static const routeName = '/OcrPregnantPage';
-
+  String companyCode;
   // const PregnantPage({Key? key, this.title}) : super(key: key);
   // final List listfromserver_pre_mo;
   final int seq_num;
-  const PregnantModifyPage(this.seq_num);
+  PregnantModifyPage(this.companyCode,this.seq_num);
 
   @override
   PregnantModifyPageState createState() => PregnantModifyPageState();
@@ -724,7 +724,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                               sow_hang = listfromserver_pre_mo[2];
                               pregnant_update();
                               Navigator.of(context).popUntil((route) => route.isFirst);
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(companyCode: widget.companyCode,)));
                             },
                           ),
                         ],

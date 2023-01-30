@@ -10,7 +10,8 @@ import 'package:intl/intl.dart';
 import '../functions/functions.dart';
 
 class TargetValueView extends StatefulWidget {
-  const TargetValueView({Key? key}) : super(key: key);
+  String companyCode;
+  TargetValueView({Key? key, required this.companyCode}) : super(key: key);
 
   @override
   TargetValueViewState createState(){

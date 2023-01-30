@@ -16,19 +16,11 @@ import '../functions/functions.dart';
 import '../page/maternity_page.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
-
-main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const CameraOverlayMaternity(),
-  );
-}
-
 class CameraOverlayMaternity extends StatefulWidget {
 
   static const routeName = '/camera-overlay-maternity-page';
-
-  const CameraOverlayMaternity({Key? key}) : super(key: key);
+  String companyCode;
+  CameraOverlayMaternity({Key? key, required this.companyCode}) : super(key: key);
 
   @override
   CameraOverlayMaternityState createState() => CameraOverlayMaternityState();
@@ -346,7 +338,7 @@ class CameraOverlayMaternityState extends State<CameraOverlayMaternity> {
 
                                                             Navigator.of(context).popUntil((route) => route.isFirst);
                                                             await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                                                MaternityPage(list)),
+                                                                MaternityPage(widget.companyCode,list)),
                                                             );
                                                           }
                                                         },

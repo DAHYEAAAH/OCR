@@ -17,18 +17,13 @@ import '../page/pregnant_page.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:flutter/cupertino.dart';
 
-main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const CameraOverlayPregnant(),
-  );
-}
-
 class CameraOverlayPregnant extends StatefulWidget {
 
   static const routeName = '/camera-overlay-pregnant-page';
+  String companyCode;
+  // EstrusPage({Key? key, required this.companyCode}) : super(key: key);
 
-  const CameraOverlayPregnant({Key? key}) : super(key: key);
+  CameraOverlayPregnant({Key? key, required this.companyCode}) : super(key: key);
 
   @override
   CameraOverlayPregnantState createState() => CameraOverlayPregnantState();
@@ -66,7 +61,6 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
 
   @override
   Widget build(BuildContext context) {
-
     var media = MediaQuery.of(context);
     var size = media.size;
     double width = media.orientation == Orientation.portrait
@@ -307,7 +301,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
 
                                                           Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
                                                           await Navigator.push(context,
-                                                            MaterialPageRoute(builder: (context) => PregnantPage(list)), // PregnantPage 넘어가기
+                                                            MaterialPageRoute(builder: (context) => PregnantPage(widget.companyCode,list)), // PregnantPage 넘어가기
                                                           );
                                                         }
                                                       },
