@@ -54,7 +54,7 @@ class TargetValueViewState extends State<TargetValueView>{
   }
 
   firstshow() async{
-    var targetdata= await ocrTargetSelectedRow(_pickerYear.toString(), _selectedMonth.month.toString().padLeft(2, "0").toString());
+    var targetdata= await ocrTargetSelectedRow(widget.companyCode,_pickerYear.toString(), _selectedMonth.month.toString().padLeft(2, "0").toString());
     setState(() {
       if(targetdata==null){
         sow_cross.text = "0";
@@ -446,6 +446,7 @@ class TargetValueViewState extends State<TargetValueView>{
                 ),
                 onPressed: () async{
                   await ocrTargetInsertUpdate(
+                      widget.companyCode,
                       _pickerYear.toString(),
                       _selectedMonth.month.toString().padLeft(
                           2, "0").toString(), totalbaby.text.toString(), feedbaby.text.toString(),
@@ -500,7 +501,7 @@ class TargetValueViewState extends State<TargetValueView>{
                 setState(() {
                   _selectedMonth = dateTime;
                 });
-                var targetdata= await ocrTargetSelectedRow(_pickerYear.toString(), _selectedMonth.month.toString().padLeft(2, "0").toString());
+                var targetdata= await ocrTargetSelectedRow(widget.companyCode,_pickerYear.toString(), _selectedMonth.month.toString().padLeft(2, "0").toString());
                 setState(() {
                   if(targetdata==null){
                     sow_cross.text = "0";

@@ -27,7 +27,7 @@ class MaternityListPageState extends State<MaternityListPage> {
     prepareList();
   }
   prepareList() async{
-    listfromserver_list_mat = await maternity_getocr();
+    listfromserver_list_mat = await maternity_getocr(widget.companyCode);
     setState(() {
       // print(listfromserver_list_mat);
       num = listfromserver_list_mat[0][0];
@@ -116,7 +116,7 @@ class MaternityListPageState extends State<MaternityListPage> {
                                                                       ),
                                                                       TextButton(
                                                                         onPressed: () async {
-                                                                          await maternity_deleterow(ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
+                                                                          await maternity_deleterow(widget.companyCode,ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
 
                                                                           Navigator.of(context).popUntil((route) => route.isFirst);
                                                                           // print("pop 함");

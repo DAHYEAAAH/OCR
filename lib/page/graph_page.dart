@@ -72,11 +72,11 @@ class GraphPageState extends State<GraphPage> {
       li.add(templist); // [시작날짜, 끝날짜] 형태로 리스트에 추가
       sunday = nextsunday; // 그 다음주를 계산하기 위해 sunday를 nextsunday로 변경
     }
-    var pregnantdata= await send_date_pregnant(li);
+    var pregnantdata= await send_date_pregnant(widget.companyCode,li);
 
-    var maternitydata= await send_date_maternity(li);
+    var maternitydata= await send_date_maternity(widget.companyCode,li);
 
-    var targetdata= await ocrTargetSelectedRow(thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
+    var targetdata= await ocrTargetSelectedRow(widget.companyCode,thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
 
     setState(() {
       for(int i=0; i<li.length; i++){
@@ -195,10 +195,10 @@ class GraphPageState extends State<GraphPage> {
   }
 
   getdata() async {
-    var pregnantdata = await send_date_pregnant(li);
+    var pregnantdata = await send_date_pregnant(widget.companyCode,li);
     var targetdata = await ocrTargetSelectedRow(
-        thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
-    var maternitydata = await send_date_maternity(li);
+        widget.companyCode,thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
+    var maternitydata = await send_date_maternity(widget.companyCode,li);
     setState(() {
       for (int i = 0; i < li.length; i++) {
         if (pregnantdata[i]['sow_cross'] == null) {

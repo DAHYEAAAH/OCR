@@ -27,7 +27,7 @@ class PregnantListPageState extends State<PregnantListPage> {
     prepareList();
   }
   prepareList() async{
-    listfromserver_list_pre = await pregnant_getocr();
+    listfromserver_list_pre = await pregnant_getocr(widget.companyCode);
     //서버로부터 값 받아오기
     setState(() {
       // print("hey");
@@ -122,8 +122,8 @@ class PregnantListPageState extends State<PregnantListPage> {
                                                                         TextButton(
                                                                           onPressed: () async {
                                                                             await pregnant_deleterow(
+                                                                                widget.companyCode,
                                                                                 ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
-
                                                                             // print("pregnant return get ocr->");
                                                                             Navigator.of(context).popUntil((route) => route.isFirst);
                                                                             // print("pop 함");

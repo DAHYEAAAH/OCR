@@ -78,10 +78,10 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
     prepareList();
   }
   prepareList() async{
-    listfromserver_pre_mo = await pregnant_selectrow(widget.seq_num);
+    listfromserver_pre_mo = await pregnant_selectrow(widget.companyCode,widget.seq_num);
     //서버로부터 값 받아오기
     setState(() {
-      print("hey");
+      // print("hey");
     });
   }
 
@@ -150,8 +150,8 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
     if(listfromserver_pre_mo.isNotEmpty){
       if(flag==0) {
         flag++;
-        print("임신사 수정 페이지 : ");
-        print(listfromserver_pre_mo);
+        // print("임신사 수정 페이지 : ");
+        // print(listfromserver_pre_mo);
 
         sowID1_Controller.text = listfromserver_pre_mo[1].toString().split("-")[0];
         sowID2_Controller.text = listfromserver_pre_mo[1].toString().split("-")[1];

@@ -77,11 +77,12 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
     prepareList();
   }
   prepareList() async{
-    listfromserver_mat_mo = await maternity_selectrow(widget.seq_num);
+    listfromserver_mat_mo = await maternity_selectrow(widget.companyCode,widget.seq_num);
+    // print(listfromserver_mat_mo);
     //서버로부터 값 받아오기
-    // setState(() {
+    setState(() {
     //   print("hey");
-    // });
+    });
   }
 
   Widget showImage() {
