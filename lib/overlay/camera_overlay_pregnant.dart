@@ -21,9 +21,7 @@ class CameraOverlayPregnant extends StatefulWidget {
 
   static const routeName = '/camera-overlay-pregnant-page';
   String companyCode;
-  // EstrusPage({Key? key, required this.companyCode}) : super(key: key);
-
-  CameraOverlayPregnant({Key? key, required this.companyCode}) : super(key: key);
+  CameraOverlayPregnant({Key? key, required this.companyCode,}) : super(key: key);
 
   @override
   CameraOverlayPregnantState createState() => CameraOverlayPregnantState();
@@ -61,6 +59,7 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
 
   @override
   Widget build(BuildContext context) {
+
     var media = MediaQuery.of(context);
     var size = media.size;
     double width = media.orientation == Orientation.portrait
@@ -118,204 +117,204 @@ class CameraOverlayPregnantState extends State<CameraOverlayPregnant> {
                                 children: <Widget>[
                                   CustomNavigationBar(),
                                   Expanded(
-                                    child: Container(
+                                      child: Container(
                                         child: Stack(
-                                        children: [
-                                          Stack(fit: StackFit.expand,children:[
-                                            Image.file(File(file.path))]),
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            fit: StackFit.loose,
-                                            children: [
-                                              Align(
-                                                  alignment: Alignment.center,
-                                                  child: Container(
-                                                    width: width,
-                                                    height: height,
-                                                    decoration: ShapeDecoration(
-                                                        color: Colors.transparent,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.zero,
-                                                            // borderRadius: BorderRadius.circular(radius),
-                                                            side: const BorderSide(width: 1, color: Colors.white))),
-                                                  )
-                                              ),
-                                              ColorFiltered(
-                                                colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcOut),
-                                                child: Stack(
-                                                  children: [
-                                                    Container(
-                                                      decoration: const BoxDecoration(
-                                                        color: Colors.transparent,
-                                                      ),
-                                                      child: Align(
-                                                        alignment: Alignment.center,
-                                                        child: Container(
-                                                          width: width,
-                                                          height:height,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors.black,
-                                                              borderRadius: BorderRadius.zero),
-                                                          // borderRadius: BorderRadius.circular(radius)),
+                                          children: [
+                                            Stack(fit: StackFit.expand,children:[
+                                              Image.file(File(file.path))]),
+                                            Stack(
+                                              alignment: Alignment.center,
+                                              fit: StackFit.loose,
+                                              children: [
+                                                Align(
+                                                    alignment: Alignment.center,
+                                                    child: Container(
+                                                      width: width,
+                                                      height: height,
+                                                      decoration: ShapeDecoration(
+                                                          color: Colors.transparent,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.zero,
+                                                              // borderRadius: BorderRadius.circular(radius),
+                                                              side: const BorderSide(width: 1, color: Colors.white))),
+                                                    )
+                                                ),
+                                                ColorFiltered(
+                                                  colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcOut),
+                                                  child: Stack(
+                                                    children: [
+                                                      Container(
+                                                        decoration: const BoxDecoration(
+                                                          color: Colors.transparent,
+                                                        ),
+                                                        child: Align(
+                                                          alignment: Alignment.center,
+                                                          child: Container(
+                                                            width: width,
+                                                            height:height,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors.black,
+                                                                borderRadius: BorderRadius.zero),
+                                                            // borderRadius: BorderRadius.circular(radius)),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Material(
-                                                color: Colors.transparent,
-                                                child: Container(
-                                                    decoration: const BoxDecoration(
-                                                      color: Colors.black12,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    margin: const EdgeInsets.all(25),
-                                                    child: IconButton(
-                                                      enableFeedback: true,
-                                                      color: Colors.white,
-                                                      onPressed: () async {
-                                                        Navigator.of(context).pop();
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.arrow_back,
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Material(
+                                                  color: Colors.transparent,
+                                                  child: Container(
+                                                      decoration: const BoxDecoration(
+                                                        color: Colors.black12,
+                                                        shape: BoxShape.circle,
                                                       ),
-                                                      iconSize: 30,
-                                                    ))),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Material(
-                                                color: Colors.transparent,
-                                                child: Container(
-                                                    decoration: const BoxDecoration(
-                                                      color: Colors.black12,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    margin: const EdgeInsets.all(25),
-                                                    child: IconButton(
-                                                      enableFeedback: true,
-                                                      color: Colors.white,
-                                                      onPressed: () async {
-                                                        // 서버로 임신사 사진 list에 넣어서 보내기
-                                                        showDialog(context: context, builder: (context){
-                                                          return Container(
-                                                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                                            alignment: Alignment.center,
-                                                            decoration: const BoxDecoration(
-                                                              color: Colors.white70,
-                                                            ),
-                                                            child: Container(
-                                                              // decoration: BoxDecoration(
-                                                              //     color: Colors.white,
-                                                              //     borderRadius: BorderRadius.circular(10.0)
-                                                              // ),
-                                                              width: 300.0,
-                                                              height: 200.0,
-                                                              alignment: AlignmentDirectional.center,
-                                                              child: Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                children: <Widget>[
-                                                                  const Center(
-                                                                    child: SizedBox(
-                                                                      height: 50.0,
-                                                                      width: 50.0,
-                                                                      child: CircularProgressIndicator( // 로딩화면 애니메이션
-                                                                        value: null,
-                                                                        strokeWidth: 7.0,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  Container(
-                                                                    margin: const EdgeInsets.only(top: 25.0),
-                                                                    child: const Center(
-                                                                      child:
-                                                                      Text(
-                                                                        "loading.. wait...",
-                                                                        style: TextStyle(
-                                                                            color: Colors.blue
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          );
-                                                        });
-                                                        List list = await uploadimg_pregnant(File(file.path));
-
-                                                        if(list[1].length==0||(list[1].every((x) => x == ""))){
-                                                          print("ocr인식오류");
-
-                                                          Navigator.pop(context, 'Yep!');
+                                                      margin: const EdgeInsets.all(25),
+                                                      child: IconButton(
+                                                        enableFeedback: true,
+                                                        color: Colors.white,
+                                                        onPressed: () async {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.arrow_back,
+                                                        ),
+                                                        iconSize: 30,
+                                                      ))),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: Material(
+                                                  color: Colors.transparent,
+                                                  child: Container(
+                                                      decoration: const BoxDecoration(
+                                                        color: Colors.black12,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      margin: const EdgeInsets.all(25),
+                                                      child: IconButton(
+                                                        enableFeedback: true,
+                                                        color: Colors.white,
+                                                        onPressed: () async {
+                                                          // 서버로 임신사 사진 list에 넣어서 보내기
                                                           showDialog(context: context, builder: (context){
                                                             return Container(
                                                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                                               alignment: Alignment.center,
-                                                              // decoration: const BoxDecoration(
-                                                              //   color: Colors.white70,
-                                                              // ),
+                                                              decoration: const BoxDecoration(
+                                                                color: Colors.white70,
+                                                              ),
                                                               child: Container(
-                                                                decoration: BoxDecoration(
-                                                                    color: Colors.white70,
-                                                                    borderRadius: BorderRadius.circular(10.0)
-                                                                ),
+                                                                // decoration: BoxDecoration(
+                                                                //     color: Colors.white,
+                                                                //     borderRadius: BorderRadius.circular(10.0)
+                                                                // ),
                                                                 width: 300.0,
-                                                                height: 100.0,
+                                                                height: 200.0,
                                                                 alignment: AlignmentDirectional.center,
                                                                 child: Column(
                                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                                   children: <Widget>[
-                                                                    Text(
-                                                                        "please take the picture again",
-                                                                        style: TextStyle(
-                                                                            fontSize: 17,
-                                                                            fontWeight: FontWeight.bold,
-                                                                            color: Colors.black
-                                                                        ))
+                                                                    const Center(
+                                                                      child: SizedBox(
+                                                                        height: 50.0,
+                                                                        width: 50.0,
+                                                                        child: CircularProgressIndicator( // 로딩화면 애니메이션
+                                                                          value: null,
+                                                                          strokeWidth: 7.0,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      margin: const EdgeInsets.only(top: 25.0),
+                                                                      child: const Center(
+                                                                        child:
+                                                                        Text(
+                                                                          "loading.. wait...",
+                                                                          style: TextStyle(
+                                                                              color: Colors.blue
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
                                                             );
                                                           });
-                                                          await Future.delayed(Duration(seconds: 1));
-                                                          Navigator.pop(context, 'Yep!');
-                                                          Navigator.pop(context, 'Yep!');
-                                                        }
+                                                          List list = await uploadimg_pregnant(File(file.path));
 
-                                                        else {
-                                                          // 찍은 사진 갤러리에 저장
-                                                          GallerySaver.saveImage(file.path)
-                                                              .then((value) => print(
-                                                              '>>>> save value= $value'))
-                                                              .catchError((err) {
-                                                            print('error : $err');
-                                                          });
+                                                          if(list[1].length==0||(list[1].every((x) => x == ""))){
+                                                            print("ocr인식오류");
 
-                                                          Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
-                                                          await Navigator.push(context,
-                                                            MaterialPageRoute(builder: (context) => PregnantPage(widget.companyCode,list)), // PregnantPage 넘어가기
-                                                          );
-                                                        }
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.send,
-                                                      ),
-                                                      iconSize: 30,
-                                                    )
-                                                )
+                                                            Navigator.pop(context, 'Yep!');
+                                                            showDialog(context: context, builder: (context){
+                                                              return Container(
+                                                                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                                                alignment: Alignment.center,
+                                                                // decoration: const BoxDecoration(
+                                                                //   color: Colors.white70,
+                                                                // ),
+                                                                child: Container(
+                                                                  decoration: BoxDecoration(
+                                                                      color: Colors.white70,
+                                                                      borderRadius: BorderRadius.circular(10.0)
+                                                                  ),
+                                                                  width: 300.0,
+                                                                  height: 100.0,
+                                                                  alignment: AlignmentDirectional.center,
+                                                                  child: Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                    children: <Widget>[
+                                                                      Text(
+                                                                          "please take the picture again",
+                                                                          style: TextStyle(
+                                                                              fontSize: 17,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black
+                                                                          ))
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            });
+                                                            await Future.delayed(Duration(seconds: 1));
+                                                            Navigator.pop(context, 'Yep!');
+                                                            Navigator.pop(context, 'Yep!');
+                                                          }
+
+                                                          else {
+                                                            // 찍은 사진 갤러리에 저장
+                                                            GallerySaver.saveImage(file.path)
+                                                                .then((value) => print(
+                                                                '>>>> save value= $value'))
+                                                                .catchError((err) {
+                                                              print('error : $err');
+                                                            });
+
+                                                            Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
+                                                            await Navigator.push(context,
+                                                              MaterialPageRoute(builder: (context) => PregnantPage(widget.companyCode,list)), // PregnantPage 넘어가기
+                                                            );
+                                                          }
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.send,
+                                                        ),
+                                                        iconSize: 30,
+                                                      )
+                                                  )
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                    ),
-                                  )
+                                          ],
+                                        ),
+                                      )
                                   )
                                 ],
                               ),

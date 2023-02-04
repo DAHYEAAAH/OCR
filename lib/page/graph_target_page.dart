@@ -74,42 +74,50 @@ class TargetValueViewState extends State<TargetValueView>{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     return Scaffold(
       key:_formKey,
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            //SizedBox(height: 30,),
-            SizedBox(
-              //width: double.infinity, height: 70,
-              width: MediaQuery.of(context).size.width, height: 70,
-              child:unitTitle(), //'목표값 입력' 띄움
+          scrollDirection: Axis.vertical,
+          child: Container(
+            width: 1000,
+            child: Column(
+              children: [
+                Container(
+                  width: 600,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 30,),
+                      SizedBox(
+                        //width: double.infinity, height: 70,
+                        width: MediaQuery.of(context).size.width, height: 70,
+                        child:unitTitle(), //'목표값 입력' 띄움
+                      ),
+                      Container(
+                        //width: double.infinity,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black54,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          // color: const Color(0xf6f6f6f6),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(width: 10,),
+                            Expanded(child: inputContents(), flex:10, ), // textform 모음
+                            SizedBox(width: 10,),
+                            Expanded(child: inputContentsDeco(), flex:10 ), // G farm 사진
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
-            Container(
-              //width: double.infinity,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black54,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                // color: const Color(0xf6f6f6f6),
-              ),
-              child: Row(
-                children: [
-                  SizedBox(width: 10,),
-                  Expanded(child: inputContents(), flex:10, ), // textform 모음
-                  SizedBox(width: 10,),
-                  Expanded(child: inputContentsDeco(), flex:10 ), // G farm 사진
-                ],
-              ),
-            ),
-          ],
-        ),
+          )
       ),
     );
   }
@@ -446,7 +454,7 @@ class TargetValueViewState extends State<TargetValueView>{
                 ),
                 onPressed: () async{
                   await ocrTargetInsertUpdate(
-                      widget.companyCode,
+                    widget.companyCode,
                       _pickerYear.toString(),
                       _selectedMonth.month.toString().padLeft(
                           2, "0").toString(), totalbaby.text.toString(), feedbaby.text.toString(),

@@ -6,7 +6,7 @@ import '../../routing/router.dart';
 import '../../services/navigation_service.dart';
 import '../../widgets/centered_view/centered_view.dart';
 import '../../widgets/navigation_bar/navigation_bar.dart';
-import '../../widgets/navigation_drawer/navigation_drawer.dart';
+import '../../widgets/navigation_drawer/navigation_drawer.dart' as prefix;
 
 class LayoutTemplate extends StatelessWidget {
   const LayoutTemplate({Key? key}) : super(key: key);
@@ -31,7 +31,7 @@ class LayoutTemplate extends StatelessWidget {
           ),
         ),
         drawer: sizingInformation.deviceScreenType == DeviceScreenType.mobile
-            ? NavigationDrawer()
+            ? NavigationDrawer(children: [],)
             : null,
         backgroundColor: Colors.white,
         body: CenteredView(

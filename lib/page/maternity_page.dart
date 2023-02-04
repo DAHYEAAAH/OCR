@@ -540,7 +540,7 @@ class MaternityPageState extends State<MaternityPage>{
                                 // "ocr_imgpath":'17',
                                 memo = memo_Controller.text;
 
-                                await maternity_insert();
+                                await maternity_insert(widget.companyCode);
                                 Navigator.of(context).popUntil((route) => route.isFirst);
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage(companyCode:widget.companyCode)));
 
@@ -557,9 +557,10 @@ class MaternityPageState extends State<MaternityPage>{
   }
 }
 //분만사 사진전송
-maternity_insert() async{
+maternity_insert(String companyCode) async{
   final api ='https://www.dfxsoft.com/api/ocrmaternityInsert';
   final data = {
+    "companyCode":companyCode,
     "sow_no": sow_no,
     "sow_birth": sow_birth,
     "sow_buy": sow_buy,

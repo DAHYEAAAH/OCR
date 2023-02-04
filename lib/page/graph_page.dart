@@ -2,8 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../functions/functions.dart';
 import 'package:intl/intl.dart';
-
-import 'TargetValueView.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 var mating_week = new List<double>.filled(5,0);
 late String mating_goal = "0";
@@ -29,6 +28,12 @@ var thismonth = DateTime.now().month;
 
 
 class GraphPageState extends State<GraphPage> {
+  late List<_ChartData> mating_data_1;
+  late List<_ChartData> mating_data_2;
+  late TooltipBehavior _tooltip1;
+  late TooltipBehavior _tooltip2;
+  late TooltipBehavior _tooltip3;
+  late TooltipBehavior _tooltip4;
 
   @override
   initState(){
@@ -37,6 +42,13 @@ class GraphPageState extends State<GraphPage> {
     preparegraph();
     thisyear = DateTime.now().year;
     thismonth = DateTime.now().month;
+
+    _tooltip1 = TooltipBehavior(enable: true);
+    _tooltip2 = TooltipBehavior(enable: true);
+    _tooltip3 = TooltipBehavior(enable: true);
+    _tooltip4 = TooltipBehavior(enable: true);
+
+    //super.initState();
   }
 
   List li = [];
@@ -196,8 +208,8 @@ class GraphPageState extends State<GraphPage> {
 
   getdata() async {
     var pregnantdata = await send_date_pregnant(widget.companyCode,li);
-    var targetdata = await ocrTargetSelectedRow(
-        widget.companyCode,thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
+    var targetdata = await ocrTargetSelectedRow(widget.companyCode,
+        thisyear.toString(), thismonth.toString().padLeft(2, "0").toString());
     var maternitydata = await send_date_maternity(widget.companyCode,li);
     setState(() {
       for (int i = 0; i < li.length; i++) {
@@ -265,6 +277,10 @@ class GraphPageState extends State<GraphPage> {
     });
   }
 
+  void get_weeknum(){
+
+  }
+
   final goal_Controller_cross = TextEditingController();
   final goal_Controller_sevrer = TextEditingController();
   final goal_Controller_total = TextEditingController();
@@ -272,204 +288,119 @@ class GraphPageState extends State<GraphPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    // print(mating_week[0].toDouble().runtimeType);
+    // print(mating_week[0].toDouble());
+
     changeMonth();
+
+
     return Scaffold(
-        appBar: AppBar(
-            title: Text('$thisyear'.toString()+"년 "+'$thismonth'.toString()+"월 목표 달성(통계)")
+      appBar: AppBar(
+          title: Text('$thisyear'.toString()+"년 "+'$thismonth'.toString()+"월 목표 달성(통계)")
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(10, 20, 10, 80),
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () async { decrease_month(); changeMonth();getdata();},
+                      icon: Icon(Icons.navigate_before)
+                  ),
+                  IconButton(
+                      onPressed: () { increase_month();changeMonth();getdata();},
+                      icon: Icon(Icons.navigate_next)
+                  )
+                ]
+            ),
+            Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+
+                Expanded(
+                  //flex: 3,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 350.0,
+                        child: mainChart_sow_cross(li, count) ,
+                      )
+                    ],
+                  ),
+                ),
+
+                Expanded(
+                  //flex: 3,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 350.0,
+                        child:  mainChart_feed_baby(li, count) ,)
+                    ],
+                  ),
+                ),
+
+              ],
+            ),
+
+            Column(
+              children: [
+                SizedBox(
+                  height: 30.0,
+                ),
+              ],
+            ),
+
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                //Size.fromWidth(MediaQuery.of(context).size.width),
+                Expanded(
+
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 350.0,
+                        child:  mainChart_sow_sevrer(li, count) ,
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 350.0,
+                        child:  mainChart_total_baby(li, count) ,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+
+            ),
+
+            //   SizedBox(height: 50,),
+          ],
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(10, 20, 10, 80),
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                        onPressed: () async { decrease_month(); changeMonth();getdata();},
-                        icon: Icon(Icons.navigate_before)
-                    ),
-                    IconButton(
-                        onPressed: () { increase_month();changeMonth();getdata();},
-                        icon: Icon(Icons.navigate_next)
-                    )
-                  ]
-              ),
-              Column(
-                children: [
-                  // AspectRatio(aspectRatio: 3 / 1,
-                    FittedBox(
-                      fit: BoxFit.none,
-                      //padding: EdgeInsets.fromLTRB(40, 40, 50, 50),
-                      child: Text("교배", style: TextStyle(fontSize: 15),),
-                    ),
-                  // ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  // AspectRatio(aspectRatio: 3 / 1,
-                    FittedBox(
-                      fit: BoxFit.none,
-                      //padding: EdgeInsets.fromLTRB(40, 40, 50, 50),
-                      child: LineChart(
-                        mainChart_sow_cross(li,count),
-                      ),
-                    ),
-                  // ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  // AspectRatio(aspectRatio: 3 / 1,
-                    FittedBox(
-                      fit: BoxFit.none,
-                      child: Text("이유", style: TextStyle(fontSize: 15),),
-                    ),
-                  // ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  // AspectRatio(aspectRatio: 3 / 1,
-                    FittedBox(
-                      fit: BoxFit.none,
-                      //padding: EdgeInsets.fromLTRB(40, 40, 50, 50),
-                      child: LineChart(
-                        mainChart_sow_sevrer(li,count),
-                      ),
-                    ),
-                  // ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  // AspectRatio(aspectRatio: 3 / 1,
-                    FittedBox(
-                      fit: BoxFit.none,
-                      child: Text("총산자수", style: TextStyle(fontSize: 15),),
-                    ),
-                  // ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  // AspectRatio(aspectRatio: 3 / 1,
-                    FittedBox(
-                      fit: BoxFit.none,
-                      child: LineChart(
-                        mainChart_total_baby(li,count),
-                      ),
-                    // ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  // AspectRatio(aspectRatio: 3 / 1,
-                    FittedBox(
-                      fit: BoxFit.none,
-                      child: Text("포유", style: TextStyle(fontSize: 15),),
-                    ),
-                  // ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  // AspectRatio(aspectRatio: 3 / 1,
-                    FittedBox(
-                      fit: BoxFit.none,
-                      //padding: EdgeInsets.fromLTRB(40, 40, 50, 50),
-                      child: LineChart(
-                        mainChart_feed_baby(li,count),
-                      ),
-                    // ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 100,),
-            ],
-          ),
-        ),
-        // floatingActionButton: Column(
-        //     mainAxisAlignment: MainAxisAlignment.end,
-        //     children: [
-        //
-        //       FloatingActionButton(
-        //         heroTag: 'dialog',
-        //         backgroundColor: Colors.blue,
-        //         child: Icon(Icons.arrow_forward),
-        //         onPressed: () async{
-        //           Navigator.push(context, MaterialPageRoute(builder: (context) => const TargetValueView()));
-        //         },
-        //       ),
-        //     ]
-        // )
+      ),
     );
   }
 
 
-//교배복수**********************
-  LineChartData mainChart_sow_cross(List li, int weeknum) {
-    List<Color> gradientColors_values = [
-      const Color(0xff23b6e6),
-      const Color(0xff02d39a),
-    ];
 
-    List<Color> gradientColorsAvg = [
-      const Color(0xfffa0000),
-      const Color(0xffffdd00),
-    ];
+//교배복수**********************
+  SfCartesianChart mainChart_sow_cross(List li, int weeknum) {
+
     double max = 40;
     if (double.parse(mating_goal) > 40)
       max = double.parse(mating_goal) + 10;
@@ -482,224 +413,81 @@ class GraphPageState extends State<GraphPage> {
     if(mating_week[3]>max)
       max = mating_week[3];
     if (li.length == 4) {
-      return LineChartData(
 
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: 10,
-          drawHorizontalLine: true,
+      final List<_ChartData> mating_data_1 = <_ChartData>[
+        _ChartData(weeknum.toString()+"주차\n~"+li[0][1].toString().split("-").last+"일", mating_week[0].toDouble(), double.parse(mating_goal)), //이름, 막대그래프, 선그래프값
+        _ChartData((weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일", mating_week[1].toDouble(), double.parse(mating_goal)),
+        _ChartData((weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일", mating_week[2].toDouble(), double.parse(mating_goal)),
+        _ChartData((weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일", mating_week[3].toDouble(), double.parse(mating_goal)),
+      ];
 
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-        ),
-
-        titlesData: FlTitlesData(
-          show: true,
-          bottomTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 22,
-            textStyle: const TextStyle(
-                color: Color(0xff000000),
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
-            getTitles: (value) {
-              switch (value.toInt()) {
-                case 0:
-                  return weeknum.toString()+"주차\n~"+li[0][1].toString().split("-").last+"일";
-                case 4:
-                  return (weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일";
-                case 8:
-                  return (weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일";
-                case 12:
-                  return (weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일";
-              }
-              return '';
-            },
-            margin: 8,
+      return SfCartesianChart(
+          primaryXAxis: CategoryAxis(
+              labelStyle: TextStyle(
+                  fontSize: 10
+              )
           ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            interval: 10,
-            textStyle: const TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        // // borderData: FlBorderData(
-        // //     show: true,
-        // //     border: Border.all(color: const Color(0xff000000), width: 1)),
-        minX: 0,
-        maxX: 12,
-        minY: 0,
-        maxY: max,
-        lineBarsData: [
-          LineChartBarData(
-            spots: [
-              FlSpot(0, mating_week[0]),
-              FlSpot(4, mating_week[1]),
-              FlSpot(8, mating_week[2]),
-              FlSpot(12, mating_week[3]),
-            ],
-
-            isCurved: false,
-            colors: gradientColors_values,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-          LineChartBarData(
-            spots: [
-              FlSpot(0, double.parse(mating_goal)),
-              FlSpot(4, double.parse(mating_goal)),
-              FlSpot(8, double.parse(mating_goal)),
-              FlSpot(12, double.parse(mating_goal)),
-            ],
-            isCurved: false,
-            colors: gradientColorsAvg,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-        ],
+          primaryYAxis: NumericAxis(minimum: 0, maximum: max, interval: 5), //그래프 범위
+          tooltipBehavior: _tooltip1,
+          series: <ChartSeries<_ChartData, String>>[
+            ColumnSeries<_ChartData, String>(
+                dataSource: mating_data_1,
+                xValueMapper: (_ChartData mating_data_1, _) => mating_data_1.x,
+                yValueMapper: (_ChartData mating_data_1, _) => mating_data_1.y,
+                name: '교배',
+                color: Color(0xff23b6e6)), //막대그래프 색
+            LineSeries<_ChartData, String>(
+                dataSource: mating_data_1,
+                xValueMapper: (_ChartData mating_data_1, _) => mating_data_1.x,
+                yValueMapper: (_ChartData mating_data_1, _) => mating_data_1.y1,
+                name: '목표값',
+                color: Color(0xfffa0000)) //선그래프 색
+          ]
       );
     }
+
     else {
+      final List<_ChartData> mating_data_2 = <_ChartData>[
+        _ChartData(weeknum.toString()+"주차\n~"+li[0][1].toString().split("-").last+"일", mating_week[0].toDouble(), double.parse(mating_goal)), //이름, 막대그래프, 선그래프값
+        _ChartData((weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일", mating_week[1].toDouble(), double.parse(mating_goal)),
+        _ChartData((weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일", mating_week[2].toDouble(), double.parse(mating_goal)),
+        _ChartData((weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일", mating_week[3].toDouble(), double.parse(mating_goal)),
+        _ChartData((weeknum+4).toString()+"주차\n~"+li[4][1].toString().split("-").last+"일", mating_week[4].toDouble(), double.parse(mating_goal))
+      ];
+
       if(mating_week[4]>max)
         max = mating_week[4];
-      return LineChartData(
-
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: 10,
-          drawHorizontalLine: true,
-
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-        ),
-
-        titlesData: FlTitlesData(
-          show: true,
-          bottomTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 22,
-            textStyle: const TextStyle(
-                color: Color(0xff000000),
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
-            getTitles: (value) {
-              switch (value.toInt()) {
-                case 0:
-                  return weeknum.toString()+"주차\n~"+li[0][1].toString().split("-").last+"일";
-                case 3:
-                  return (weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일";
-                case 6:
-                  return (weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일";
-                case 9:
-                  return (weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일";
-                case 12:
-                  return (weeknum+4).toString()+"주차\n~"+li[4][1].toString().split("-").last+"일";
-              }
-              return '';
-            },
-            margin: 8,
+      return SfCartesianChart(
+          primaryXAxis: CategoryAxis(
+              labelStyle: TextStyle(
+                fontSize: 8,
+              )
           ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            interval: 10,
-            textStyle: const TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-
-          ),
-        ),
-        minX: 0,
-        maxX: 12,
-        minY: 0,
-        maxY: max,
-        lineBarsData: [
-          LineChartBarData(
-            spots: [
-              FlSpot(0, mating_week[0]),
-              FlSpot(3, mating_week[1]),
-              FlSpot(6, mating_week[2]),
-              FlSpot(9, mating_week[3]),
-              FlSpot(12, mating_week[4]),
-            ],
-
-            isCurved: false,
-            colors: gradientColors_values,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-          LineChartBarData(
-            spots: [
-              FlSpot(0, double.parse(mating_goal)),
-              FlSpot(3, double.parse(mating_goal)),
-              FlSpot(6, double.parse(mating_goal)),
-              FlSpot(9, double.parse(mating_goal)),
-              FlSpot(12, double.parse(mating_goal)),
-            ],
-            isCurved: true,
-            colors: gradientColorsAvg,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-        ],
+          primaryYAxis: NumericAxis(minimum: 0, maximum: max, interval: 5), //그래프 범위
+          tooltipBehavior: _tooltip1,
+          series: <ChartSeries<_ChartData, String>>[
+            ColumnSeries<_ChartData, String>(
+                dataSource: mating_data_2,
+                xValueMapper: (_ChartData mating_data_2, _) => mating_data_2.x,
+                yValueMapper: (_ChartData mating_data_2, _) => mating_data_2.y,
+                name: '교배',
+                color: Color(0xff23b6e6)), //막대그래프 색
+            LineSeries<_ChartData, String>(
+                dataSource: mating_data_2,
+                xValueMapper: (_ChartData mating_data_2, _) => mating_data_2.x,
+                yValueMapper: (_ChartData mating_data_2, _) => mating_data_2.y1,
+                name: '목표값',
+                color: Color(0xfffa0000)) //선그래프 색
+          ]
       );
     }
   }
 
-//이유두수******************
-  LineChartData mainChart_sow_sevrer(List li, int weeknum) {
-    List<Color> gradientColors_values = [
-      const Color(0xff23b6e6),
-      const Color(0xff02d39a),
-    ];
+  //이유두수******************
+  SfCartesianChart mainChart_sow_sevrer(List li, int weeknum) {
 
-    List<Color> gradientColors_avg = [
-      const Color(0xfffa0000),
-      const Color(0xffffdd00),
-    ];
-
-
-    double max = 300;
-    if (double.parse(sevrer_goal) > 300)
+    double max = 150;
+    if (double.parse(sevrer_goal) > 150)
       max = double.parse(sevrer_goal) + 10;
     if(sevrer_week[0]>max)
       max = sevrer_week[0];
@@ -709,235 +497,84 @@ class GraphPageState extends State<GraphPage> {
       max = sevrer_week[2];
     if(sevrer_week[3]>max)
       max = sevrer_week[3];
-    if (li.length == 4)
-      return LineChartData(
 
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: 100,
-          drawHorizontalLine: true,
+    if (li.length == 4) {
 
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-        ),
+      final List<_ChartData> sevrer_data_1 = <_ChartData>[
+        _ChartData(weeknum.toString()+"주차\n~"+li[0][1].toString().split("-").last+"일", sevrer_week[0].toDouble(), double.parse(sevrer_goal)), //이름, 막대그래프, 선그래프값
+        _ChartData((weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일", sevrer_week[1].toDouble(), double.parse(sevrer_goal)),
+        _ChartData((weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일", sevrer_week[2].toDouble(), double.parse(sevrer_goal)),
+        _ChartData((weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일", sevrer_week[3].toDouble(), double.parse(sevrer_goal)),
+      ];
 
-        titlesData: FlTitlesData(
-          show: true,
-          bottomTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 22,
-            textStyle: const TextStyle(
-                color: Color(0xff000000),
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
-            getTitles: (value) {
-              switch (value.toInt()) {
-                case 0:
-                  return (weeknum+0).toString()+"주차\n~"+li[0][1].toString().split("-").last+"일";
-                case 4:
-                  return (weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일";
-                case 8:
-                  return (weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일";
-                case 12:
-                  return (weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일";
-              }
-              return '';
-            },
-            margin: 8,
+      return SfCartesianChart(
+          primaryXAxis: CategoryAxis(
+              labelStyle: TextStyle(
+                  fontSize: 10
+              )
           ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            interval: 100,
-            textStyle: const TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        minX: 0,
-        maxX: 12,
-        minY: 0,
-        maxY: max,
-        lineBarsData: [
-          LineChartBarData(
-            spots: [
-              FlSpot(0, sevrer_week[0].toDouble()),
-              FlSpot(4, sevrer_week[1].toDouble()),
-              FlSpot(8, sevrer_week[2].toDouble()),
-              FlSpot(12, sevrer_week[3].toDouble()),
-            ],
-
-            isCurved: false,
-            colors: gradientColors_values,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-          LineChartBarData(
-            spots: [
-              FlSpot(0, double.parse(sevrer_goal)),
-              FlSpot(4, double.parse(sevrer_goal)),
-              FlSpot(8, double.parse(sevrer_goal)),
-              FlSpot(12, double.parse(sevrer_goal)),
-            ],
-            isCurved: false,
-            colors: gradientColors_avg,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-        ],
+          primaryYAxis: NumericAxis(minimum: 0, maximum: max, interval: 15), //그래프 범위
+          tooltipBehavior: _tooltip2,
+          series: <ChartSeries<_ChartData, String>>[
+            ColumnSeries<_ChartData, String>(
+                dataSource: sevrer_data_1,
+                xValueMapper: (_ChartData sevrer_data_1, _) => sevrer_data_1.x,
+                yValueMapper: (_ChartData sevrer_data_1, _) => sevrer_data_1.y,
+                name: '이유',
+                color: Color(0xff23b6e6)), //막대그래프 색
+            LineSeries<_ChartData, String>(
+                dataSource: sevrer_data_1,
+                xValueMapper: (_ChartData sevrer_data_1, _) => sevrer_data_1.x,
+                yValueMapper: (_ChartData sevrer_data_1, _) => sevrer_data_1.y1,
+                name: '목표값',
+                color: Color(0xfffa0000)) //선그래프 색
+          ]
       );
+    }
+
     else {
-      if(sevrer_week[4]>max)
+      final List<_ChartData> sevrer_data_2 = <_ChartData>[
+        _ChartData(weeknum.toString()+"주차\n~"+li[0][1].toString().split("-").last+"일", sevrer_week[0].toDouble(), double.parse(sevrer_goal)), //이름, 막대그래프, 선그래프값
+        _ChartData((weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일", sevrer_week[1].toDouble(), double.parse(sevrer_goal)),
+        _ChartData((weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일", sevrer_week[2].toDouble(), double.parse(sevrer_goal)),
+        _ChartData((weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일", sevrer_week[3].toDouble(), double.parse(sevrer_goal)),
+        _ChartData((weeknum+4).toString()+"주차\n~"+li[4][1].toString().split("-").last+"일", sevrer_week[4].toDouble(), double.parse(sevrer_goal))
+      ];
+
+      if(sevrer_week[4] > max)
         max = sevrer_week[4];
-      return LineChartData(
-
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: 100,
-          drawHorizontalLine: true,
-
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-        ),
-
-        titlesData: FlTitlesData(
-          show: true,
-          bottomTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 22,
-            textStyle: const TextStyle(
-                color: Color(0xff000000),
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
-            getTitles: (value) {
-              switch (value.toInt()) {
-                case 0:
-                  return (weeknum + 0).toString() + "주차\n~" + li[0][1]
-                      .toString()
-                      .split("-")
-                      .last + "일";
-                case 3:
-                  return (weeknum + 1).toString() + "주차\n~" + li[1][1]
-                      .toString()
-                      .split("-")
-                      .last + "일";
-                case 6:
-                  return (weeknum + 2).toString() + "주차\n~" + li[2][1]
-                      .toString()
-                      .split("-")
-                      .last + "일";
-                case 9:
-                  return (weeknum + 3).toString() + "주차\n~" + li[3][1]
-                      .toString()
-                      .split("-")
-                      .last + "일";
-                case 12:
-                  return (weeknum + 4).toString() + "주차\n~" + li[4][1]
-                      .toString()
-                      .split("-")
-                      .last + "일";
-              }
-              return '';
-            },
-            margin: 8,
+      return SfCartesianChart(
+          primaryXAxis: CategoryAxis(
+              labelStyle: TextStyle(
+                fontSize: 8,
+              )
           ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            interval: 100,
-            textStyle: const TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        minX: 0,
-        maxX: 12,
-        minY: 0,
-        maxY: max,
-        lineBarsData: [
-          LineChartBarData(
-            spots: [
-              FlSpot(0, sevrer_week[0].toDouble()),
-              FlSpot(3, sevrer_week[1].toDouble()),
-              FlSpot(6, sevrer_week[2].toDouble()),
-              FlSpot(9, sevrer_week[3].toDouble()),
-              FlSpot(12, sevrer_week[4].toDouble()),
-            ],
-
-            isCurved: false,
-            colors: gradientColors_values,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-          LineChartBarData(
-            spots: [
-              FlSpot(0, double.parse(sevrer_goal)),
-              FlSpot(3, double.parse(sevrer_goal)),
-              FlSpot(6, double.parse(sevrer_goal)),
-              FlSpot(9, double.parse(sevrer_goal)),
-              FlSpot(12, double.parse(sevrer_goal)),
-            ],
-            isCurved: false,
-            colors: gradientColors_avg,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-        ],
+          primaryYAxis: NumericAxis(minimum: 0, maximum: max, interval: 15), //그래프 범위
+          tooltipBehavior: _tooltip2,
+          series: <ChartSeries<_ChartData, String>>[
+            ColumnSeries<_ChartData, String>(
+                dataSource: sevrer_data_2,
+                xValueMapper: (_ChartData sevrer_data_2, _) => sevrer_data_2.x,
+                yValueMapper: (_ChartData sevrer_data_2, _) => sevrer_data_2.y,
+                name: '이유',
+                color: Color(0xff23b6e6)), //막대그래프 색
+            LineSeries<_ChartData, String>(
+                dataSource: sevrer_data_2,
+                xValueMapper: (_ChartData sevrer_data_2, _) => sevrer_data_2.x,
+                yValueMapper: (_ChartData sevrer_data_2, _) => sevrer_data_2.y1,
+                name: '목표값',
+                color: Color(0xfffa0000)) //선그래프 색
+          ]
       );
     }
   }
 
-//총산자수******************
-  LineChartData mainChart_total_baby(List li, int weeknum) {
-    List<Color> gradientColors_values = [
-      const Color(0xff23b6e6),
-      const Color(0xff02d39a),
-    ];
 
-    List<Color> gradientColors_avg = [
-      const Color(0xfffa0000),
-      const Color(0xffffdd00),
-    ];
+  //총산자수******************
+  SfCartesianChart mainChart_total_baby(List li, int weeknum) {
 
-
-    double max = 300;
-    if (double.parse(totalbaby_goal) > 300)
+    double max = 150;
+    if (double.parse(totalbaby_goal) > 150)
       max = double.parse(totalbaby_goal) + 10;
     if(totalbaby_week[0]>max)
       max = totalbaby_week[0];
@@ -948,221 +585,83 @@ class GraphPageState extends State<GraphPage> {
     if(totalbaby_week[3]>max)
       max = totalbaby_week[3];
     if (li.length == 4) {
-      return LineChartData(
 
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: 100,
-          drawHorizontalLine: true,
+      final List<_ChartData> totalbaby_data_1 = <_ChartData>[
+        _ChartData(weeknum.toString()+"주차\n~"+li[0][1].toString().split("-").last+"일", totalbaby_week[0].toDouble(), double.parse(totalbaby_goal)), //이름, 막대그래프, 선그래프값
+        _ChartData((weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일", totalbaby_week[1].toDouble(), double.parse(totalbaby_goal)),
+        _ChartData((weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일", totalbaby_week[2].toDouble(), double.parse(totalbaby_goal)),
+        _ChartData((weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일", totalbaby_week[3].toDouble(), double.parse(totalbaby_goal)),
+      ];
 
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-        ),
-
-        titlesData: FlTitlesData(
-          show: true,
-          bottomTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 22,
-            textStyle: const TextStyle(
-                color: Color(0xff000000),
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
-            getTitles: (value) {
-              switch (value.toInt()) {
-                case 0:
-                  return (weeknum+0).toString()+"주차\n~"+li[0][1].toString().split("-").last+"일";
-                case 4:
-                  return (weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일";
-                case 8:
-                  return (weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일";
-                case 12:
-                  return (weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일";
-
-              }
-              return '';
-            },
-            margin: 8,
+      return SfCartesianChart(
+          primaryXAxis: CategoryAxis(
+              labelStyle: TextStyle(
+                fontSize: 10,
+              )
           ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            interval: 100,
-            textStyle: const TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        minX: 0,
-        maxX: 12,
-        minY: 0,
-        maxY: max,
-        lineBarsData: [
-          LineChartBarData(
-            spots: [
-              FlSpot(0, totalbaby_week[0].toDouble()),
-              FlSpot(4, totalbaby_week[1].toDouble()),
-              FlSpot(8, totalbaby_week[2].toDouble()),
-              FlSpot(12, totalbaby_week[3].toDouble()),
-            ],
-
-            isCurved: false,
-            colors: gradientColors_values,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-          LineChartBarData(
-            spots: [
-              FlSpot(0, double.parse(totalbaby_goal)),
-              FlSpot(4, double.parse(totalbaby_goal)),
-              FlSpot(8, double.parse(totalbaby_goal)),
-              FlSpot(12, double.parse(totalbaby_goal)),
-            ],
-            isCurved: false,
-            colors: gradientColors_avg,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-        ],
+          primaryYAxis: NumericAxis(minimum: 0, maximum: max, interval: 15), //그래프 범위
+          tooltipBehavior: _tooltip3,
+          series: <ChartSeries<_ChartData, String>>[
+            ColumnSeries<_ChartData, String>(
+                dataSource: totalbaby_data_1,
+                xValueMapper: (_ChartData totalbaby_data_1, _) => totalbaby_data_1.x,
+                yValueMapper: (_ChartData totalbaby_data_1, _) => totalbaby_data_1.y,
+                name: '총산자수',
+                color: Color(0xff23b6e6)), //막대그래프 색
+            LineSeries<_ChartData, String>(
+                dataSource: totalbaby_data_1,
+                xValueMapper: (_ChartData totalbaby_data_1, _) => totalbaby_data_1.x,
+                yValueMapper: (_ChartData totalbaby_data_1, _) => totalbaby_data_1.y1,
+                name: '목표값',
+                color: Color(0xfffa0000)) //선그래프 색
+          ]
       );
     }
+
     else {
-      if(totalbaby_week[4]>max)
+      final List<_ChartData> totalbaby_data_2 = <_ChartData>[
+        _ChartData(weeknum.toString()+"주차\n~"+li[0][1].toString().split("-").last+"일", totalbaby_week[0].toDouble(), double.parse(totalbaby_goal)), //이름, 막대그래프, 선그래프값
+        _ChartData((weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일", totalbaby_week[1].toDouble(), double.parse(totalbaby_goal)),
+        _ChartData((weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일", totalbaby_week[2].toDouble(), double.parse(totalbaby_goal)),
+        _ChartData((weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일", totalbaby_week[3].toDouble(), double.parse(totalbaby_goal)),
+        _ChartData((weeknum+4).toString()+"주차\n~"+li[4][1].toString().split("-").last+"일", totalbaby_week[4].toDouble(), double.parse(totalbaby_goal))
+      ];
+
+      if(totalbaby_week[4] > max)
         max = totalbaby_week[4];
-      return LineChartData(
-
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: 100,
-          drawHorizontalLine: true,
-
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-        ),
-
-        titlesData: FlTitlesData(
-          show: true,
-          bottomTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 22,
-            textStyle: const TextStyle(
-                color: Color(0xff000000),
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
-            getTitles: (value) {
-              switch (value.toInt()) {
-                case 0:
-                  return (weeknum+0).toString()+"주차\n~"+li[0][1].toString().split("-").last+"일";
-                case 3:
-                  return (weeknum+0).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일";
-                case 6:
-                  return (weeknum+0).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일";
-                case 9:
-                  return (weeknum+0).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일";
-                case 12:
-                  return (weeknum+0).toString()+"주차\n~"+li[4][1].toString().split("-").last+"일";
-
-              }
-              return '';
-            },
-            margin: 8,
+      return SfCartesianChart(
+          primaryXAxis: CategoryAxis(
+              labelStyle: TextStyle(
+                fontSize: 8,
+              )
           ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            interval: 100,
-            textStyle: const TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-
-          ),
-        ),
-        minX: 0,
-        maxX: 12,
-        minY: 0,
-        maxY: max,
-        lineBarsData: [
-          LineChartBarData(
-            spots: [
-              FlSpot(0, totalbaby_week[0].toDouble()),
-              FlSpot(3, totalbaby_week[1].toDouble()),
-              FlSpot(6, totalbaby_week[2].toDouble()),
-              FlSpot(9, totalbaby_week[3].toDouble()),
-              FlSpot(12, totalbaby_week[4].toDouble()),
-            ],
-
-            isCurved: false,
-            colors: gradientColors_values,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-          LineChartBarData(
-            spots: [
-              FlSpot(0, double.parse(totalbaby_goal)),
-              FlSpot(3, double.parse(totalbaby_goal)),
-              FlSpot(6, double.parse(totalbaby_goal)),
-              FlSpot(9, double.parse(totalbaby_goal)),
-              FlSpot(12, double.parse(totalbaby_goal)),
-            ],
-            isCurved: true,
-            colors: gradientColors_avg,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-        ],
+          primaryYAxis: NumericAxis(minimum: 0, maximum: max, interval: 15), //그래프 범위
+          tooltipBehavior: _tooltip3,
+          series: <ChartSeries<_ChartData, String>>[
+            ColumnSeries<_ChartData, String>(
+                dataSource: totalbaby_data_2,
+                xValueMapper: (_ChartData totalbaby_data_2, _) => totalbaby_data_2.x,
+                yValueMapper: (_ChartData totalbaby_data_2, _) => totalbaby_data_2.y,
+                name: '총산자수',
+                color: Color(0xff23b6e6)), //막대그래프 색
+            LineSeries<_ChartData, String>(
+                dataSource: totalbaby_data_2,
+                xValueMapper: (_ChartData totalbaby_data_2, _) => totalbaby_data_2.x,
+                yValueMapper: (_ChartData totalbaby_data_2, _) => totalbaby_data_2.y1,
+                name: '목표값',
+                color: Color(0xfffa0000)) //선그래프 색
+          ]
       );
     }
   }
 
-//포유개시******************
-  LineChartData mainChart_feed_baby(List li, int weeknum) {
-    List<Color> gradientColors_values = [
-      const Color(0xff23b6e6),
-      const Color(0xff02d39a),
-    ];
 
-    List<Color> gradientColors_avg = [
-      const Color(0xfffa0000),
-      const Color(0xffffdd00),
-    ];
-    double max = 400;
-    if (double.parse(feedbaby_goal) > 400)
+  //포유개시******************
+  SfCartesianChart mainChart_feed_baby(List li, int weeknum) {
+
+    double max = 150;
+
+    if (double.parse(feedbaby_goal) > 150)
       max = double.parse(feedbaby_goal) + 10;
     if(feedbaby_week[0]>max)
       max = feedbaby_week[0];
@@ -1174,209 +673,80 @@ class GraphPageState extends State<GraphPage> {
       max = feedbaby_week[3];
 
     if (li.length == 4) {
-      return LineChartData(
 
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: 100,
-          drawHorizontalLine: true,
+      final List<_ChartData> feedbaby_data_1 = <_ChartData>[
+        _ChartData(weeknum.toString()+"주차\n~"+li[0][1].toString().split("-").last+"일", feedbaby_week[0].toDouble(), double.parse(feedbaby_goal)), //이름, 막대그래프, 선그래프값
+        _ChartData((weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일", feedbaby_week[1].toDouble(), double.parse(feedbaby_goal)),
+        _ChartData((weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일", feedbaby_week[2].toDouble(), double.parse(feedbaby_goal)),
+        _ChartData((weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일", feedbaby_week[3].toDouble(), double.parse(feedbaby_goal)),
+      ];
 
-          //가로선
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-          //세로선
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-        ),
-
-        titlesData: FlTitlesData(
-          show: true,
-          bottomTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 22,
-            textStyle: const TextStyle(
-                color: Color(0xff000000),
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
-            getTitles: (value) {
-              switch (value.toInt()) {
-                case 0:
-                  return (weeknum+0).toString()+"주차\n~"+li[0][1].toString().split("-").last+"일";
-                case 4:
-                  return (weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일";
-                case 8:
-                  return (weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일";
-                case 12:
-                  return (weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일";
-
-              }
-              return '';
-            },
-            margin: 8,
+      return SfCartesianChart(
+          primaryXAxis: CategoryAxis(
+              labelStyle: TextStyle(
+                fontSize: 10,
+              )
           ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            interval: 100,
-            textStyle: const TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-        ),
-        minX: 0,
-        maxX: 12,
-        minY: 0,
-        maxY: max,
-        lineBarsData: [
-          LineChartBarData(
-            spots: [
-              FlSpot(0, feedbaby_week[0].toDouble()),
-              FlSpot(4, feedbaby_week[1].toDouble()),
-              FlSpot(8, feedbaby_week[2].toDouble()),
-              FlSpot(12, feedbaby_week[3].toDouble()),
-            ],
-
-            isCurved: false,
-            colors: gradientColors_values,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-          LineChartBarData(
-            spots: [
-              FlSpot(0, double.parse(feedbaby_goal)),
-              FlSpot(4, double.parse(feedbaby_goal)),
-              FlSpot(8, double.parse(feedbaby_goal)),
-              FlSpot(12, double.parse(feedbaby_goal)),
-            ],
-            isCurved: false,
-            colors: gradientColors_avg,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-        ],
+          primaryYAxis: NumericAxis(minimum: 0, maximum: max, interval: 15), //그래프 범위
+          tooltipBehavior: _tooltip4,
+          series: <ChartSeries<_ChartData, String>>[
+            ColumnSeries<_ChartData, String>(
+                dataSource: feedbaby_data_1,
+                xValueMapper: (_ChartData feedbaby_data_1, _) => feedbaby_data_1.x,
+                yValueMapper: (_ChartData feedbaby_data_1, _) => feedbaby_data_1.y,
+                name: '포유',
+                color: Color(0xff23b6e6)), //막대그래프 색
+            LineSeries<_ChartData, String>(
+                dataSource: feedbaby_data_1,
+                xValueMapper: (_ChartData feedbaby_data_1, _) => feedbaby_data_1.x,
+                yValueMapper: (_ChartData feedbaby_data_1, _) => feedbaby_data_1.y1,
+                name: '목표값',
+                color: Color(0xfffa0000)) //선그래프 색
+          ]
       );
     }
+
     else {
-      if(feedbaby_week[4]>max)
+      final List<_ChartData> feedbaby_data_2 = <_ChartData>[
+        _ChartData(weeknum.toString()+"주차\n~"+li[0][1].toString().split("-").last+"일", feedbaby_week[0].toDouble(), double.parse(feedbaby_goal)), //이름, 막대그래프, 선그래프값
+        _ChartData((weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일", feedbaby_week[1].toDouble(), double.parse(feedbaby_goal)),
+        _ChartData((weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일", feedbaby_week[2].toDouble(), double.parse(feedbaby_goal)),
+        _ChartData((weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일", feedbaby_week[3].toDouble(), double.parse(feedbaby_goal)),
+        _ChartData((weeknum+4).toString()+"주차\n~"+li[4][1].toString().split("-").last+"일", feedbaby_week[4].toDouble(), double.parse(feedbaby_goal))
+      ];
+
+      if(feedbaby_week[4] > max)
         max = feedbaby_week[4];
-      return LineChartData(
-
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: 100,
-          drawHorizontalLine: true,
-
-          //가로선
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-          //세로선
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: Color(0xff000000),
-              strokeWidth: 1,
-            );
-          },
-        ),
-
-        titlesData: FlTitlesData(
-          show: true,
-          bottomTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 22,
-            textStyle: const TextStyle(
-                color: Color(0xff000000),
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
-            getTitles: (value) {
-              switch (value.toInt()) {
-                case 0:
-                  return (weeknum+0).toString()+"주차\n~"+li[0][1].toString().split("-").last+"일";
-                case 3:
-                  return (weeknum+1).toString()+"주차\n~"+li[1][1].toString().split("-").last+"일";
-                case 6:
-                  return (weeknum+2).toString()+"주차\n~"+li[2][1].toString().split("-").last+"일";
-                case 9:
-                  return (weeknum+3).toString()+"주차\n~"+li[3][1].toString().split("-").last+"일";
-                case 12:
-                  return (weeknum+4).toString()+"주차\n~"+li[4][1].toString().split("-").last+"일";
-
-              }
-              return '';
-            },
-            margin: 8,
+      return SfCartesianChart(
+          primaryXAxis: CategoryAxis(
+              labelStyle: TextStyle(
+                fontSize: 8,
+              )
           ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            interval: 100,
-            textStyle: const TextStyle(
-              color: Color(0xff000000),
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-
-          ),
-        ),
-        minX: 0,
-        maxX: 12,
-        minY: 0,
-        maxY: max,
-        lineBarsData: [
-          LineChartBarData(
-            spots: [
-              FlSpot(0, feedbaby_week[0].toDouble()),
-              FlSpot(3, feedbaby_week[1].toDouble()),
-              FlSpot(6, feedbaby_week[2].toDouble()),
-              FlSpot(9, feedbaby_week[3].toDouble()),
-              FlSpot(12, feedbaby_week[4].toDouble()),
-            ],
-
-            isCurved: false,
-            colors: gradientColors_values,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-          LineChartBarData(
-            spots: [
-              FlSpot(0, double.parse(feedbaby_goal)),
-              FlSpot(3, double.parse(feedbaby_goal)),
-              FlSpot(6, double.parse(feedbaby_goal)),
-              FlSpot(9, double.parse(feedbaby_goal)),
-              FlSpot(12, double.parse(feedbaby_goal)),
-            ],
-            isCurved: false,
-            colors: gradientColors_avg,
-            barWidth: 5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-            ),
-          ),
-        ],
+          primaryYAxis: NumericAxis(minimum: 0, maximum: max, interval: 15), //그래프 범위
+          tooltipBehavior: _tooltip4,
+          series: <ChartSeries<_ChartData, String>>[
+            ColumnSeries<_ChartData, String>(
+                dataSource: feedbaby_data_2,
+                xValueMapper: (_ChartData feedbaby_data_2, _) => feedbaby_data_2.x,
+                yValueMapper: (_ChartData feedbaby_data_2, _) => feedbaby_data_2.y,
+                name: '포유',
+                color: Color(0xff23b6e6)), //막대그래프 색
+            LineSeries<_ChartData, String>(
+                dataSource: feedbaby_data_2,
+                xValueMapper: (_ChartData feedbaby_data_2, _) => feedbaby_data_2.x,
+                yValueMapper: (_ChartData feedbaby_data_2, _) => feedbaby_data_2.y1,
+                name: '목표값',
+                color: Color(0xfffa0000)) //선그래프 색
+          ]
       );
     }
   }
+}
+
+class _ChartData {
+  _ChartData(this.x, this.y, this.y1);
+  final String x;
+  final double y;
+  final double y1;
 }

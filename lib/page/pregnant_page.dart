@@ -704,7 +704,7 @@ class PregnantPageState extends State<PregnantPage>{
                                   vaccine4 = vaccine4_fir_Controller.text + "-" + vaccine4_sec_Controller.text; // "ocr_imgpath":'17',
                                   memo = memo_Controller.text;
 
-                                  await pregnant_insert(); // 임신사 사진 전송 api 호출
+                                  await pregnant_insert(widget.companyCode); // 임신사 사진 전송 api 호출
                                   Navigator.of(context).popUntil((route) => route.isFirst); // 처음 화면으로 돌아가기
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(companyCode: widget.companyCode,))); // PregnantListPage로 넘어가기
                                 },
@@ -723,9 +723,10 @@ class PregnantPageState extends State<PregnantPage>{
 }
 
 //임신사 사진전송 api
-pregnant_insert() async {
+pregnant_insert(String companyCode) async {
   final api ='https://www.dfxsoft.com/api/ocrpregnatInsert';
   final data = {
+    "companyCode":companyCode,
     "sow_no": sow_no,
     "sow_birth": sow_birth,
     "sow_buy":sow_buy,

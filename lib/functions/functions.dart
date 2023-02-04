@@ -4,10 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_rx/get_rx.dart';
 import 'package:intl/intl.dart';
-import 'package:last_ocr/entities/Ocr_maternity.dart';
-import 'package:last_ocr/entities/Ocr_pregnant.dart';
+import '../entities/Ocr_maternity.dart';
+import '../entities/Ocr_pregnant.dart';
 import 'package:ntp/ntp.dart';
-import 'package:path_provider/path_provider.dart';
 
 late final domain = "https://www.dfxsoft.com/api/";
 
@@ -20,7 +19,7 @@ send_date_pregnant(String companyCode, List sendlist) async {
   final dio = Dio();
 
   final data={
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
     'everysunday':sendlist
   };
   Response response;
@@ -47,7 +46,7 @@ send_date_maternity(String companyCode, List sendlist) async {
   final dio = Dio();
 
   final data={
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
     'everysunday':sendlist
   };
   Response response;
@@ -73,7 +72,7 @@ ocrTargetInsertUpdate(String companyCode, String yyyy, String mm, String sow_tot
   final dio = Dio();
 
   final data={
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
     'yyyy': yyyy,
     'mm':mm,
     'sow_totalbaby':sow_totalbaby,
@@ -100,7 +99,7 @@ ocrTargetSelectedRow(String companyCode, String yyyy, String mm) async {
   final dio = Dio();
 
   final data={
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
     'yyyy': yyyy,
     'mm':mm,
   };
@@ -152,7 +151,7 @@ Future<List> uploadimg_pregnant(File file)async{
 pregnant_selectrow(String companyCode, int num) async{
   final api =domain+'ocr_pregnantSelectedRow';
   final data = {
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
     "ocr_seq": num, //pk
   };
   final dio = Dio();
@@ -189,7 +188,7 @@ homepage_img() async {
 pregnant_deleterow(String companyCode, int num) async{
   final api =domain+'ocr_pregnantDelete';
   final data = {
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
     "ocr_seq": num, //pk
   };
   final dio = Dio();
@@ -216,11 +215,11 @@ pregnant_getocr(String companyCode) async {
 
   final api =domain+'getOcr_pregnant';
   final data = {
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
   };
   final dio = Dio();
-  // Response response = await dio.post(api,data: data);
-  Response response = await dio.get(api);
+  Response response = await dio.post(api,data: data);
+  // Response response = await dio.get(api);
 
   if(response.statusCode == 200) {
 
@@ -257,11 +256,11 @@ pregnant_getocr(String companyCode) async {
 delete_pregnant(String companyCode) async{
   final api =domain+'ocrDeleteAll';
   final data = {
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
   };
   final dio = Dio();
-  Response response = await dio.get(api);
-  // Response response = await dio.post(api,data: data);
+  // Response response = await dio.get(api);
+  Response response = await dio.post(api,data: data);
   // if(response.statusCode == 200) {
   //   print("successfully deleted");
   // }else{
@@ -301,7 +300,7 @@ Future<List> uploadimg_maternity(File file)async{
 maternity_selectrow(String companyCode, int num) async {
   final api =domain+'ocr_maternitySelectedRow';
   final data = {
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
     "ocr_seq":num,
   };
   final dio = Dio();
@@ -327,12 +326,12 @@ maternity_getocr(String companyCode) async {
 
   final api =domain+'getOcr_maternity';
   final data = {
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
   };
   final dio = Dio();
   Response response;
-  // response = await dio.post(api,data: data);
-  response = await dio.get(api);
+  response = await dio.post(api,data: data);
+  // response = await dio.get(api);
 
   if(response.statusCode == 200) {
     List<dynamic> result = response.data;
@@ -367,7 +366,7 @@ maternity_getocr(String companyCode) async {
 maternity_deleterow(String companyCode, int num) async{
   final api =domain+'ocr_maternityDelete';
   final data = {
-    // "companyCode":companyCode,
+    "companyCode":companyCode,
     "ocr_seq": num, //pk
   };
   final dio = Dio();

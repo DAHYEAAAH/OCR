@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:last_ocr/functions/functions.dart';
-import 'package:last_ocr/page/TargetValueView.dart';
+import 'package:last_ocr/page/graph_target_page.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
 import 'package:last_ocr/page/maternity_list_page.dart';
 import 'package:last_ocr/page/graph_page.dart';
-import 'package:last_ocr/page/owner_graph_page.dart';
 import 'overlay/camera_overlay_maternity.dart';
 import 'overlay/camera_overlay_pregnant.dart';
 
