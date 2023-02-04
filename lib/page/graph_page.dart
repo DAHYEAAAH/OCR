@@ -422,6 +422,7 @@ class GraphPageState extends State<GraphPage> {
       ];
 
       return SfCartesianChart(
+          title: ChartTitle(text: '교배복수'),
           primaryXAxis: CategoryAxis(
               labelStyle: TextStyle(
                   fontSize: 10
@@ -431,6 +432,10 @@ class GraphPageState extends State<GraphPage> {
           tooltipBehavior: _tooltip1,
           series: <ChartSeries<_ChartData, String>>[
             ColumnSeries<_ChartData, String>(
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  showZeroValue: false,
+                ),
                 dataSource: mating_data_1,
                 xValueMapper: (_ChartData mating_data_1, _) => mating_data_1.x,
                 yValueMapper: (_ChartData mating_data_1, _) => mating_data_1.y,
@@ -458,6 +463,7 @@ class GraphPageState extends State<GraphPage> {
       if(mating_week[4]>max)
         max = mating_week[4];
       return SfCartesianChart(
+          title: ChartTitle(text: '교배복수'),
           primaryXAxis: CategoryAxis(
               labelStyle: TextStyle(
                 fontSize: 8,
@@ -467,6 +473,10 @@ class GraphPageState extends State<GraphPage> {
           tooltipBehavior: _tooltip1,
           series: <ChartSeries<_ChartData, String>>[
             ColumnSeries<_ChartData, String>(
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  showZeroValue: false,
+                ),
                 dataSource: mating_data_2,
                 xValueMapper: (_ChartData mating_data_2, _) => mating_data_2.x,
                 yValueMapper: (_ChartData mating_data_2, _) => mating_data_2.y,
@@ -508,6 +518,7 @@ class GraphPageState extends State<GraphPage> {
       ];
 
       return SfCartesianChart(
+          title: ChartTitle(text: '이유두수'),
           primaryXAxis: CategoryAxis(
               labelStyle: TextStyle(
                   fontSize: 10
@@ -517,6 +528,10 @@ class GraphPageState extends State<GraphPage> {
           tooltipBehavior: _tooltip2,
           series: <ChartSeries<_ChartData, String>>[
             ColumnSeries<_ChartData, String>(
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  showZeroValue: false,
+                ),
                 dataSource: sevrer_data_1,
                 xValueMapper: (_ChartData sevrer_data_1, _) => sevrer_data_1.x,
                 yValueMapper: (_ChartData sevrer_data_1, _) => sevrer_data_1.y,
@@ -544,6 +559,7 @@ class GraphPageState extends State<GraphPage> {
       if(sevrer_week[4] > max)
         max = sevrer_week[4];
       return SfCartesianChart(
+          title: ChartTitle(text: '이유두수'),
           primaryXAxis: CategoryAxis(
               labelStyle: TextStyle(
                 fontSize: 8,
@@ -553,6 +569,10 @@ class GraphPageState extends State<GraphPage> {
           tooltipBehavior: _tooltip2,
           series: <ChartSeries<_ChartData, String>>[
             ColumnSeries<_ChartData, String>(
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  showZeroValue: false,
+                ),
                 dataSource: sevrer_data_2,
                 xValueMapper: (_ChartData sevrer_data_2, _) => sevrer_data_2.x,
                 yValueMapper: (_ChartData sevrer_data_2, _) => sevrer_data_2.y,
@@ -594,6 +614,7 @@ class GraphPageState extends State<GraphPage> {
       ];
 
       return SfCartesianChart(
+          title: ChartTitle(text: '총산자수'),
           primaryXAxis: CategoryAxis(
               labelStyle: TextStyle(
                 fontSize: 10,
@@ -603,6 +624,10 @@ class GraphPageState extends State<GraphPage> {
           tooltipBehavior: _tooltip3,
           series: <ChartSeries<_ChartData, String>>[
             ColumnSeries<_ChartData, String>(
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  showZeroValue: false,
+                ),
                 dataSource: totalbaby_data_1,
                 xValueMapper: (_ChartData totalbaby_data_1, _) => totalbaby_data_1.x,
                 yValueMapper: (_ChartData totalbaby_data_1, _) => totalbaby_data_1.y,
@@ -630,6 +655,7 @@ class GraphPageState extends State<GraphPage> {
       if(totalbaby_week[4] > max)
         max = totalbaby_week[4];
       return SfCartesianChart(
+          title: ChartTitle(text: '총산자수'),
           primaryXAxis: CategoryAxis(
               labelStyle: TextStyle(
                 fontSize: 8,
@@ -639,6 +665,10 @@ class GraphPageState extends State<GraphPage> {
           tooltipBehavior: _tooltip3,
           series: <ChartSeries<_ChartData, String>>[
             ColumnSeries<_ChartData, String>(
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  showZeroValue: false,
+                ),
                 dataSource: totalbaby_data_2,
                 xValueMapper: (_ChartData totalbaby_data_2, _) => totalbaby_data_2.x,
                 yValueMapper: (_ChartData totalbaby_data_2, _) => totalbaby_data_2.y,
@@ -682,6 +712,7 @@ class GraphPageState extends State<GraphPage> {
       ];
 
       return SfCartesianChart(
+          title: ChartTitle(text: '포유개시'),
           primaryXAxis: CategoryAxis(
               labelStyle: TextStyle(
                 fontSize: 10,
@@ -691,6 +722,10 @@ class GraphPageState extends State<GraphPage> {
           tooltipBehavior: _tooltip4,
           series: <ChartSeries<_ChartData, String>>[
             ColumnSeries<_ChartData, String>(
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  showZeroValue: false,
+                ),
                 dataSource: feedbaby_data_1,
                 xValueMapper: (_ChartData feedbaby_data_1, _) => feedbaby_data_1.x,
                 yValueMapper: (_ChartData feedbaby_data_1, _) => feedbaby_data_1.y,
@@ -718,6 +753,7 @@ class GraphPageState extends State<GraphPage> {
       if(feedbaby_week[4] > max)
         max = feedbaby_week[4];
       return SfCartesianChart(
+          title: ChartTitle(text: '포유개시'),
           primaryXAxis: CategoryAxis(
               labelStyle: TextStyle(
                 fontSize: 8,
@@ -727,6 +763,10 @@ class GraphPageState extends State<GraphPage> {
           tooltipBehavior: _tooltip4,
           series: <ChartSeries<_ChartData, String>>[
             ColumnSeries<_ChartData, String>(
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  showZeroValue: false,
+                ),
                 dataSource: feedbaby_data_2,
                 xValueMapper: (_ChartData feedbaby_data_2, _) => feedbaby_data_2.x,
                 yValueMapper: (_ChartData feedbaby_data_2, _) => feedbaby_data_2.y,
