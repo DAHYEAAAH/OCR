@@ -44,112 +44,194 @@ class MaternityListPageState extends State<MaternityListPage> {
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
 
-    return Scaffold(
-        appBar: AppBar(title: Text('분만사 기록보기')), //앱 상단의 제목 :  "분만사 기록보기"
-        body: Scrollbar( //앱의 내용을 스크롤로 보기 위해
-            thumbVisibility: true, //always show scrollbar
-            thickness: 10, //width of scrollbar
-            radius: Radius.circular(20), //corner radius of scrollbar
-            scrollbarOrientation: ScrollbarOrientation.right, //which side to show scrollbar
-            child: Column(
-                children:[
+    return MaterialApp(
+        home: Scaffold(
+          // appBar: AppBar(title: Text('임신사 기록보기')),
+            body: Column(
+                children: [
                   Expanded(
-                      child:ListView.separated( //리스트 뷰에서 리스트 별 나누기
-                        padding: const EdgeInsets.all(8), //간격 : 8
-                        itemCount: sow_no.length, //ocr_seq.길이만큼 리스트뷰의 리스트 구분하기
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container( //리스트별 Container로 감싸기
-                            child: (
-                                Stack(
-                                  children: [
-                                    // for(int i = 0 ; i < ocr_seq.length ; i++)
-                                    GestureDetector(
-                                      onTap: () async {
-                                        // print(index-1);
-                                        if(index-1 != -1) {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityModifyPage(widget.companyCode,ocr_seq[index-1]))); //PregnantModifyPage로 변환하면서, list와 이미지경로 전달
-                                        }
-                                        },
-                                        child: ListTile(
-                                          title: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children:[
-                                                Flexible(
-                                                  flex: 2,
-                                                  fit: FlexFit.tight,
-                                                  child: Container(
-                                                    child: Text(sow_no[index],textAlign: TextAlign.center),
-                                                    // color: Colors.blue,
-                                                  ),
-                                                ),
-                                                Flexible(
-                                                  flex: 4,
-                                                  fit: FlexFit.tight,
-                                                  child: Container(
-                                                    child: Text(upload_day[index],textAlign: TextAlign.center),
-                                                    // color: Colors.blue,
-                                                  ),
-                                                ),
-                                                if(index!=0)
-                                                  Flexible(fit: FlexFit.tight, child: IconButton(onPressed: () async {
-                                                    //사용자가 선택한 리스트 행 삭제
-                                                    showDialog(context: context,
-                                                        barrierDismissible: true,
-                                                        builder: (context) {
-                                                          // return Expanded(
-                                                          return AlertDialog(
-                                                              scrollable: true,
-                                                              title: Text("삭제하시겠습니까?", textAlign: TextAlign.center,),
-                                                              content: Column(
-                                                                children: [
-                                                                  Text("",),
-                                                                  Text("모돈번호 " + sow_no[index] + "가 삭제됩니다", textAlign: TextAlign.center,),
-                                                                ],),
-                                                              actions: <Widget>[
-                                                                ButtonBar(
-                                                                    alignment: MainAxisAlignment.end,
-                                                                    // buttonPadding: EdgeInsets.all(1.0),
-                                                                    children: [
-                                                                      TextButton(
-                                                                        child: const Text('취소'),
-                                                                        onPressed: () => Navigator.pop(context, '취소'),
-                                                                      ),
-                                                                      TextButton(
-                                                                        onPressed: () async {
-                                                                          await maternity_deleterow(widget.companyCode,ocr_seq[index-1]); //서버로 사용자가 삭제하길 원한 행의 index값 보내기
-
-                                                                          Navigator.of(context).popUntil((route) => route.isFirst);
-                                                                          // print("pop 함");
-                                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage(companyCode: widget.companyCode)));
-                                                                        },
-                                                                        child: const Text('삭제'),
-                                                                      ),
-                                                                    ]
-                                                                )
-                                                              ]
-                                                          );
-                                                          // child: null,;
-                                                          // )
-                                                        }
-                                                    );
-                                                  },icon: const Icon(Icons.delete, color: Colors.black,)),)
-                                                else
-                                                  Flexible(fit: FlexFit.tight, child: Text("삭제",textAlign: TextAlign.center))
-                                              ]
-                                          )
-                                        ) ,
-                                    ),
-                                  ],
-                                )
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) => const Divider(), //구분선 생성하기
-                      )
+                    child: ListView(
+                      children: [
+                        _createDataTable(),
+                      ],
+                    ),
                   )
                 ]
             )
         )
     );
   }
+  Widget _createDataTable() {
+    return Container(
+      child: Column(
+        children: [
+          SizedBox(height: 20,),
+          Text('분만사 List',textAlign: TextAlign.start,style: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.black54),),
+          SizedBox(height: 10,),
+          FittedBox(
+              fit: BoxFit.fitWidth,
+              child: DataTable(
+                border: TableBorder.all(
+                  width: 1,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                columns: _createColumns(),
+                // columnSpacing: 30,
+                rows: _createRows(),
+                headingTextStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+
+                ),
+                headingRowColor: MaterialStateProperty.resolveWith(
+                        (states) => Colors.grey
+                ),
+              )
+          )
+        ],
+      ),
+    );
+  }
+
+  List<DataColumn> _createColumns() {
+    return [
+      DataColumn(label: Expanded(child: Text( '모돈번호', textAlign: TextAlign.center,))),
+      DataColumn(label: Expanded(child: Text( '업로드 시간', textAlign: TextAlign.center,))),
+      DataColumn(label: Expanded(child: Text( 'Option', textAlign: TextAlign.center,))),
+    ];
+  }
+
+
+  List<DataRow> _createRows() {
+    List<DataRow> list = <DataRow>[];
+    for (int i = 0; i < ocr_seq.length; i++) {
+      list.add(
+        DataRow(cells: [
+          DataCell(
+              Container(
+                // width: 70,
+                child: Row(
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {
+                      },
+                      child: Text(sow_no[i+1]),
+                      style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(15))
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+              )
+          ),
+          DataCell(
+              Container(
+                // width: 70,
+                child: Row(
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {
+                      },
+                      child: Text(upload_day[i+1]),
+                      style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(15))
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+              )
+          ),
+          DataCell(
+              Container(
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityModifyPage(widget.companyCode,ocr_seq[i])));
+                      },
+                      child: Ink.image(
+                        image: AssetImage('assets/wrench.png'),
+                        // fit: BoxFit.cover,
+                        width: 15,
+                        height: 15,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        _showdialogDelete(context,i,sow_no[i+1]);
+                      },
+                      child: Ink.image(
+                        image: AssetImage('assets/trash-bin.png'),
+                        // fit: BoxFit.cover,
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+          ),
+        ]),
+      );
+    }
+    return list;
+  }
+  Future<dynamic> _showdialogDelete(BuildContext context,int index,String name) async{
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(name+' 삭제'),
+        content: Text('선택한 모돈을 삭제하시겠습니까?'),
+
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () async => {
+                    Navigator.pop(context, false),
+                    await pregnant_deleterow(widget.companyCode, ocr_seq[index]),//서버로 사용자가 삭제하길 원한 행의 index값 보내기
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                        MaternityListPage(companyCode: widget.companyCode,)))
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
+                  child: Text('삭제')),
+              SizedBox(width: 10,),
+              ElevatedButton(
+                  onPressed: () => {
+                    Navigator.pop(context, false),
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    foregroundColor: Colors.black54,
+                    primary: Colors.white,
+                  ),
+                  child: Text('취소')
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
 }

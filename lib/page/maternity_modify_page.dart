@@ -196,21 +196,19 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
         vaccine4_sec_Controller.text = listfromserver_mat_mo[16].toString().split("-")[1];
       }
     }
-
+    final _scrollController = ScrollController();
     return Scaffold(
         appBar: AppBar(
           title: Text("분만사"),
         ),
-
-        body: Scrollbar(
-            thumbVisibility: true, //always show scrollbar
-            thickness: 10, //width of scrollbar
-            radius: Radius.circular(20), //corner radius of scrollbar
-            scrollbarOrientation: ScrollbarOrientation.right,
-            child: GestureDetector( // 키보드 닫기 이벤트
-              onVerticalDragDown: (DragDownDetails details){ FocusScope.of(context).unfocus();},
-              onTap: () { FocusManager.instance.primaryFocus?.unfocus(); },
+        body: GestureDetector( // 키보드 닫기 이벤트
+            onVerticalDragDown: (DragDownDetails details){ FocusScope.of(context).unfocus();},
+            onTap: () { FocusManager.instance.primaryFocus?.unfocus(); },
+            child: Scrollbar(
+              controller: _scrollController, // <---- Here, the controller
+              thumbVisibility: true, //always show scrollbar
               child: SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   children:[
                     Container(
@@ -564,7 +562,7 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
                               memo = memo_Controller.text;
                               ocr_seq = listfromserver_mat_mo[0];
                               sow_hang = listfromserver_mat_mo[2];
-                              maternity_update();
+                              maternity_update(widget.companyCode);
                               Navigator.of(context).popUntil((route) => route.isFirst);
                               Navigator.push(context, MaterialPageRoute(builder: (context) => MaternityListPage(companyCode: widget.companyCode,)));
                             },
@@ -580,9 +578,10 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
   }
 }
 
-maternity_update() async {
+maternity_update(String companyCode) async {
   final api ='https://www.dfxsoft.com/api/ocrmaternityUpdate';
   final data = {
+    "companyCode":companyCode,
     "ocr_seq": ocr_seq,
     "sow_no": sow_no,
     "sow_hang": sow_hang,

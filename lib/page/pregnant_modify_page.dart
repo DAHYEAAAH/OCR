@@ -195,59 +195,57 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
         memo_Controller.text = listfromserver_pre_mo[18].toString();
       }
     }
-
+    final _scrollController = ScrollController();
     return Scaffold(
         appBar: AppBar(
           title: Text("임신사"),
         ),
-        body: Scrollbar(
-            thumbVisibility: true, //always show scrollbar
-            thickness: 10, //width of scrollbar
-            radius: Radius.circular(20), //corner radius of scrollbar
-            scrollbarOrientation: ScrollbarOrientation.right, //which side to show scrollbar
-            child: GestureDetector( // 키보드 닫기 이벤트
+        body: GestureDetector( // 키보드 닫기 이벤트
               onVerticalDragDown: (DragDownDetails details){ FocusScope.of(context).unfocus();},
               onTap: () { FocusManager.instance.primaryFocus?.unfocus(); },
-              child: SingleChildScrollView(
-                child: Column(
-                  children:[
-                    Container(
-                      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                      child: Table(
-                        textBaseline: TextBaseline.alphabetic,
-                        border: TableBorder.all(),
-                        columnWidths: const { 0: FractionColumnWidth(.0), 1: FractionColumnWidth(.4), 2: FractionColumnWidth(.4), 3: FractionColumnWidth(.1), 4: FractionColumnWidth(.1)},
-                        children: [
-                          TableRow(
-                            children: [
-                              const TableCell(
-                                child: SizedBox(height: 30,),
-                              ),
-                              Column(children: const [
-                                Text('모돈번호', style: TextStyle(fontSize: 20),
-                                  textAlign: TextAlign.center,)
-                              ]),
-                              Column(children: [
-                                TextField(controller: sowID1_Controller,
-                                  decoration: const InputDecoration(hintText: " "),
-                                  style: const TextStyle(fontSize: 20),
-                                  keyboardType: TextInputType.number,
-                                  textAlign: TextAlign.center, enabled: false,),
-                              ]),
-                              Column(children: const [
-                                Text('-', style: TextStyle(fontSize: 20),
-                                  textAlign: TextAlign.center,)
-                              ]),
-                              Column(children: [
-                                TextField(controller: sowID2_Controller,
-                                  decoration: const InputDecoration(hintText: " "),
-                                  style: const TextStyle(fontSize: 20),
-                                  keyboardType: TextInputType.number,
-                                  textAlign: TextAlign.center, enabled: false,),
-                              ]),
-                            ],),
-                        ],
-                      ),
+              child: Scrollbar(
+                  controller:_scrollController,
+                  thumbVisibility: true,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(children:[
+                      Container(
+                        margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                        child: Table(
+                          textBaseline: TextBaseline.alphabetic,
+                          border: TableBorder.all(),
+                          columnWidths: const { 0: FractionColumnWidth(.0), 1: FractionColumnWidth(.4), 2: FractionColumnWidth(.4), 3: FractionColumnWidth(.1), 4: FractionColumnWidth(.1)},
+                          children: [
+                            TableRow(
+                              children: [
+                                const TableCell(
+                                  child: SizedBox(height: 30,),
+                                ),
+                                Column(children: const [
+                                  Text('모돈번호', style: TextStyle(fontSize: 20),
+                                    textAlign: TextAlign.center,)
+                                ]),
+                                Column(children: [
+                                  TextField(controller: sowID1_Controller,
+                                    decoration: const InputDecoration(hintText: " "),
+                                    style: const TextStyle(fontSize: 20),
+                                    keyboardType: TextInputType.number,
+                                    textAlign: TextAlign.center, enabled: false,),
+                                ]),
+                                Column(children: const [
+                                  Text('-', style: TextStyle(fontSize: 20),
+                                    textAlign: TextAlign.center,)
+                                ]),
+                                Column(children: [
+                                  TextField(controller: sowID2_Controller,
+                                    decoration: const InputDecoration(hintText: " "),
+                                    style: const TextStyle(fontSize: 20),
+                                    keyboardType: TextInputType.number,
+                                    textAlign: TextAlign.center, enabled: false,),
+                                ]),
+                              ],),
+                          ],
+                        ),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 20, right: 20),
@@ -666,7 +664,6 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                     Container(
                       margin: EdgeInsets.only(left: 20, right: 20),
                       child: Table(
-
                         border: TableBorder.all(),
                         columnWidths: const {
                           0: FractionColumnWidth(0),
@@ -722,7 +719,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
                               memo = memo_Controller.text;
                               ocr_seq = listfromserver_pre_mo[0];
                               sow_hang = listfromserver_pre_mo[2];
-                              pregnant_update();
+                              pregnant_update(widget.companyCode);
                               Navigator.of(context).popUntil((route) => route.isFirst);
                               Navigator.push(context, MaterialPageRoute(builder: (context) => PregnantListPage(companyCode: widget.companyCode,)));
                             },
@@ -739,9 +736,10 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
 }
 
 //임신사 수정 후 업데이트
-pregnant_update() async {
+pregnant_update(String companyCode) async {
   final api ='https://www.dfxsoft.com/api/ocrpregnatUpdate';
   final data = {
+    "companyCode":companyCode,
     "ocr_seq": ocr_seq ,
     "sow_no": sow_no,
     "sow_hang": sow_hang,
