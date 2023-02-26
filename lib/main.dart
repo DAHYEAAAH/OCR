@@ -5,8 +5,9 @@ import 'package:last_ocr/page/graph_target_page.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
 import 'package:last_ocr/page/maternity_list_page.dart';
 import 'package:last_ocr/page/graph_page.dart';
+import 'package:last_ocr/views/PigsRoomThisMonth.dart';
 import 'package:last_ocr/views/VenderList.dart';
-import 'package:last_ocr/views/sale_pig_view.dart';
+import 'package:last_ocr/views/SalepigView.dart';
 import 'overlay/camera_overlay_maternity.dart';
 import 'overlay/camera_overlay_pregnant.dart';
 
@@ -211,9 +212,26 @@ class _MyHomePageState extends State<MyHomePage> {
                       OutlinedButton(
                         onPressed: () async {
                           // PregnantGraphPage로 넘어가기
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SalepigView(companyCode: "0")));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SalepigView(companyCode: index_of_farm)));
                         },
                         child: const Text('salepig'),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
+                        ),
+                      ),
+                      // SizedBox(width: 70,)
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // SizedBox(width: 100,),
+                      OutlinedButton(
+                        onPressed: () async {
+                          // PregnantGraphPage로 넘어가기
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PigsRoomThisMonth(companyCode: index_of_farm)));
+                        },
+                        child: const Text('PigsRoomThisMonth'),
                         style: OutlinedButton.styleFrom(
                           padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
                         ),

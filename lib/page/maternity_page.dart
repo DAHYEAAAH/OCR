@@ -558,7 +558,7 @@ class MaternityPageState extends State<MaternityPage>{
 }
 //분만사 사진전송
 maternity_insert(String companyCode) async{
-  final api ='https://www.dfxsoft.com/api/ocrmaternityInsert';
+  final api ='https://www.gfarmx.com/api/ocrmaternityInsert';
   final data = {
     "companyCode":companyCode,
     "sow_no": sow_no,

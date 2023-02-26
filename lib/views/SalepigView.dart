@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import '../entities/CompanyCombo.dart';
 import '../entities/Vender.dart';
 import '../entities/VenderCombo.dart';
@@ -11,6 +12,8 @@ import '../services/navigation_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart' hide Response;
 
+late final domain = "https://www.gfarmx.com/api/";
+
 class SalepigView extends StatefulWidget {
   String companyCode;
   SalepigView({Key? key, required this.companyCode}) : super(key: key);
@@ -19,10 +22,13 @@ class SalepigView extends StatefulWidget {
   SalepigViewState createState(){
     return SalepigViewState();
   }
+
 }
 
 class SalepigViewState extends State<SalepigView>{
+  AutovalidateMode _autovalidate = AutovalidateMode.disabled;
   final _formKey = GlobalKey<FormState>();
+
   String _seqno ='';
   String _companyCode ='';
   String _venderCode ='';
@@ -32,6 +38,7 @@ class SalepigViewState extends State<SalepigView>{
   String _dd ='';
   String _qty ='';
   String _memo ='';
+  late List<dynamic> listMonths = [];
   List<CompanyCombo> companyList = <CompanyCombo>[].obs;
   var companys = <Company>[].obs;
   var selectedDropdown="0";
@@ -60,6 +67,10 @@ class SalepigViewState extends State<SalepigView>{
   final TextEditingController qty = TextEditingController();
   final TextEditingController memo = TextEditingController();
 
+  String _selectedMonth = DateTime.now().month.toString();
+  String _selectedDay = DateTime.now().day.toString();
+  String _selectedYear = DateTime.now().year.toString();
+
   @override
   void initState() {
     companysList();
@@ -69,45 +80,48 @@ class SalepigViewState extends State<SalepigView>{
 
   @override
   Widget build(BuildContext context) {
+
     // TODO: implement build
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-            body: Form(
-            key:_formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: 30,),
-                SizedBox(
-                  width: 700,height: 70,
-                  child:unitTitle(),
-                ),
-                Container(
-                  width: 700,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black54,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    // color: const Color(0xf6f6f6f6),
+      debugShowCheckedModeBanner: false ,
+      home: Scaffold(
+        appBar: AppBar(),
+        body: Form(
+          key:_formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 30,),
+              SizedBox(
+                width: 700,height: 70,
+                child:unitTitle(),
+              ),
+              Container(
+                width: 700,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black54,
                   ),
-                  child: Row(
-                    children: [
-                      // Expanded(child: SizedBox(width: 50,), flex:1 ),
-                      SizedBox(width: 20,),
-                      Expanded(child: inputContents(), flex:1 ),
-                      SizedBox(width: 20,),
-                      Expanded(child: inputContentsDeco(), flex:1 ),
-                      // Expanded(child: SizedBox(width: 50,), flex:1 ),
-                    ],
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  // color: const Color(0xf6f6f6f6),
                 ),
-              ],
-            ),
-            )
-        )
-    );
+                child: Row(
+                  children: [
+                    // Expanded(child: SizedBox(width: 50,), flex:1 ),
+                    SizedBox(width: 20,),
+                    Expanded(child: inputContents(), flex:1 ),
+                    SizedBox(width: 20,),
+                    Expanded(child: inputContentsDeco(), flex:1 ),
+                    // Expanded(child: SizedBox(width: 50,), flex:1 ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ) ;
+
   }
 
   Widget unitTitle() {
@@ -120,6 +134,7 @@ class SalepigViewState extends State<SalepigView>{
   }
 
   Widget inputContents(){
+
     return Container(
       decoration: BoxDecoration(
         // borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -141,6 +156,7 @@ class SalepigViewState extends State<SalepigView>{
           ),
           SizedBox(height: 5,),
           SizedBox(
+            //child: buildSaleDate(),
             child: buildSaleDate(),
           ),
           SizedBox(height: 5,),
@@ -287,113 +303,101 @@ class SalepigViewState extends State<SalepigView>{
   }
 
   Widget buildSaleDate(){
+    List<String> _yearList = [];
+    List<String> _monthList = [];
+    List<String> _dayList = [];
+
+    for(int i = 0; i<=2; i++){
+      _yearList.add((DateTime.now().year-1+i).toString());
+    }
+    for(int i = 1; i<=12; i++){
+      _monthList.add(i.toString());
+    }
+    for(int i = 1; i<=DateTime(int.parse(_selectedYear), int.parse(_selectedMonth)+1,0).day; i++){
+      _dayList.add(i.toString());
+    }
+
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Flexible(
           fit: FlexFit.tight,
-          flex: 2,
-          child: TextFormField(
-            controller: yyyy,
-            decoration: const InputDecoration(
-              // suffixIcon: Icon(Icons.star),
-              hintText: 'YYYY',
-              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-              // border: InputBorder.none,
-              // labelText: 'Label Text',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                borderSide: BorderSide( width:2,color: Colors.black54),
-              ),
-              filled: true,
-              fillColor: Colors.white,
-
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+                border: Border.all()
             ),
-            keyboardType: TextInputType.text,
-            autovalidateMode: AutovalidateMode.always,
-            onSaved: (value){
-              setState(() {
-                _yyyy = value as String;
-              });
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please insert sale yyyy';
-              } else {
-                return null;
-              }
-            },
+            child: DropdownButtonHideUnderline(
+              child:
+              DropdownButton(
+                isExpanded: true,
+                value: _selectedYear,
+                items: _yearList.map((String item) {
+                  return DropdownMenuItem<String>(
+                    child: Center(child: Text('$item',textAlign: TextAlign.center,)),
+                    value: item,
+                  );
+                }).toList(),
+                onChanged: (dynamic value) {
+                  setState(() {
+                    _selectedYear = value;
+                  });
+                },
+              ),
+            )
           ),
         ),
         Flexible(
           fit: FlexFit.tight,
-          flex: 1,
-          child: TextFormField(
-            controller: mm,
-            decoration: const InputDecoration(
-              // suffixIcon: Icon(Icons.star),
-              hintText: 'MM',
-              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-              // border: InputBorder.none,
-              // labelText: 'Label Text',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                borderSide: BorderSide( width:2,color: Colors.black54),
-              ),
-              filled: true,
-              fillColor: Colors.white,
-
+          child: Container(
+            decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5.0),
+            border: Border.all()
             ),
-            keyboardType: TextInputType.text,
-            autovalidateMode: AutovalidateMode.always,
-            onSaved: (value){
-              setState(() {
-                _mm = value as String;
-              });
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please insert sale Month';
-              } else {
-                return null;
-              }
-            },
-          ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                isExpanded: true,
+                value: _selectedMonth,
+                items: _monthList.map((String item) {
+                  return DropdownMenuItem<String>(
+                    child: Center(child: Text('$item',textAlign: TextAlign.center,)),
+                    value: item,
+                  );
+                }).toList(),
+                onChanged: (dynamic value) {
+                  setState(() {
+                    _selectedMonth = value;
+                  });
+                },
+              ),
+            )
+          )
         ),
         Flexible(
-          fit: FlexFit.tight,
-          flex: 1,
-          child: TextFormField(
-            controller: dd,
-            decoration: const InputDecoration(
-              // suffixIcon: Icon(Icons.star),
-              hintText: 'MM',
-              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-              // border: InputBorder.none,
-              // labelText: 'Label Text',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                borderSide: BorderSide( width:2,color: Colors.black54),
-              ),
-              filled: true,
-              fillColor: Colors.white,
-
-            ),
-            keyboardType: TextInputType.text,
-            autovalidateMode: AutovalidateMode.always,
-            onSaved: (value){
-              setState(() {
-                _dd = value as String;
-              });
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please insert sale Day';
-              } else {
-                return null;
-              }
-            },
-          ),
+            fit: FlexFit.tight,
+            child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    border: Border.all()
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    isExpanded: true,
+                    value: _selectedDay,
+                    items: _dayList.map((String item) {
+                      return DropdownMenuItem<String>(
+                        child: Center(child: Text('$item',textAlign: TextAlign.center,)),
+                        value: item,
+                      );
+                    }).toList(),
+                    onChanged: (dynamic value) {
+                      setState(() {
+                        _selectedDay = value;
+                      });
+                    },
+                  ),
+                )
+            )
         ),
       ],
     );
@@ -500,7 +504,7 @@ class SalepigViewState extends State<SalepigView>{
 
   void getPigsroomStock(String roomNo) async{
 
-    final api ='https://www.dfxsoft.com/api/getPigsroomStock';
+    final api = domain + 'getPigsroomStock';
     final data = {
       "companyCode":widget.companyCode,
       "roomNo":roomNo
@@ -564,7 +568,7 @@ class SalepigViewState extends State<SalepigView>{
                   }
                   if(_formKey.currentState!.validate()){
                     _formKey.currentState!.save();
-                    final api ='https://www.dfxsoft.com/api/salepigInsert';
+                    final api = domain + 'salepigInsert';
                     final data = {
                       "companyCode":selectedDropdown,
                       "venderCode":selectedDropdownVender,
@@ -585,8 +589,8 @@ class SalepigViewState extends State<SalepigView>{
                         resultToast('저장되지 않았습니다. \n\n 입력 정보를 체크하세요.');
                       }
                     }
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SalepigView(companyCode:"0")));
                     // locator<NavigationService>().navigateTo(SalepigViewRoute, arguments: "0");
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SalepigView(companyCode: '0',)));
                   }else{
                     return;
                   }
@@ -599,7 +603,7 @@ class SalepigViewState extends State<SalepigView>{
   }
 
   Future<void> companysList() async{
-    final api ='https://www.dfxsoft.com/api/getCompanyinfoAll';
+    final api = domain + 'getCompanyinfoAll';
     final dio = Dio();
     Response response = await dio.get(api);
     if(response.statusCode == 200) {
@@ -620,7 +624,7 @@ class SalepigViewState extends State<SalepigView>{
   }
 
   Future<void> vendersList() async{
-    final api ='https://www.dfxsoft.com/api/getVenderAll';
+    final api = domain + 'getVenderAll';
     final dio = Dio();
     Response response = await dio.get(api);
     if(response.statusCode == 200) {

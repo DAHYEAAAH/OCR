@@ -8,9 +8,7 @@ import '../entities/Ocr_maternity.dart';
 import '../entities/Ocr_pregnant.dart';
 import 'package:ntp/ntp.dart';
 
-late final domain = "https://www.dfxsoft.com/api/";
-
-
+late final domain = "https://www.gfarmx.com/api/";
 
 // 서버로 현재 날짜를 보내고 임신사의 교배복수 총합 받기
 send_date_pregnant(String companyCode, List sendlist) async {
@@ -347,7 +345,7 @@ maternity_getocr(String companyCode) async {
       // print(" success!"+ maternity[i].ocr_seq.toString()+" " +maternity[i].sow_no.toString());
       list_ocr_seq.add(maternity[i].ocr_seq!.toInt());
       list_sow_no.add(maternity[i].sow_no!.toString());
-      list_upload_day.add(maternity[i].input_date.toString()+" "+maternity[i].input_time.toString().split(":")[0]+":"+maternity[i].input_time.toString().split(":")[1]);
+      list_upload_day.add(maternity[i].input_date.toString()+"  "+maternity[i].input_time.toString().split(":")[0]+":"+maternity[i].input_time.toString().split(":")[1]);
     }
   }
   else{
