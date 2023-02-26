@@ -207,9 +207,24 @@ class TargetValueViewState extends State<TargetValueView>{
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             _pickerYear = _pickerYear - 1;
+                            _selectedMonth = DateTime(_pickerYear, _selectedMonth.month, 1);
+                          });
+                          var targetdata= await ocrTargetSelectedRow(widget.companyCode,_pickerYear.toString(), _selectedMonth.month.toString().padLeft(2, "0").toString());
+                          setState(() {
+                            if (targetdata == null) {
+                              sow_cross.text = "0";
+                              sevrer.text = "0";
+                              totalbaby.text = "0";
+                              feedbaby.text = "0";
+                            } else {
+                              sow_cross.text = targetdata[5];
+                              sevrer.text = targetdata[4];
+                              totalbaby.text = targetdata[2];
+                              feedbaby.text = targetdata[3];
+                            }
                           });
                         },
                         icon: Icon(Icons.navigate_before_rounded), // <, 전
@@ -223,9 +238,24 @@ class TargetValueViewState extends State<TargetValueView>{
                         ),
                       ),
                       IconButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             _pickerYear = _pickerYear + 1;
+                            _selectedMonth = DateTime(_pickerYear, _selectedMonth.month, 1);
+                          });
+                          var targetdata= await ocrTargetSelectedRow(widget.companyCode,_pickerYear.toString(), _selectedMonth.month.toString().padLeft(2, "0").toString());
+                          setState(() {
+                            if (targetdata == null) {
+                              sow_cross.text = "0";
+                              sevrer.text = "0";
+                              totalbaby.text = "0";
+                              feedbaby.text = "0";
+                            } else {
+                              sow_cross.text = targetdata[5];
+                              sevrer.text = targetdata[4];
+                              totalbaby.text = targetdata[2];
+                              feedbaby.text = targetdata[3];
+                            }
                           });
                         },
                         icon: Icon(Icons.navigate_next_rounded), // >, 후
@@ -545,8 +575,6 @@ class TargetValueViewState extends State<TargetValueView>{
 
 
   List<Widget> generateMonths() {
-
-
     return [
       FittedBox(
           fit: BoxFit.fitWidth,
