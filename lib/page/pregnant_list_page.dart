@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../functions/functions.dart';
-import '../page/pregnant_modify_page.dart';
+import 'pregnant_modify_page.dart';
 
 class PregnantListPage extends StatefulWidget {
   String companyCode;

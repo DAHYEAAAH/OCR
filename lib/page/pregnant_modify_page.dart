@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import '../page/pregnant_list_page.dart';
-
 import '../functions/functions.dart';
+import 'pregnant_list_page.dart';
 
 late int ocr_seq;
 late String sow_no;
@@ -98,7 +97,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
             .size
             .width*1.414,
         child: Center(
-              child: listfromserver_pre_mo.isEmpty? Text("please wait"):Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrpreimages/"+listfromserver_pre_mo[17].toString().split("/").last) ));
+              child: listfromserver_pre_mo.isEmpty? Text("please wait"):Image.network("https://www.gfarmx.com/api/ocrGetImage/ocrpreimages/"+listfromserver_pre_mo[17].toString().split("/").last) ));
   }
 
   final sowID1_Controller = TextEditingController();

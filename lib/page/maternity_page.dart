@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import '../functions/functions.dart';
-import '../page/maternity_list_page.dart';
+import 'maternity_list_page.dart';
 
 late int ocr_seq;
 late String sow_no;
@@ -79,7 +79,7 @@ class MaternityPageState extends State<MaternityPage>{
             .size
             .width*1.414,
         child: Center(
-            child: Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrmatimages/"+widget.listfromserver_mat[0].toString())));
+            child: Image.network("https://www.gfarmx.com/api/ocrGetImage/ocrmatimages/"+widget.listfromserver_mat[0].toString())));
   }
 
   //모돈번호

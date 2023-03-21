@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import '../page/pregnant_list_page.dart';
 import '../functions/functions.dart';
+import 'pregnant_list_page.dart';
 
 // 서버에서 받을 값 변수 선언
 late int ocr_seq;
@@ -85,7 +85,7 @@ class PregnantPageState extends State<PregnantPage>{
             .size
             .width*1.414,
         child: Center(
-            child: Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrpreimages/"+widget.listfromserver_pre[0].toString())));
+            child: Image.network("https://www.gfarmx.com/api/ocrGetImage/ocrpreimages/"+widget.listfromserver_pre[0].toString())));
   }
 
   // 서버에서 받은 값이 수정가능하게 하기위해 TextEditingController로 선언

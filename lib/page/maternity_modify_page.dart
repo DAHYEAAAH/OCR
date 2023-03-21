@@ -98,7 +98,7 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
             .size
             .width*1.414,
         child: Center(
-            child: listfromserver_mat_mo.isEmpty? Text("please wait"):Image.network("https://www.dfxsoft.com/api/ocrGetImage/ocrmatimages/"+listfromserver_mat_mo[19].toString().split("/").last)));
+            child: listfromserver_mat_mo.isEmpty? Text("please wait"):Image.network("https://www.gfarmx.com/api/ocrGetImage/ocrmatimages/"+listfromserver_mat_mo[19].toString().split("/").last)));
   }
   //모돈번호
   final sowID1_Controller = TextEditingController();
