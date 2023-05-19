@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,10 +27,11 @@ late String filename;
 
 class MaternityPage extends StatefulWidget{
   static const routeName = '/OcrMaternityPage';
+  String imagePath;
   String companyCode;
   // const MaternityPage({Key? key, this.title}) : super(key: key);
-  final List listfromserver_mat;
-  MaternityPage(this.companyCode, this.listfromserver_mat);
+  // final List listfromserver_mat;
+  MaternityPage(this.imagePath,this.companyCode);
 
   @override
   MaternityPageState createState() => MaternityPageState();
@@ -65,6 +68,23 @@ class MaternityPageState extends State<MaternityPage>{
   late String totalteen;
   late String teenweight;
 
+  late List listfromserver_mat=[];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    prepareList();
+  }
+
+  prepareList() async{
+    listfromserver_mat = await uploadimg_maternity(File(widget.imagePath));
+    //서버로부터 값 받아오기
+    setState(() {
+      // print("hey");
+    });
+  }
+
   Widget showImage() {
 
     return Container(
@@ -79,7 +99,7 @@ class MaternityPageState extends State<MaternityPage>{
             .size
             .width*1.414,
         child: Center(
-            child: Image.network("https://www.gfarmx.com/api/ocrGetImage/ocrmatimages/"+widget.listfromserver_mat[0].toString())));
+            child: Image.network(domain+"ocrGetImage/ocrmatimages/"+listfromserver_mat[0].toString())));
   }
 
   //모돈번호
@@ -134,48 +154,48 @@ class MaternityPageState extends State<MaternityPage>{
   var flag = 0; // 서버에서 가져온 값을 한번만 표에 넣기 위함
   @override
   Widget build(BuildContext context) {
-    if(widget.listfromserver_mat.isNotEmpty){
+    if(listfromserver_mat.isNotEmpty){
       if(flag==0) {
         flag++;
         // print(widget.listfromserver_mat);
 
-        sowID1_Controller.text = widget.listfromserver_mat[1][0].split('-')[0];
-        sowID2_Controller.text = widget.listfromserver_mat[1][0].split('-')[1];
+        sowID1_Controller.text = listfromserver_mat[1][0].split('-')[0];
+        sowID2_Controller.text = listfromserver_mat[1][0].split('-')[1];
 
-        birth_year_Controller.text = widget.listfromserver_mat[1][1];
-        birth_month_Controller.text = widget.listfromserver_mat[1][2];
-        birth_day_Controller.text = widget.listfromserver_mat[1][3];
+        birth_year_Controller.text = listfromserver_mat[1][1];
+        birth_month_Controller.text = listfromserver_mat[1][2];
+        birth_day_Controller.text = listfromserver_mat[1][3];
 
-        adoption_year_Controller.text = widget.listfromserver_mat[1][4];
-        adoption_month_Controller.text = widget.listfromserver_mat[1][5];
-        adoption_day_Controller.text = widget.listfromserver_mat[1][6];
+        adoption_year_Controller.text = listfromserver_mat[1][4];
+        adoption_month_Controller.text = listfromserver_mat[1][5];
+        adoption_day_Controller.text = listfromserver_mat[1][6];
 
-        expect_month_Controller.text = widget.listfromserver_mat[1][7];
-        expect_day_Controller.text = widget.listfromserver_mat[1][8];
+        expect_month_Controller.text = listfromserver_mat[1][7];
+        expect_day_Controller.text = listfromserver_mat[1][8];
 
-        givebirth_month_Controller.text = widget.listfromserver_mat[1][9];
-        givebirth_day_Controller.text = widget.listfromserver_mat[1][10];
+        givebirth_month_Controller.text = listfromserver_mat[1][9];
+        givebirth_day_Controller.text = listfromserver_mat[1][10];
 
-        totalbaby_Controller.text = widget.listfromserver_mat[1][11];
-        feedbaby_Controller.text = widget.listfromserver_mat[1][12];
-        weight_Controller.text = widget.listfromserver_mat[1][13];
+        totalbaby_Controller.text = listfromserver_mat[1][11];
+        feedbaby_Controller.text = listfromserver_mat[1][12];
+        weight_Controller.text = listfromserver_mat[1][13];
 
-        teen_month_Controller.text = widget.listfromserver_mat[1][14];
-        teen_day_Controller.text = widget.listfromserver_mat[1][15];
+        teen_month_Controller.text = listfromserver_mat[1][14];
+        teen_day_Controller.text = listfromserver_mat[1][15];
 
-        totalteen_Controller.text = widget.listfromserver_mat[1][16];
-        teenweight_Controller.text = widget.listfromserver_mat[1][17];
+        totalteen_Controller.text = listfromserver_mat[1][16];
+        teenweight_Controller.text = listfromserver_mat[1][17];
 
-        vaccine1_fir_Controller.text = widget.listfromserver_mat[1][18];
-        vaccine1_sec_Controller.text = widget.listfromserver_mat[1][19];
-        vaccine2_fir_Controller.text = widget.listfromserver_mat[1][20];
-        vaccine2_sec_Controller.text = widget.listfromserver_mat[1][21];
-        vaccine3_fir_Controller.text = widget.listfromserver_mat[1][22];
-        vaccine3_sec_Controller.text = widget.listfromserver_mat[1][23];
-        vaccine4_fir_Controller.text = widget.listfromserver_mat[1][24];
-        vaccine4_sec_Controller.text = widget.listfromserver_mat[1][25];
+        vaccine1_fir_Controller.text = listfromserver_mat[1][18];
+        vaccine1_sec_Controller.text = listfromserver_mat[1][19];
+        vaccine2_fir_Controller.text = listfromserver_mat[1][20];
+        vaccine2_sec_Controller.text = listfromserver_mat[1][21];
+        vaccine3_fir_Controller.text = listfromserver_mat[1][22];
+        vaccine3_sec_Controller.text = listfromserver_mat[1][23];
+        vaccine4_fir_Controller.text = listfromserver_mat[1][24];
+        vaccine4_sec_Controller.text = listfromserver_mat[1][25];
 
-        filename = widget.listfromserver_mat[0];
+        filename = listfromserver_mat[0];
       }
     }
     return Scaffold(
@@ -558,7 +578,7 @@ class MaternityPageState extends State<MaternityPage>{
 }
 //분만사 사진전송
 maternity_insert(String companyCode) async{
-  final api ='https://www.gfarmx.com/api/ocrmaternityInsert';
+  final api =domain+'ocrmaternityInsert';
   final data = {
     "companyCode":companyCode,
     "sow_no": sow_no,

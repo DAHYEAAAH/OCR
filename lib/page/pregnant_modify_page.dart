@@ -736,7 +736,7 @@ class PregnantModifyPageState extends State<PregnantModifyPage>{
 
 //임신사 수정 후 업데이트
 pregnant_update(String companyCode) async {
-  final api ='https://www.gfarmx.com/api/ocrpregnatUpdate';
+  final api =domain+'ocrpregnatUpdate';
   final data = {
     "companyCode":companyCode,
     "ocr_seq": ocr_seq ,

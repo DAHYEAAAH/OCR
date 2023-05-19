@@ -579,7 +579,7 @@ class MaternityModifyPageState extends State<MaternityModifyPage>{
 }
 
 maternity_update(String companyCode) async {
-  final api ='https://www.gfarmx.com/api/ocrmaternityUpdate';
+  final api =domain+'ocrmaternityUpdate';
   final data = {
     "companyCode":companyCode,
     "ocr_seq": ocr_seq,

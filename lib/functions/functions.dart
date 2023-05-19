@@ -269,6 +269,7 @@ delete_pregnant(String companyCode) async{
 // 서버로 분만사 사진 보내는 api
 Future<List> uploadimg_maternity(File file)async{
   final api =domain+'ocrImageUpload';
+  // final api = 'http://192.168.0.26:4000/api/ocrImageUpload';
   final dio = Dio();
 
   DateTime currentTime = await NTP.now();
@@ -282,15 +283,18 @@ Future<List> uploadimg_maternity(File file)async{
         filename: fileName, contentType : MediaType("image","jpg")),
   });
 
+  print("before post");
   Response response = await dio.post(
       api,
       data:_formData,
       onSendProgress: (rec, total) {
-        // print('Rec: $rec , Total: $total');
+        print('Rec: $rec , Total: $total');
       }
   );
-  // print(response);
-  // print('Successfully uploaded');
+  print("response is");
+  print(response);
+
+  print('Successfully uploaded');
   return response.data;
 }
 

@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:last_ocr/functions/functions.dart';
 import 'package:last_ocr/page/graph_target_page.dart';
+import 'package:last_ocr/page/maternity_page.dart';
 import 'package:last_ocr/page/pregnant_list_page.dart';
 import 'package:last_ocr/page/maternity_list_page.dart';
 import 'package:last_ocr/page/graph_page.dart';
+import 'package:last_ocr/page/pregnant_page.dart';
 import 'package:last_ocr/views/PigsRoomThisMonth.dart';
 import 'package:last_ocr/views/VenderList.dart';
 import 'package:last_ocr/views/SalepigView.dart';
 import 'overlay/camera_overlay_maternity.dart';
 import 'overlay/camera_overlay_pregnant.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:edge_detection/edge_detection.dart';
 
 void main() {
   runApp(MyApp());
@@ -96,8 +102,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       SizedBox(width:20,),
                       OutlinedButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant(companyCode: index_of_farm)));
+                        onPressed: () async {
+                          String imagePath = await prepareCamera();
+                          await EdgeDetection.detectEdge(imagePath);
+                          Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => PregnantPage(imagePath, index_of_farm)));
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayPregnant(companyCode: index_of_farm)));
                           },
                         child: const Text('OCR',),
                         style: OutlinedButton.styleFrom(
@@ -130,8 +140,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       SizedBox(width:20,),
                       OutlinedButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayMaternity(companyCode: index_of_farm)));
+                        onPressed: () async {
+                          String imagePath = await prepareCamera();
+                          await EdgeDetection.detectEdge(imagePath);
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => MaternityPage(imagePath, index_of_farm)));
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => CameraOverlayMaternity(companyCode: index_of_farm)));
                         },
                         child: const Text('OCR'),
                         style: OutlinedButton.styleFrom(
@@ -188,60 +202,77 @@ class _MyHomePageState extends State<MyHomePage> {
                       // SizedBox(width: 70,)
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // SizedBox(width: 100,),
-                      OutlinedButton(
-                        onPressed: () async {
-                          // PregnantGraphPage로 넘어가기
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => VenderList()));
-                        },
-                        child: const Text('vender'),
-                        style: OutlinedButton.styleFrom(
-                          padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
-                        ),
-                      ),
-                      // SizedBox(width: 70,)
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // SizedBox(width: 100,),
-                      OutlinedButton(
-                        onPressed: () async {
-                          // PregnantGraphPage로 넘어가기
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SalepigView(companyCode: index_of_farm)));
-                        },
-                        child: const Text('salepig'),
-                        style: OutlinedButton.styleFrom(
-                          padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
-                        ),
-                      ),
-                      // SizedBox(width: 70,)
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // SizedBox(width: 100,),
-                      OutlinedButton(
-                        onPressed: () async {
-                          // PregnantGraphPage로 넘어가기
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PigsRoomThisMonth(companyCode: index_of_farm)));
-                        },
-                        child: const Text('PigsRoomThisMonth'),
-                        style: OutlinedButton.styleFrom(
-                          padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
-                        ),
-                      ),
-                      // SizedBox(width: 70,)
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     // SizedBox(width: 100,),
+                  //     OutlinedButton(
+                  //       onPressed: () async {
+                  //         // PregnantGraphPage로 넘어가기
+                  //         Navigator.push(context, MaterialPageRoute(builder: (context) => VenderList()));
+                  //       },
+                  //       child: const Text('vender'),
+                  //       style: OutlinedButton.styleFrom(
+                  //         padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
+                  //       ),
+                  //     ),
+                  //     // SizedBox(width: 70,)
+                  //   ],
+                  // ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     // SizedBox(width: 100,),
+                  //     OutlinedButton(
+                  //       onPressed: () async {
+                  //         // PregnantGraphPage로 넘어가기
+                  //         Navigator.push(context, MaterialPageRoute(builder: (context) => SalepigView(companyCode: index_of_farm)));
+                  //       },
+                  //       child: const Text('salepig'),
+                  //       style: OutlinedButton.styleFrom(
+                  //         padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
+                  //       ),
+                  //     ),
+                  //     // SizedBox(width: 70,)
+                  //   ],
+                  // ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: [
+                  //     // SizedBox(width: 100,),
+                  //     OutlinedButton(
+                  //       onPressed: () async {
+                  //         // PregnantGraphPage로 넘어가기
+                  //         Navigator.push(context, MaterialPageRoute(builder: (context) => PigsRoomThisMonth(companyCode: index_of_farm)));
+                  //       },
+                  //       child: const Text('PigsRoomThisMonth'),
+                  //       // style: OutlinedButton.styleFrom(
+                  //       //   padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
+                  //       // ),
+                  //     ),
+                  //     // SizedBox(width: 70,)
+                  //   ],
+                  // ),
                 ]
             )
+
         )
     );
+  }
+  Future<String> prepareCamera() async{
+    bool isCameraGranted = await Permission.camera.request().isGranted;
+    if (!isCameraGranted) {
+      isCameraGranted =
+          await Permission.camera.request() == PermissionStatus.granted;
+    }
+    if (!isCameraGranted) {
+      // Have not permission to camera
+      // return;
+    }
+    // Generate filepath for saving
+    String imgPath = join((await getApplicationSupportDirectory()).path,
+        "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
+
+    return imgPath;
   }
 }

@@ -68,6 +68,8 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   carousel_pro: ^1.0.0
   syncfusion_flutter_charts: ^20.4.44
+  edge_detection: ^1.1.1
+  permission_handler: ^10.0.0
 dev_dependencies:
   flutter_test: # flutter용 테스트 라이브러리
     sdk: flutter
