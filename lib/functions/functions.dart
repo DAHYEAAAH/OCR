@@ -124,7 +124,7 @@ Future<List> uploadimg_pregnant(File file)async{
 
   DateTime currentTime = await NTP.now();
   currentTime = currentTime.toUtc().add(Duration(hours: 9));
-  String formatDate = DateFormat('yyyyMMddHHmm').format(currentTime); //format변경
+  String formatDate = DateFormat('yyyyMMddHHmmss').format(currentTime); //format변경
   String fileName = "pre"+formatDate+'.jpg';
   // print(api);
   // print(fileName);
@@ -275,7 +275,7 @@ Future<List> uploadimg_maternity(File file)async{
   DateTime currentTime = await NTP.now();
 
   currentTime = currentTime.toUtc().add(Duration(hours: 9));
-  String formatDate = DateFormat('yyyyMMddHHmm').format(currentTime); //format변경
+  String formatDate = DateFormat('yyyyMMddHHmmss').format(currentTime); //format변경
   String fileName = "mat"+formatDate+'.jpg';
 
   FormData _formData = FormData.fromMap({
